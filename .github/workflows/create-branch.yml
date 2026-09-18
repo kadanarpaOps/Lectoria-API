@@ -1,0 +1,35 @@
+name: Create Branch
+on:
+  workflow_dispatch:
+    inputs:
+      branch-name:
+        description: >
+          Branch Name with Jira Feature Issue Key
+          Example Result: feature/KAD-24-add-user-module
+        required: true
+        type: string
+      branch-type:
+        description: >
+          Branch Type to be Created
+          Supported Types: "feature", "bugfix"
+        required: true
+        type: string
+
+jobs:
+  call-create-branch:
+    name: Create Branch
+    permissions:
+      contents: write
+    uses: kadanarpaOps/Ops-Github-Workflows/.github/workflows/create-branch.yml@main
+    with:
+      branch-name: ${{ inputs.branch-name }}
+      branch-type: ${{ inputs.branch-type }}
+      allowed-jira-types: 'Feature'
+      allowed-jira-statuses: 'New,In Progress'
+    secrets:
+      BOT_CLIENT_ID: ${{ secrets.BOT_CLIENT_ID }}
+      BOT_APP_PRIVATE_KEY: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+      JIRA_KEY: ${{ secrets.JIRA_KEY }}
+      JIRA_URL: ${{ secrets.JIRA_URL }}
+      JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+      JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}

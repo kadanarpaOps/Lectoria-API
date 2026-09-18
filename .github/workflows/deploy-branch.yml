@@ -1,0 +1,24 @@
+name: Deploy Branch
+on:
+  workflow_dispatch:
+    inputs:
+      target-branch:
+        required: true
+        description: 'Target Branch to Deploy'
+      environment:
+        required: true
+        description: 'Environment to Deploy'
+
+jobs:
+  deploy-branch:
+    uses: kadanarpaOps/Ops-Github-Workflows/.github/workflows/deploy-branch.yml@main
+    with:
+      target-branch: ${{ inputs.target-branch }}
+      environment: ${{ inputs.environment }}
+    secrets:
+      VPS_IP: ${{ secrets.VPS_IP }}
+      VPS_PRIVATE_KEY: ${{ secrets.VPS_PRIVATE_KEY }}
+      VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      HOSTINGER_MAIN_DNS: ${{ secrets.HOSTINGER_MAIN_DNS }}
+      HOSTINGER_TOKEN: ${{ secrets.HOSTINGER_TOKEN }}

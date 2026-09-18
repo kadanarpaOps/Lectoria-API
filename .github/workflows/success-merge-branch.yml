@@ -1,0 +1,20 @@
+name: Success Merge Branch
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'release/**'
+
+jobs:
+  merge-default-branch:
+    name: Merge Protected Branch
+    permissions:
+      contents: read
+      actions: read
+    uses: kadanarpaOps/Ops-Github-Workflows/.github/workflows/success-merge-branch.yml@main
+    with:
+      sonar-quality-gate-wait: true
+    secrets:
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+      SONAR_URL: ${{ secrets.SONAR_URL }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

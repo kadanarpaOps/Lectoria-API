@@ -1,0 +1,11 @@
+name: PR Validation
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    uses: kadanarpaOps/Ops-Github-Workflows/.github/workflows/pr-validate.yml@main
+    secrets:
+      BOT_CLIENT_ID: ${{ secrets.BOT_CLIENT_ID }}
+      BOT_APP_PRIVATE_KEY: ${{ secrets.BOT_APP_PRIVATE_KEY }}
