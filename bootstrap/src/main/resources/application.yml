@@ -1,0 +1,61 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: Lectoria-API
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_REALM_ISSUER}
+
+keycloak:
+  server:
+    url: ${KEYCLOAK_SERVER_URL}
+  client:
+    id: ${KEYCLOAK_CLIENT_ID}
+    secret: ${KEYCLOAK_CLIENT_SECRET}
+  realm: ${KEYCLOAK_REALM}
+  auth:
+    url:
+      login: ${KEYCLOAK_AUTH_LOGIN_URL}
+      logout: ${KEYCLOAK_AUTH_LOGOUT_URL}
+      introspection: ${KEYCLOAK_AUTH_INTROSPECTION_URL}
+  skip:
+    defaultrole: ${KEYCLOAK_SKIP_ROLE}
+
+cloudinary:
+  cloud_name: ${CLOUDINARY_CLOUD_NAME_SPRING}
+  api_key: ${CLOUDINARY_API_KEY_SPRING}
+  api_secret: ${CLOUDINARY_API_SECRET_SPRING}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs
+
+environment: ${ENVIRONMENT}
+
+frontend:
+  url: ${FRONTEND_URL}
+
+logging:
+  pattern:
+    dateformat: hh:mm
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
