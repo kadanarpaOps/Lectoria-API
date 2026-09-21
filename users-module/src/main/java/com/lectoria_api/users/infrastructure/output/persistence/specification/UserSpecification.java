@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserSpecification {
+
+    private UserSpecification() {
+        /* Utility Class, should not be instantiated */
+    }
+
     public static Specification<UserEntity> withFilters(UserFilters filters) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

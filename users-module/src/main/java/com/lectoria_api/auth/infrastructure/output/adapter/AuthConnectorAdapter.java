@@ -123,11 +123,14 @@ public class AuthConnectorAdapter implements AuthConnectorPort {
 
         try {
             refreshResponse = authClient.refresh(refreshData).getBody();
-        } catch (Exception e) {
-            if (e instanceof FeignException.BadRequest)
-                throw new FailedOperationException(REFR_OP, INVALID_TOKEN);
-            else
-                throw new FailedOperationException(REFR_OP, KEYCLOAK_ERR_CONNECTION);
+        } catch (FeignException.BadRequest e) {
+            throw new FailedOperationException(REFR_OP, INVALID_TOKEN);
+        } catch(Exception e) {
+            throw new FailedOperationException(REFR_OP, KEYCLOAK_ERR_CONNECTION);
+        }
+
+        if (refreshResponse == null) {
+            throw new FailedOperationException(REFR_OP, INVALID_TOKEN);
         }
 
         return RefreshAccessResponse.builder()

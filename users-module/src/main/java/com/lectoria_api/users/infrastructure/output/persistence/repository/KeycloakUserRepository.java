@@ -2,6 +2,7 @@ package com.lectoria_api.users.infrastructure.output.persistence.repository;
 
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.RoleRepresentation;
@@ -28,10 +29,14 @@ public class KeycloakUserRepository {
 
     public String save(UserRepresentation user) {
         String locationHeader;
-        try {
-            locationHeader = keycloak.realm(realm).users().create(user)
-                    .getHeaderString(HttpHeaders.LOCATION);
-            locationHeader = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+        try (Response response = keycloak.realm(realm).users().create(user)) {
+
+            locationHeader = response.getHeaderString(HttpHeaders.LOCATION);
+
+            if (locationHeader != null) {
+                locationHeader = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+            }
+
         } catch (RuntimeException e) {
             throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
         }

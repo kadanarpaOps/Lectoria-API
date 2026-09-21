@@ -15,7 +15,7 @@ public class UpdateUserPasswordDTO {
 
     @NotNull @NotEmpty
     @Pattern(
-            regexp = "^(?=.*\\d+)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[^a-zA-Z\\d]+)[\\w\\W]{7,30}$",
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[^a-zA-Z0-9]).{7,30}$",
             message = "Password must be from 7 to 30 characters, that contains 1 lowercase and 1 uppercase letter, 1 number and 1 special character"
     )
     private String newPassword;

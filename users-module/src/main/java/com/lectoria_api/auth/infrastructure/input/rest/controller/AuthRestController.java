@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.lectoria_api.auth.domain.constants.Constants.ACCESS_TOKEN;
 import static com.lectoria_api.auth.domain.constants.Constants.BLANK;
 import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_PATH;
-import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_SECURE_DEV;
+import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_SECURE;
 import static com.lectoria_api.auth.domain.constants.Constants.HTTP_ONLY;
+import static com.lectoria_api.auth.domain.constants.Constants.NONE_SITE;
 import static com.lectoria_api.auth.domain.constants.Constants.REFRESH_TOKEN;
-import static com.lectoria_api.auth.domain.constants.Constants.SAME_SITE_DEV;
 import static com.lectoria_api.auth.domain.constants.Constants.ZERO;
 
 @RestController
@@ -116,8 +116,8 @@ public class AuthRestController {
     private String buildCookie(String cookieName, String cookieValue, Long cookieTime) {
         return ResponseCookie.from(cookieName, cookieValue)
                 .httpOnly(HTTP_ONLY)
-                .sameSite(SAME_SITE_DEV)
-                .secure(COOKIE_SECURE_DEV)
+                .sameSite(NONE_SITE)
+                .secure(COOKIE_SECURE)
                 .path(COOKIE_PATH)
                 .maxAge(cookieTime)
                 .build().toString();

@@ -45,12 +45,11 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
 
         keycloakUser.getRealmRoles().forEach(roleToAdd -> {
             try {
-                    keycloakRepository.getRoleByName(roleToAdd);
-            } catch (RuntimeException e) {
-                if (e instanceof NotFoundException)
-                    throw new KeycloakRoleNotFoundException(roleToAdd);
-                else
-                    throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
+                keycloakRepository.getRoleByName(roleToAdd);
+            } catch (NotFoundException e) {
+                throw new KeycloakRoleNotFoundException(roleToAdd);
+            } catch  (RuntimeException e) {
+                throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
             }
         });
 

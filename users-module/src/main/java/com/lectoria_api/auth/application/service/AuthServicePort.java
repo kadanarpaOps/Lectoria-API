@@ -35,8 +35,7 @@ public class AuthServicePort implements AuthUseCases {
      */
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        LoginResponse loginResponse = authConnector.login(loginRequest);
-        return loginResponse;
+        return authConnector.login(loginRequest);
     }
 
     /**
@@ -60,8 +59,8 @@ public class AuthServicePort implements AuthUseCases {
     @Override
     public TokenValidationResponse validateToken(String token) {
         if (token == null) return TokenValidationResponse.builder().active(false).build();
-        TokenValidationResponse validationResponse = authConnector.validateToken(token);
-        return validationResponse;
+
+        return authConnector.validateToken(token);
     }
 
     /**
@@ -75,8 +74,7 @@ public class AuthServicePort implements AuthUseCases {
     public RefreshAccessResponse refreshAccessToken(String refreshToken) {
         if (refreshToken == null) throw new InvalidRefreshAccessAttemptException();
 
-        RefreshAccessResponse refreshAccessResponse = authConnector.refreshAccess(refreshToken);
-        return refreshAccessResponse;
+        return authConnector.refreshAccess(refreshToken);
     }
 
     /**
@@ -93,10 +91,11 @@ public class AuthServicePort implements AuthUseCases {
             throw new NoAuthenticationFoundExcepcion();
 
         Jwt tokenCredentials = (Jwt) actualAuthentication.getCredentials();
-        Map<String, Object> claims = tokenCredentials.getClaims();
-        UUID userId = UUID.fromString((String) claims.get(SUB));
+        if (tokenCredentials == null) throw new NoAuthenticationFoundExcepcion();
 
-        return userId;
+        Map<String, Object> claims = tokenCredentials.getClaims();
+
+        return UUID.fromString((String) claims.get(SUB));
     }
 
 }
