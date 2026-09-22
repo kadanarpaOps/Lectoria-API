@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -20,7 +21,7 @@ public class GlobalExceptionHandler {
                         .statusCode(HttpStatus.UNAUTHORIZED.value())
                         .message(ex.getMessage())
                         .details(doDetails(ex))
-                        .timestamp(LocalDateTime.now())
+                        .timestamp(now())
                         .build()
         );
     }
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .message(ex.getMessage())
                         .details(doDetails(ex))
-                        .timestamp(LocalDateTime.now())
+                        .timestamp(now())
                         .build()
         );
     }
@@ -41,6 +42,10 @@ public class GlobalExceptionHandler {
         return ErrorDetailsDTO.builder()
                 .errorName(ex.getClass().getSimpleName())
                 .build();
+    }
+
+    private LocalDateTime now() {
+        return LocalDateTime.now(ZoneId.of("UTC-5"));
     }
 
 }

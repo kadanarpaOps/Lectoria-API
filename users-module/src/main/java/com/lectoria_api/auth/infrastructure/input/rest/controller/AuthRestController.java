@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Duration;
-
 import static com.lectoria_api.auth.domain.constants.Constants.ACCESS_TOKEN;
 import static com.lectoria_api.auth.domain.constants.Constants.BLANK;
 import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_PATH;
@@ -125,7 +123,7 @@ public class AuthRestController {
                 .sameSite(siteConfig)
                 .secure(secureCookieConfig)
                 .path(COOKIE_PATH)
-                .maxAge(Duration.ofSeconds(cookieTime))
+                .maxAge(cookieTime)
                 .build().toString();
     }
 
