@@ -53,6 +53,11 @@ environment: ${ENVIRONMENT}
 frontend:
   url: ${FRONTEND_URL}
 
+cookie:
+  config:
+    site: ${COOKIE_SITE_CONFIG}
+    secure: ${COOKIE_SECURE_CONFIG}
+
 logging:
   pattern:
     dateformat: hh:mm

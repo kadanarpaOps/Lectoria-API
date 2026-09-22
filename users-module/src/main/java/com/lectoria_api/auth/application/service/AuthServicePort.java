@@ -46,7 +46,7 @@ public class AuthServicePort implements AuthUseCases {
      */
     @Override
     public void logout(String refreshToken) {
-        if (refreshToken == null) return;
+        if (refreshToken == null || refreshToken.trim().isEmpty()) return;
         authConnector.logout(refreshToken);
     }
 

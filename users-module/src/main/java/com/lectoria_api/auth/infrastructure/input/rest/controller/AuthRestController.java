@@ -9,6 +9,7 @@ import com.lectoria_api.auth.infrastructure.input.rest.dto.in.LoginRequestDTO;
 import com.lectoria_api.auth.infrastructure.input.rest.dto.out.ValidationResponseDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
+
 import static com.lectoria_api.auth.domain.constants.Constants.ACCESS_TOKEN;
 import static com.lectoria_api.auth.domain.constants.Constants.BLANK;
 import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_PATH;
-import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_SECURE;
 import static com.lectoria_api.auth.domain.constants.Constants.HTTP_ONLY;
-import static com.lectoria_api.auth.domain.constants.Constants.NONE_SITE;
 import static com.lectoria_api.auth.domain.constants.Constants.REFRESH_TOKEN;
 import static com.lectoria_api.auth.domain.constants.Constants.ZERO;
 
@@ -33,6 +34,11 @@ import static com.lectoria_api.auth.domain.constants.Constants.ZERO;
 public class AuthRestController {
 
     private final AuthUseCases authService;
+
+    @Value("${cookie.config.site}")
+    private String siteConfig;
+    @Value("${cookie.config.secure}")
+    private boolean secureCookieConfig;
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(
@@ -116,10 +122,10 @@ public class AuthRestController {
     private String buildCookie(String cookieName, String cookieValue, Long cookieTime) {
         return ResponseCookie.from(cookieName, cookieValue)
                 .httpOnly(HTTP_ONLY)
-                .sameSite(NONE_SITE)
-                .secure(COOKIE_SECURE)
+                .sameSite(siteConfig)
+                .secure(secureCookieConfig)
                 .path(COOKIE_PATH)
-                .maxAge(cookieTime)
+                .maxAge(Duration.ofSeconds(cookieTime))
                 .build().toString();
     }
 

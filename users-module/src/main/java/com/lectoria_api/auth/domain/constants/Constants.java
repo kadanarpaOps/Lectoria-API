@@ -32,8 +32,6 @@ public class Constants {
 
     // COOKIES Constants
     public static final boolean HTTP_ONLY = true;
-    public static final String NONE_SITE = "None";
-    public static final boolean COOKIE_SECURE = true;
     public static final String COOKIE_PATH = "/";
     // Delete Cookies
     public static final String BLANK = "";

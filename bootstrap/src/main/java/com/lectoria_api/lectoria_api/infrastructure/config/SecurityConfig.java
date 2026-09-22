@@ -30,6 +30,7 @@ public class SecurityConfig {
     private String frontendUrl;
 
     private final KeycloakAuthConverter authConverter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -55,11 +56,15 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(oauth -> oauth
                         .bearerTokenResolver(cookieAccessTokenResolver())
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .jwt(jwtConfigurer -> jwtConfigurer
                                 .jwtAuthenticationConverter(jwtToken ->
                                         new JwtAuthenticationToken(jwtToken, authConverter.convert(jwtToken))
                                 )
                         )
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .build();
     }
