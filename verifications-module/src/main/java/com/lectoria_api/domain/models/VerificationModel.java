@@ -10,12 +10,17 @@ import lombok.Setter;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class VerificationModel {
+
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     private UUID verificationId;
     private UUID userId;
     private String code;
@@ -26,20 +31,19 @@ public class VerificationModel {
     private VerificationStatus verificationStatus;
 
     public void generateCode() {
-        SecureRandom random = new SecureRandom();
-        int number = random.nextInt(900000) + 100000;
+        int number = RANDOM.nextInt(900000) + 100000;
         this.code = String.valueOf(number);
     }
 
     public void loadDates() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expirationDate = now.plusMinutes(5);
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
         this.creationDate = now;
-        this.expirationDate = expirationDate;
+        this.expirationDate = now.plusMinutes(5);
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expirationDate);
+        return LocalDateTime.now(ZoneId.of("America/Bogota"))
+                .isAfter(expirationDate);
     }
 
     public boolean isValidCode(String code) {
