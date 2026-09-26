@@ -11,6 +11,8 @@ import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -29,6 +31,8 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
 
     private final KeycloakUserRepository keycloakRepository;
     private final KeycloakRepresentationalMapper keycloakMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(KeycloakConnectorAdapter.class);
 
     /**
      * @param user Represents the Model to be created in Keycloak Realm
@@ -53,9 +57,12 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
             }
         });
 
+        LOG.info("[KEYCLOAK_CONNECTOR] User to be stored on Keycloak: {}", keycloakUser);
+
         try {
             userId = keycloakRepository.save(keycloakUser);
         } catch (RuntimeException e) {
+            LOG.error("[KEYCLOAK_CONNECTOR] Error Creating User: {}", e.getMessage());
             throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
         }
 

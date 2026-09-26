@@ -18,6 +18,8 @@ import com.lectoria_api.users.domain.ports.input.UserUseCases;
 import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
 import com.lectoria_api.users.domain.ports.output.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +34,6 @@ import static com.lectoria_api.users.domain.constants.Constants.EMAIL;
 import static com.lectoria_api.users.domain.constants.Constants.ID;
 import static com.lectoria_api.users.domain.constants.Constants.KEYCLOAK_ERR_CONNECTION;
 import static com.lectoria_api.users.domain.constants.Constants.UPDATE_OP;
-import static com.lectoria_api.users.domain.constants.Constants.USCO_CODE;
 import static com.lectoria_api.users.domain.constants.Constants.USERNAME;
 import static com.lectoria_api.users.domain.constants.Constants.USER_WITH_ROLE_INVALID;
 
@@ -43,6 +44,8 @@ public class UserServicePort implements UserUseCases {
     private final UserRepositoryPort userRepository;
     private final KeycloakConnectorPort keycloakConnector;
     private final RoleUseCases roleUseCases;
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServicePort.class);
 
     /**
      * This method list and page the users searching by a filter series provided by the user
@@ -71,7 +74,7 @@ public class UserServicePort implements UserUseCases {
     @Override
     public UserModel findUserById(UUID userId) {
         Optional<UserModel> optionalUser = userRepository.findUserById(userId);
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             throw new UserWithFieldNotExistsException(ID);
         }
         return optionalUser.get();
@@ -80,7 +83,7 @@ public class UserServicePort implements UserUseCases {
     @Override
     public UserModel findUserByEmail(String userEmail) {
         Optional<UserModel> optionalUser = userRepository.findUserByEmail(userEmail);
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             throw new UserWithFieldNotExistsException(EMAIL);
         }
         return optionalUser.get();
@@ -98,7 +101,7 @@ public class UserServicePort implements UserUseCases {
         boolean userExistsByUsername = userRepository.existsByFilters(
                 UserFilters.builder().username(user.getUsername()).build());
 
-        if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USCO_CODE);
+        if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
 
         boolean userExistsByEmail = userRepository.existsByFilters(
                 UserFilters.builder().userEmail(user.getUserEmail()).build());
@@ -111,8 +114,12 @@ public class UserServicePort implements UserUseCases {
             roleModel.setRoleId(roleToAdd.getRoleId());
         });
 
+        LOG.info("[USER SERVICE] User to be created on Keycloak: {}", user);
+
         String userId = keycloakConnector.registerKeycloakUser(user);
         user.setUserId(UUID.fromString(userId));
+
+        LOG.info("[USER SERVICE] User to be inserted on Database: {}", user);
 
         try {
             userRepository.save(user);

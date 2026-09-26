@@ -15,7 +15,7 @@ public class Constants {
     public static final String FAILED_OP_MESSAGE = "Failed %s because %s";
     public static final String ROLE_NOT_FOUND_IN_KEYCLOAK_MESSAGE = "Role %s does not exist in Authentication Server";
 
-    public static final String USER_INVALID_USCO_CODE_MESSAGE = "Invalid USCO code";
+    public static final String USER_INVALID_USERNAME_MESSAGE = "Invalid USCO code";
     public static final String USER_INVALID_EMAIL_MESSAGE = "Invalid email";
     public static final String USER_INVALID_NAME_MESSAGE = "Invalid name";
     public static final String USER_INVALID_PASSWORD_MESSAGE = "Invalid password";
@@ -37,7 +37,6 @@ public class Constants {
 
     // Fields
     public static final String ID = "id";
-    public static final String USCO_CODE = "usco code";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
