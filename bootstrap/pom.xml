@@ -20,6 +20,11 @@
             <artifactId>users-module</artifactId>
             <version>${parent.version}</version>
         </dependency>
+		<dependency>
+			<groupId>com.lectoria-api</groupId>
+			<artifactId>verifications-module</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
     </dependencies>
 
 	<build>
