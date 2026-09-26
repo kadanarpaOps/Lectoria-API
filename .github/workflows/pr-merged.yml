@@ -5,6 +5,10 @@ on:
 
 jobs:
   handle-merge:
+    name: Propagate,Bump & Publish
+    permissions:
+      contents: write
+      pull-requests: write
     uses: kadanarpaOps/Ops-Github-Workflows/.github/workflows/pr-merged.yml@main
     secrets:
       BOT_CLIENT_ID: ${{ secrets.BOT_CLIENT_ID }}
