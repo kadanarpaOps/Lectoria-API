@@ -19,5 +19,6 @@ public class UserModel {
     private String userPassword;
     private List<RoleModel> userRoles;
     private boolean userEnabled;
+    private UserDetails userDetails;
 
 }

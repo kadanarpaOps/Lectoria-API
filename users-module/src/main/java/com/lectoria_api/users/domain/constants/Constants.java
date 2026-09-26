@@ -27,7 +27,6 @@ public class Constants {
     public static final String DELETION_OP = "Deletion";
 
     // Causes
-    public static final String ROLE_IS_REQUIRED = "Role is Required";
     public static final String AT_LEAST_ONE_FIELD_REQUIRED = "At least one field is required";
     public static final String FIELD_WITH_VALUE_NOT_EXIST = "%s with value %s does not exist";
     public static final String KEYCLOAK_ERR_CONNECTION = "Errors in the Network Connection with Keycloak";
@@ -38,10 +37,9 @@ public class Constants {
     // Fields
     public static final String ID = "id";
     public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
 
     // Admin Role
-    public static final String ADMINISTRATOR = "ADMINISTRADOR";
+    public static final String ADMINISTRATOR = "LECTORIA_ADMIN";
 
 }
