@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizaci&oacute;n de datos</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td { font-family: Georgia, 'Times New Roman', serif !important; }
+    </style>
+    <![endif]-->
+    <style type="text/css">
+        body, table, td, p, a, li { margin: 0; padding: 0; border: 0; }
+        body { background-color: #13131a; }
+        img { border: 0; display: block; }
+        a { text-decoration: none; }
+        * { -webkit-text-size-adjust: none; text-size-adjust: none; }
+    </style>
+</head>
+
+<!--
+    NOTAS THYMELEAF:
+    - th:each="campo : ${camposModificados}"  → lista de campos modificados (List<String>)
+    - th:text="${campo}"                       → nombre de cada campo
+    - th:text="${refCode}"                     → código de referencia (ej. SCR-SEC-88219)
+    - th:text="${fechaActualizacion}"          → fecha del evento (ej. AB 2024)
+-->
+
+<body style="margin: 0; padding: 0; background-color: #13131a;">
+
+    <!-- Wrapper principal -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#13131a">
+        <tr>
+        <td align="center" valign="top">
+
+            <!-- Contenedor centrado 600px -->
+            <table width="600" border="0" cellspacing="0" cellpadding="0" style="width: 600px; max-width: 600px;">
+
+            <!-- ══════════════════════════════════════
+                HEADER
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#16161d" style="background-color: #16161d; border-bottom: 1px solid #363646;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                    <td style="padding: 20px 32px;">
+                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 17px; font-weight: bold; font-style: normal; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
+                        Inkly
+                        </span>
+                    </td>
+                    <td align="right" style="padding: 20px 32px 20px 0;">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td style="padding-right: 12px;">
+                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #9a9aaa;">&#128269;</span>
+                            </td>
+                            <td>
+                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#128276;</span>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                CUERPO PRINCIPAL — TARJETA DE SEGURIDAD
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#13131a" style="background-color: #13131a; padding: 40px 32px;">
+
+                <!-- Tarjeta -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1b1b22" style="background-color: #1b1b22; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden;">
+                    <tr>
+                    <td style="padding: 40px 40px 0 40px;">
+
+                        <!-- Ícono escudo + Título -->
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr valign="top">
+
+                            <!-- Círculo con ícono escudo -->
+                            <td width="72" style="width: 72px; padding-right: 24px;">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                <td width="72" height="72" bgcolor="#ff5d62" align="center" valign="middle"
+                                    style="background-color: #ff5d62; border-radius: 50%; width: 72px; height: 72px; text-align: center;">
+                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; line-height: 72px; color: #ffffff;">
+                                    &#128737;
+                                    </span>
+                                </td>
+                                </tr>
+                            </table>
+                            </td>
+
+                            <!-- Título -->
+                            <td valign="middle">
+                            <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 26px; font-weight: bold; line-height: 1.25; color: #e4e1eb; margin: 0;">
+                                Se han actualizado tus datos de cuenta
+                            </p>
+                            </td>
+
+                        </tr>
+                        </table>
+
+                    </td>
+                    </tr>
+
+                    <!-- Descripción -->
+                    <tr>
+                    <td style="padding: 20px 40px 0 40px;">
+                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.65; color: #9a9aaa; margin: 0;">
+                        Detectamos cambios recientes en la configuraci&oacute;n de tu perfil literario.
+                        Revisa los detalles a continuaci&oacute;n para asegurar la integridad de tus datos.
+                        </p>
+                    </td>
+                    </tr>
+
+                    <!-- Caja: Campos modificados -->
+                    <tr>
+                    <td style="padding: 24px 40px 0 40px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#16161d" style="background-color: #16161d; border-radius: 8px;">
+                        <tr>
+                            <td style="padding: 20px 24px;">
+
+                            <!-- Label "CAMPOS MODIFICADOS" -->
+                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 5px; text-transform: uppercase; color: #ff5d62; margin: 0 0 14px 0;">
+                                Campos Modificados
+                            </p>
+
+                            <!-- Lista de campos — Thymeleaf itera aquí -->
+                            <!-- Bloque th:block para iteración -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" th:each="campo, iterStat : ${camposModificados}">
+                                <tr th:classappend="${!iterStat.first} ? 'campo-row' : ''">
+                                <td th:style="${!iterStat.first} ? 'padding-top: 12px;' : ''"
+                                    style="padding-bottom: 0;">
+                                    <table border="0" cellspacing="0" cellpadding="0">
+                                    <tr valign="middle">
+                                        <td style="padding-right: 10px;">
+                                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #9a9aaa;">&#8635;</span>
+                                        </td>
+                                        <td>
+                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: #e4e1eb;" th:text="${campo}">
+                                            Campo
+                                        </span>
+                                        </td>
+                                    </tr>
+                                    </table>
+                                </td>
+                                </tr>
+                            </table>
+
+                            <!-- Fallback visible sin Thymeleaf -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" th:if="${camposModificados == null or camposModificados.empty}">
+                                <tr>
+                                <td>
+                                    <table border="0" cellspacing="0" cellpadding="0">
+                                    <tr valign="middle">
+                                        <td style="padding-right: 10px;">
+                                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #9a9aaa;">&#8635;</span>
+                                        </td>
+                                        <td>
+                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: #e4e1eb;">Contrase&ntilde;a</span>
+                                        </td>
+                                    </tr>
+                                    </table>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td style="padding-top: 12px;">
+                                    <table border="0" cellspacing="0" cellpadding="0">
+                                    <tr valign="middle">
+                                        <td style="padding-right: 10px;">
+                                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #9a9aaa;">&#8635;</span>
+                                        </td>
+                                        <td>
+                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: #e4e1eb;">Biograf&iacute;a</span>
+                                        </td>
+                                    </tr>
+                                    </table>
+                                </td>
+                                </tr>
+                            </table>
+
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+
+                    <!-- Botón CTA -->
+                    <tr>
+                    <td style="padding: 32px 40px 0 40px;">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td bgcolor="#ff5d62" style="background-color: #ff5d62; border-radius: 6px;">
+                            <a href="#" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #16161d; text-decoration: none; padding: 14px 32px; text-align: center; border-radius: 6px;">
+                                Revisar mi cuenta
+                            </a>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+
+                    <!-- Aviso de seguridad -->
+                    <tr>
+                    <td style="padding: 24px 40px 0 40px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#2e1a1b" style="background-color: #2e1a1b; border-radius: 8px;">
+                        <tr valign="top">
+                            <td width="32" style="padding: 16px 0 16px 20px; width: 32px;">
+                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#9888;</span>
+                            </td>
+                            <td style="padding: 16px 20px 16px 10px;">
+                            <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.55; color: #9a9aaa; margin: 0;">
+                                Si no fuiste t&uacute;, contacta a soporte inmediatamente para proteger tu acceso.
+                            </p>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+
+                    <tr>
+                    <td style="padding: 20px 40px 28px 40px; border-top: 1px; margin-top: 24px;">
+                    </td>
+                    </tr>
+
+                </table>
+                <!-- / Tarjeta -->
+
+                </td>
+            </tr>
+
+            <tr>
+                <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                FOOTER
+            ══════════════════════════════════════ -->
+                <tr>
+                    <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="padding: 32px; text-align: center;">
+                                    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                                            Inkly
+                                        </p>
+                                    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                        © 2026 Inkly.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+            <!-- / Contenedor 600px -->
+
+        </td>
+        </tr>
+    </table>
+    <!-- / Wrapper -->
+
+</body>
+</html>

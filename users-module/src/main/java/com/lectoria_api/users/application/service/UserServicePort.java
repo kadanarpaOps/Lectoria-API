@@ -15,8 +15,8 @@ import com.lectoria_api.users.domain.model.UserFilters;
 import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.users.domain.ports.input.RoleUseCases;
 import com.lectoria_api.users.domain.ports.input.UserUseCases;
-import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
 import com.lectoria_api.users.domain.ports.output.UserRepositoryPort;
+import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ import static com.lectoria_api.users.domain.constants.Constants.USER_WITH_ROLE_I
 
 @Service
 @RequiredArgsConstructor
-public class UserServicePort implements UserUseCases {
+public class    UserServicePort implements UserUseCases {
 
     private final UserRepositoryPort userRepository;
     private final KeycloakConnectorPort keycloakConnector;

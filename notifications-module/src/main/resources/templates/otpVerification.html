@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código de verificación</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td { font-family: Georgia, 'Times New Roman', serif !important; }
+    </style>
+    <![endif]-->
+    <style type="text/css">
+        body, table, td, p, a, li { margin: 0; padding: 0; border: 0; }
+        body { background-color: #13131a; }
+        img { border: 0; display: block; }
+        a { text-decoration: none; }
+        * { -webkit-text-size-adjust: none; text-size-adjust: none; }
+    </style>
+</head>
+
+<!--
+    VARIABLES THYMELEAF (Map<String, String> dataValues):
+    - ${username}        → nombre del usuario  (ej. "solaris_writer")
+    - ${otpCode}         → código OTP de 6 dígitos (ej. "482 917")
+    - ${expiresIn}       → minutos de vigencia (ej. "10")
+    - ${refCode}         → código de referencia (ej. "OTP-VER-39471")
+    - ${fechaSolicitud}  → fecha legible del evento (ej. "Mayo 2026")
+-->
+
+<body style="margin: 0; padding: 0; background-color: #13131a;">
+
+    <!-- Wrapper principal -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#13131a">
+        <tr>
+            <td align="center" valign="top">
+
+                <!-- Contenedor centrado 600px -->
+                <table width="600" border="0" cellspacing="0" cellpadding="0" style="width: 600px; max-width: 600px;">
+
+                    <!--HEADER-->
+                    <tr>
+                        <td bgcolor="#16161d" style="background-color: #16161d; border-bottom: 1px solid #363646;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td style="padding: 20px 32px;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 17px; font-weight: bold; font-style: normal; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
+                                            Inkly
+                                        </span>
+                                    </td>
+                                    <td align="right" style="padding: 20px 32px 20px 0;">
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="padding-right: 12px;">
+                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #9a9aaa;">&#128274;</span>
+                                                </td>
+                                                <td>
+                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#128273;</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- CUERPO PRINCIPAL — TARJETA OTP -->
+                    <tr>
+                        <td bgcolor="#13131a" style="background-color: #13131a; padding: 40px 32px;">
+
+                            <!-- Tarjeta -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1b1b22"
+       style="background-color: #1b1b22; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden;">
+                                <tr>
+                                    <td style="padding: 40px 40px 0 40px;">
+
+                                        <!-- Ícono + Título -->
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr valign="top">
+
+                                                <!-- Círculo con ícono llave -->
+                                                <td width="72" style="width: 72px; padding-right: 24px;">
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="72" height="72" bgcolor="#ff5d62" align="center" valign="middle"
+                                                                style="background-color: #ff5d62; border-radius: 50%; width: 72px; height: 72px; text-align: center;">
+                                                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; line-height: 72px; color: #ffffff;">
+                                                                    &#128273;
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+
+                                                <!-- Título -->
+                                                <td valign="middle">
+                                                    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 26px; font-weight: bold; line-height: 1.25; color: #e4e1eb; margin: 0;">
+                                                        Tu código de acceso temporal
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+
+                                <!-- Saludo personalizado -->
+                                <tr>
+                                    <td style="padding: 20px 40px 0 40px;">
+                                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.65; color: #9a9aaa; margin: 0;">
+                                            Hola, <span style="color: #e4e1eb;" th:text="${username}">escritor</span>.
+                                            Recibimos una solicitud de verificaci&oacute;n para tu cuenta en Inkly.
+                                            Usa el siguiente c&oacute;digo para completar el proceso — es v&aacute;lido por
+                                            <span style="color: #ff5d62;" th:text="${expiresIn}">10</span> minutos.
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Caja: Código OTP -->
+                                <tr>
+                                    <td style="padding: 24px 40px 0 40px;">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#16161d"
+                                               style="background-color: #16161d; border-radius: 8px; border: 1px solid #2e1a1b;">
+                                            <tr>
+                                                <td align="center" style="padding: 32px 24px;">
+
+                                                    <!-- Etiqueta -->
+                                                    <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 5px; text-transform: uppercase; color: #ff5d62; margin: 0 0 20px 0;">
+                                                        Código de verificación
+                                                    </p>
+
+                                                    <!-- Código OTP -->
+                                                    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 48px; font-weight: bold; letter-spacing: 12px; color: #e4e1eb; margin: 0; line-height: 1;"
+                                                       th:text="${otpCode}">
+                                                    </p>
+
+                                                    <!-- Barra de expiración decorativa -->
+                                                    <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 24px;">
+                                                        <tr valign="middle">
+                                                            <td style="padding-right: 8px;">
+                                                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #9a9aaa;">&#9201;</span>
+                                                            </td>
+                                                            <td>
+                                                                <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #9a9aaa;">
+                                                                    Expira en <span style="color: #ff5d62;" th:text="${expiresIn}">10</span> minutos
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Aviso de seguridad -->
+                                <tr>
+                                    <td style="padding: 24px 40px 0 40px;">
+                                        <table width="100%" border="0" cellspacing="" cellpadding="0" bgcolor="#2e1a1b"
+                                               style="background-color: #2e1a1b; border-radius: 8px;">
+                                            <tr valign="top">
+                                                <td width="32" style="padding: 16px 0 16px 20px; width: 32px;">
+                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#9888;</span>
+                                                </td>
+                                                <td style="padding: 16px 20px 16px 10px;">
+                                                    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.55; color: #9a9aaa; margin: 0;">
+                                                        Si no solicitaste este c&oacute;digo, ignora este correo. Tu cuenta permanece segura.
+                                                        Nunca compartas este c&oacute;digo con nadie.
+                                                        Inkly jam&aacute;s te lo pedir&aacute;.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 20px 40px 28px 40px; border-top: 1px; margin-top: 24px;">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
+                        </td>
+                    </tr>
+
+                    <!-- FOOTER -->
+                    <tr>
+                        <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td style="padding: 32px; text-align: center;">
+                                        <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                                                Inkly
+                                            </p>
+                                        <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                            © 2026 Inkly.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- / Contenedor 600px -->
+
+            </td>
+        </tr>
+    </table>
+    <!-- / Wrapper -->
+
+</body>
+</html>

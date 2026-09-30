@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevos ojos en tu obra</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td { font-family: Georgia, 'Times New Roman', serif !important; }
+    </style>
+    <![endif]-->
+    <style type="text/css">
+        /* Reset basico para clientes de correo */
+        body, table, td, p, a, li { margin: 0; padding: 0; border: 0; }
+        body { background-color: #13131a; }
+        img { border: 0; display: block; }
+        a { text-decoration: none; }
+        /* Prevenir auto-resize en iOS */
+        * { -webkit-text-size-adjust: none; text-size-adjust: none; }
+    </style>
+</head>
+
+<!--
+    NOTAS THYMELEAF:
+    - th:text="${readerCount}"      → cantidad de visitas al perfil esta semana
+    - th:text="${newReaders}"       → nuevos lectores
+    - th:text="${savedQuotes}"      → citas guardadas
+-->
+
+<body style="margin: 0; padding: 0; background-color: #13131a;">
+
+    <!-- Wrapper principal -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#13131a">
+        <tr>
+        <td align="center" valign="top">
+
+            <!-- Contenedor centrado 600px -->
+            <table width="600" border="0" cellspacing="0" cellpadding="0" style="width: 600px; max-width: 600px;">
+
+            <!-- ══════════════════════════════════════
+                HEADER
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#16161d" style="background-color: #16161d; border-bottom: 1px solid #363646;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                    <td width="536" style="padding: 20px 32px;">
+                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 17px; font-weight: bold; font-style: normal; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
+                        Inkly
+                        </span>
+                    </td>
+                    <td width="32" align="right" style="padding: 20px 32px 20px 0;">
+                        <!-- Icono campana en unicode -->
+                        <span style="font-family: Arial, sans-serif; font-size: 18px; color: #ff5d62;">&#128276;</span>
+                    </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                HERO — TÍTULO
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#13131a" style="background-color: #13131a; padding: 40px 32px 8px 32px;">
+                <!-- Label superior -->
+                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; letter-spacing: 5px; text-transform: uppercase; color: #9a9aaa; margin: 0 0 12px 0;">
+                    Notificaci&oacute;n Literaria &bull; Edici&oacute;n de Medianoche
+                </p>
+                <!-- Título principal -->
+                <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 50px; font-weight: bold; line-height: 1.1; letter-spacing: -1px; color: #e4e1eb; margin: 0;">
+                    Nuevos ojos
+                </p>
+                <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 50px; font-weight: bold; font-style: italic; line-height: 1.1; letter-spacing: -1px; color: #ff5d62; margin: 0 0 32px 0;">
+                    en tu obra
+                </p>
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                STATS — TARJETA PRINCIPAL + LATERALES
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#13131a" style="background-color: #13131a; padding: 0 32px 24px 32px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr valign="top">
+
+                    <!-- Tarjeta principal: visitas al perfil -->
+                    <td width="360" bgcolor="#1b1b22" style="background-color: #1b1b22; padding: 24px; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); overflow: hidden;">
+                        <!-- Badge +12% -->
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#128065;</span>
+                            </td>
+                            <td align="right">
+                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #ff5d62; background-color: #2e1a1b; padding: 3px 10px; border-radius: 20px;">
+                                +12%
+                            </span>
+                            </td>
+                        </tr>
+                        </table>
+                        <!-- Número grande -->
+                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 68px; font-weight: bold; line-height: 1; color: #e4e1eb; margin: 16px 0 12px 0;" th:text="${readerCount}">
+                        85
+                        </p>
+                        <!-- Descripción -->
+                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.6; color: #9a9aaa; margin: 0;">
+                        personas han visitado tu perfil esta semana.<br>
+                        Tus historias siguen expandi&eacute;ndose dentro de Inkly.
+                        </p>
+                    </td>
+
+                    <!-- Separador horizontal -->
+                    <td width="12" style="width: 12px;">&nbsp;</td>
+
+                    <!-- Columna tarjetas laterales -->
+                    <td width="176" valign="top">
+
+                        <!-- Tarjeta: Nuevos lectores -->
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td bgcolor="#1b1b22" style="background-color: #1b1b22; padding: 20px 16px; text-align: center; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);">
+                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 20px; margin: 0 0 6px 0; color: #9a9aaa;">&#128218;</p>
+                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 4px; text-transform: uppercase; color: #9a9aaa; margin: 0 0 6px 0;">
+                                Nuevos Lectores
+                            </p>
+                            <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 38px; font-weight: bold; line-height: 1; color: #e4e1eb; margin: 0;" th:text="${newReaders}">
+                                24
+                            </p>
+                            </td>
+                        </tr>
+
+                        <!-- Separador vertical entre tarjetas -->
+                        <tr>
+                            <td style="height: 12px;">&nbsp;</td>
+                        </tr>
+
+                        <!-- Tarjeta: Citas guardadas -->
+                        <tr>
+                            <td bgcolor="#1b1b22" style="background-color: #1b1b22; padding: 20px 16px; text-align: center; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);">
+                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 20px; margin: 0 0 6px 0; color: #9a9aaa;">&#9998;</p>
+                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 4px; text-transform: uppercase; color: #9a9aaa; margin: 0 0 6px 0;">
+                                Citas Guardadas
+                            </p>
+                            <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 38px; font-weight: bold; line-height: 1; color: #e4e1eb; margin: 0;" th:text="${savedQuotes}">
+                                11
+                            </p>
+                            </td>
+                        </tr>
+                        </table>
+
+                    </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                COMUNIDAD
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#13131a" style="background-color: #13131a; padding: 8px 32px 24px 32px;">
+
+                <!-- Título sección -->
+                <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: bold; color: #e4e1eb; margin: 0 0 10px 0;">
+                    Tu comunidad est&aacute; creciendo
+                </p>
+                <!-- Párrafo -->
+                <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.65; color: #9a9aaa; margin: 0 0 20px 0;">
+                    El crecimiento no es solo un n&uacute;mero; es el eco de tus palabras en la mente de
+                    otros. Esta semana, tu perfil ha atra&iacute;do a curadores y entusiastas que buscan la
+                    profundidad que solo tu pluma ofrece.
+                </p>
+
+                <!-- Avatares + texto -->
+                <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 28px;">
+                    <tr valign="middle">
+                    <td style="padding-right: 2px;">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8JPR7SWAomcT3RE_lsdCJTvvEnJtWndXbRQ6tM9YvD5G_rw4K18012guSnTgCO-ip-5fdSlkU_5Z6OPgYg-Rxq8hybzwubw0l9jo3XuxvFqzVxigcl3-Z0FEpM9PgpUy9tM35HWx7cVouM0WO3Ywa4PqKPulaVqa1D33YqKmLKJzsqSp9Aal5uTq87PFYDDMfjwMlgOFK5UJyCVQqpzg_892qhYk0RWs56Fe9rWcm9YQNb8rpu0WzowpYIb1CXyI2gXeNg1UF-cY"
+                            width="38" height="38" alt="Lector"
+                            style="border-radius: 50%; border: 2px solid #13131a; width: 38px; height: 38px; display: block; filter: grayscale(100%);">
+                    </td>
+                    <td style="padding-right: 2px;">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp8zTYRhFwTbVYHgwvbMD8uWtWqdmpll7Uidy1Srkq-x8XN-ZjAHUdRGVPaa8Uz_-CAcJJq1DYjppirDXrEu4aX_8WsnOCnIvPKAnoxiuIi3Bmb8oAJrE32rcHVrmiB8YxMFHZ6InsOXXEvjGXtranVAPLQ0MOXCfDP36gLkFYTA4dy1lszAwtSb9MBDO335qItgAPSdQt5_LmZO_gVNM1PfCXTpJFzvH7HYsVGS0ZSb3eb3wxR2BII2zcShFfKmxFr0wLEHk13YI"
+                            width="38" height="38" alt="Lector"
+                            style="border-radius: 50%; border: 2px solid #13131a; width: 38px; height: 38px; display: block; filter: grayscale(100%);">
+                    </td>
+                    <td style="padding-right: 12px;">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxEpdhg7proev1-BpRU76_iA7HS2OrZWRAsgeWNFMKKqwU7gxeYTe53xG7u28TcEtMnA20QRGzWXyzi7rgpTyL6yvGwFkNuNTql78x9f0-NuLnNACNXNjLHJ8RQ_C8W0SozgOJSycAOeZrb-tr2fiaBK1887d6Ff0zJ1gNhXKr9skuJIKAiGO_xNlVvCcDNDuWhhiczS5KbdPMDks64EsIOkr6n1-YonhNMQGXZO00JvXz6tMUrer_diTpl5UjIVqyJqOdF04Gk"
+                            width="38" height="38" alt="Lector"
+                            style="border-radius: 50%; border: 2px solid #13131a; width: 38px; height: 38px; display: block; filter: grayscale(100%);">
+                    </td>
+                    <td>
+                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #9a9aaa;">
+                        Y otros 82 entusiastas literarios&hellip;
+                        </span>
+                    </td>
+                    </tr>
+                </table>
+
+                <!-- Botones CTA -->
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                    <td bgcolor="#ff5d62" style="background-color: #ff5d62; border-radius: 6px;">
+                        <a href="#" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #16161d; text-decoration: none; padding: 13px 28px; text-align: center;">
+                        Ver estad&iacute;sticas
+                        </a>
+                    </td>
+                    <td width="12">&nbsp;</td>
+                    <td style="border: 1px solid #5a4040; border-radius: 6px;">
+                        <a href="#" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #e4e1eb; text-decoration: none; padding: 12px 28px; text-align: center;">
+                        Explorar mi red
+                        </a>
+                    </td>
+                    </tr>
+                </table>
+
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                DIVISOR ASTERISMO
+            ══════════════════════════════════════ -->
+            <tr>
+                <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
+                </td>
+            </tr>
+
+            <!-- ══════════════════════════════════════
+                FOOTER
+            ══════════════════════════════════════ -->
+                <tr>
+                    <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="padding: 32px; text-align: center;">
+                                    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-seriff; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                                            Inkly
+                                        </p>
+                                    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                        © 2026 Inkly.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+            <!-- / Contenedor 600px -->
+
+        </td>
+        </tr>
+    </table>
+    <!-- / Wrapper -->
+
+</body>
+</html>

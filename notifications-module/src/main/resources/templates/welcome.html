@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/poppins/v15/pxiHyp8kv8F7wRkVcEpBTMx8.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @media (max-width: 599px) {
+            .email-grid-col {
+                display: block !important;
+                width: 100% !important;
+                margin-bottom: 16px;
+            }
+            .email-grid-gap {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+<div aria-roledescription="email" lang="es" role="article" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background-color: #16161D;">
+    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; table-layout: fixed; background-color: #16161D;" width="100%">
+        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+            <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                <table border="0" cellpadding="0" cellspacing="0" max-width="600" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 600px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                    <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 32px 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                    <td align="left" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.05em; color: #FF5D62;">Inkly</span>
+                                    </td>
+                                    <td align="right" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                        <img src="https://drive.usercontent.google.com/download?id=1bPDwdJGpnDIyShoTcvzjS29ajdeKuvX7" alt="Cuenta" width="40" height="40" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 4px;">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" max-width="800" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 700px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                    <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 24px; padding-right: 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; overflow: hidden; border-radius: 12px; background-color: #1b1b22; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                                <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                    <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 40px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; position: relative; padding-bottom: 32px;">
+                                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; height: 80px; width: 80px; border-radius: 9999px; background-color: rgba(255, 93, 98, 0.1);">
+                                                        <img src="https://drive.usercontent.google.com/download?id=1pw8FvxblOrtRPhXDlYCTJ0VGk7VRAPfL" alt="Inkly Logo" width="60" height="60" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-left: 4px; margin-top: 12px;">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 24px;">
+                                                    <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 48px; font-weight: 700; letter-spacing: -0.05em; color: #DCD7BA;"> Prepárate <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #ff5d62;" th:text="${username}"></span>, y busca tu <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #ff5d62;">Tinta</span>
+                                                    </h1>
+                                                </td>
+                                            </tr>
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 40px;">
+                                                    <p class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; max-width: 480px; font-size: 24px; font-weight: 300; line-height: 1.625; letter-spacing: -0.05em; color: #9CABCA;">
+                                                        Porque tu pluma ya tiene un hogar. Tu cuenta ha sido creada con éxito y el tintero
+                                                        está
+                                                        lleno. Es hora de dar vida a tus historias o perderte en las palabras de otros.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td width="48%" valign="top" class="email-grid-col" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 16px">
+                                                    <table border="0" cellpadding="24" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; height: 160px; border-radius: 12px; border-width: 1px; border-color: rgba(255, 255, 254, 0.05); background-color: #292931;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                                <img src="https://drive.usercontent.google.com/download?id=1soELeH2MGFSaCBAERfJMh-d6-l0j5EWs" alt="Historias" width="40" height="40" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 4px;">
+                                                                <h3 class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0 0 4px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.05em; color: #DCD7BA;">
+                                                                    Biblioteca Personal</h3>
+                                                                <p class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 14px; font-weight: 300; letter-spacing: -0.05em; color: #9CABCA;">
+                                                                    Organiza tus borradores y
+                                                                    lecturas favoritas en un solo lugar.</p>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td width="4%" class="email-grid-gap" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"></td>
+                                                <td width="48%" valign="top" class="email-grid-col" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 16px">
+                                                    <table border="0" cellpadding="24" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; height: 160px; border-radius: 12px; border-width: 1px; border-color: rgba(255, 255, 254, 0.05); background-color: #292931;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                                <img src="https://drive.usercontent.google.com/download?id=1SN-0LQAA7RaC21F6YZRUmAC_lxYju83u" alt="Historias" width="40" height="40" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 4px;">
+                                                                <h3 class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0 0 4px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.05em; color: #DCD7BA;">
+                                                                    Tu Primer Relato</h3>
+                                                                <p class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 14px; font-weight: 300; letter-spacing: -0.05em; color: #9CABCA;">
+                                                                    Comienza a escribir hoy
+                                                                    mismo bajo la luz de la luna.</p>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 40px;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <a class="font-body" href="#" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; display: inline-block; border-radius: 9999px; background-color: #ff5d62; padding: 4px 48px; font-size: 18px; font-weight: 700; color: #63000f; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); text-decoration: none;">
+                                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                                <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.05em;">Empezar a explorar</td>
+                                                                <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 8px;">
+                                                                    <img src="https://drive.usercontent.google.com/download?id=1GJYesHRY-p-LCaI90BjZuj_C4I_GDGtv" alt="Historias" width="30" height="30" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 4px;">
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 32px;">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td class="font-body" valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 12px; font-weight: 500; letter-spacing: -0.05em; color: #9CABCA;">EL TINTERO ESTÁ ESPERANDO </td>
+                                                            <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 8px;">
+                                                                <img src="https://drive.usercontent.google.com/download?id=1RjUf_KZqo_C37_0GCb0gn8oQKZQJTd9c" alt="Historias" width="20" height="20" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" max-width="800" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 700px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <tr>
+                            <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                            <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
+                            </td>
+                        </tr>
+
+                    <!-- ══════════════════════════════════════
+                        FOOTER
+                    ══════════════════════════════════════ -->
+                        <tr>
+                            <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style="padding: 32px; text-align: center;">
+                                            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                                                    Inkly
+                                                </p>
+                                            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                                © 2026 Inkly.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
