@@ -28,8 +28,8 @@ public class NotificationRequestDTO {
             property = "notificationType"
     )
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = EmailNotificationRequestDTO.class, name = email),
-            @JsonSubTypes.Type(value = InAppNotificationRequestDTO.class, name = inApp)
+            @JsonSubTypes.Type(value = EmailNotificationRequestDTO.class, name = EMAIL),
+            @JsonSubTypes.Type(value = InAppNotificationRequestDTO.class, name = IN_APP)
     })
     private NotificationDataDTO notificationData;
 
