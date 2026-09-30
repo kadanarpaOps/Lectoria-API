@@ -16,6 +16,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @Entity
@@ -44,12 +45,12 @@ public class EmailTemplateEntity {
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        createdAt = LocalDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        updatedAt = LocalDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
     }
 
 }

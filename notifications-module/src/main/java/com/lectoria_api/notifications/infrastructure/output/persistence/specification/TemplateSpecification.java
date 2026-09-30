@@ -10,6 +10,9 @@ import java.util.List;
 
 public class TemplateSpecification {
 
+    private TemplateSpecification () {
+    }
+
     public static Specification<EmailTemplateEntity> withFilters(TemplateFiltersModel filters) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

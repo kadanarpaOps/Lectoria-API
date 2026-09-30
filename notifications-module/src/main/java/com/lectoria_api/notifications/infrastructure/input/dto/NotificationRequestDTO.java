@@ -11,8 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static com.lectoria_api.notifications.domain.constants.NotificationTypes.EMAIL;
-import static com.lectoria_api.notifications.domain.constants.NotificationTypes.IN_APP;
+import static com.lectoria_api.notifications.domain.constants.NotificationTypes.*;
 
 @Getter
 @Setter
@@ -29,8 +28,8 @@ public class NotificationRequestDTO {
             property = "notificationType"
     )
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = EmailNotificationRequestDTO.class, name = EMAIL),
-            @JsonSubTypes.Type(value = InAppNotificationRequestDTO.class, name = IN_APP)
+            @JsonSubTypes.Type(value = EmailNotificationRequestDTO.class, name = email),
+            @JsonSubTypes.Type(value = InAppNotificationRequestDTO.class, name = inApp)
     })
     private NotificationDataDTO notificationData;
 
