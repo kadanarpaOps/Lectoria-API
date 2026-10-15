@@ -17,8 +17,8 @@ public class RegisterUserDTO {
 
     @NotNull @NotEmpty
     @Pattern(
-            regexp = "^[A-ZÑ][A-Za-zÀ-ÿ]+(\\s[A-ZÑ][A-Za-zÀ-ÿ]+){0,4}$",
-            message = "Username and it parts must start with an Uppercase letter"
+            regexp = "^[a-z0-9][a-z0-9._-]{3,29}$",
+            message = "Username must contains just alphanumeric characters, with a length from 3 to 29"
     )
     private String username;
 
