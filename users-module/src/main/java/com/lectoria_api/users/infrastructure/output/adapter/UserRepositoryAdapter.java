@@ -62,6 +62,11 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    public Optional<UserModel> findUserByUsernameOrEmail(String username, String email) {
+        return userRepository.findByUsernameOrUserEmail(username, email);
+    }
+
+    @Override
     public boolean existsByFilters(UserFilters filters) {
         return userRepository.exists(
                 UserSpecification.withFilters(filters)
@@ -72,4 +77,10 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     public void save(UserModel user) {
         userRepository.save(userMapper.toEntity(user));
     }
+
+    @Override
+    public void delete(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+
 }

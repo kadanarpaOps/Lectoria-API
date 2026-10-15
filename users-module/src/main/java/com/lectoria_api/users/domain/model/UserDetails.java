@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class UserDetails {
 
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime lastUpdatedAt;
     private boolean registeredVerified;
     private String profileImageUrl;
 

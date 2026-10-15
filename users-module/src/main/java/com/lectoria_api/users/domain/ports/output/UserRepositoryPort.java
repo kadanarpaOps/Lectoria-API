@@ -13,7 +13,9 @@ public interface UserRepositoryPort {
     PaginationResult<UserModel> pageUsers(PaginationRequest request, UserFilters filters);
     Optional<UserModel> findUserById(UUID userId);
     Optional<UserModel> findUserByEmail(String email);
+    Optional<UserModel> findUserByUsernameOrEmail(String username, String email);
     boolean existsByFilters(UserFilters filters);
     void save(UserModel user);
+    void delete(UUID userId);
 
 }
