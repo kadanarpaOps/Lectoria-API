@@ -1,4 +1,4 @@
-package com.lectoria_api.infrastructure.output.persistence.repositories;
+package com.lectoria_api.infrastructure.output.persistence.repository;
 
 import com.lectoria_api.domain.models.enums.VerificationStatus;
 import com.lectoria_api.common.domain.model.verification.VerificationType;

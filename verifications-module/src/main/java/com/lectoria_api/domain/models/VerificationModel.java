@@ -2,6 +2,7 @@ package com.lectoria_api.domain.models;
 
 import com.lectoria_api.domain.models.enums.VerificationStatus;
 import com.lectoria_api.common.domain.model.verification.VerificationType;
+import com.lectoria_api.users.domain.model.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class VerificationModel {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private UUID verificationId;
-    private UUID userId;
+    private UserModel user;
     private String code;
     private Integer attempts;
     private LocalDateTime creationDate;
