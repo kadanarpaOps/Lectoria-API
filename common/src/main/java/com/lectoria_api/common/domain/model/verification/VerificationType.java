@@ -1,7 +1,10 @@
 package com.lectoria_api.common.domain.model.verification;
 
 public enum VerificationType {
+
+    VERIFY_REGISTRY,
     FORGOT_PASSWORD,
-    VERIFY_EMAIL,
+    CHANGE_PASSWORD,
     CHANGE_EMAIL
+
 }

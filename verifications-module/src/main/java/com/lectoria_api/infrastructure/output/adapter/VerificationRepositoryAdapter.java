@@ -21,7 +21,7 @@ public class VerificationRepositoryAdapter implements VerificationRepositoryPort
     @Override
     public VerificationModel findByUserIdAndVerificationType(UUID userId, VerificationType verificationType) {
         return mapper.toDomain(jpaRepository
-                .findByUserIdAndVerificationType(userId, verificationType));
+                .findByUser_UserIdAndVerificationType(userId, verificationType));
     }
 
     @Override
@@ -36,13 +36,13 @@ public class VerificationRepositoryAdapter implements VerificationRepositoryPort
 
     @Override
     public void deleteByUserId(UUID userId) {
-        jpaRepository.deleteByUserId((userId));
+        jpaRepository.deleteByUser_UserId(userId);
     }
 
     @Override
     @Transactional
     public boolean existsByUserIdWithStatusVerifiedAndType(UUID userId, VerificationType verificationType) {
-        return jpaRepository.existsByUserIdAndVerificationStatusAndVerificationType(
+        return jpaRepository.existsByUser_UserIdAndVerificationStatusAndVerificationType(
                 userId,
                 VerificationStatus.VERIFIED,
                 verificationType

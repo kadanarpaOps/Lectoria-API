@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public interface VerificationJpaRepository extends JpaRepository<VerificationEntity, UUID> {
 
-    VerificationEntity findByUserIdAndVerificationType(UUID userId, VerificationType verificationType);
-    boolean existsByUserIdAndVerificationStatusAndVerificationType(UUID userId, VerificationStatus verificationStatus, VerificationType verificationType);
-    void deleteByUserId(UUID userId);
+    VerificationEntity findByUser_UserIdAndVerificationType(UUID userUserId, VerificationType verificationType);
+    void deleteByUser_UserId(UUID userUserId);
+    boolean existsByUser_UserIdAndVerificationStatusAndVerificationType(UUID userUserId, VerificationStatus verificationStatus, VerificationType verificationType);
 
 }

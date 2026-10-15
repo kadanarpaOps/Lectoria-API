@@ -35,6 +35,7 @@ import static com.lectoria_api.users.domain.constants.Constants.ID;
 import static com.lectoria_api.users.domain.constants.Constants.KEYCLOAK_ERR_CONNECTION;
 import static com.lectoria_api.users.domain.constants.Constants.UPDATE_OP;
 import static com.lectoria_api.users.domain.constants.Constants.USERNAME;
+import static com.lectoria_api.users.domain.constants.Constants.USERNAME_OR_EMAIL;
 import static com.lectoria_api.users.domain.constants.Constants.USER_WITH_ROLE_INVALID;
 
 @Service
@@ -81,10 +82,10 @@ public class UserServicePort implements UserUseCases {
     }
 
     @Override
-    public UserModel findUserByEmail(String userEmail) {
-        Optional<UserModel> optionalUser = userRepository.findUserByEmail(userEmail);
+    public UserModel findUserByUsernameOrEmail(String usernameOrEmail) {
+        Optional<UserModel> optionalUser = userRepository.findUserByUsernameOrEmail(usernameOrEmail);
         if (optionalUser.isEmpty()) {
-            throw new UserWithFieldNotExistsException(EMAIL);
+            throw new UserWithFieldNotExistsException(USERNAME_OR_EMAIL);
         }
         return optionalUser.get();
     }

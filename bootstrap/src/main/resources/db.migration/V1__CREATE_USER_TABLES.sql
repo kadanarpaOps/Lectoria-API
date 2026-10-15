@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS T_USER_DETAILS (
 CREATE TABLE IF NOT EXISTS T_USER_ROLES (
                                         USER_ID UUID NOT NULL,
                                         ROLE_ID UUID NOT NULL,
+                                        PRIMARY KEY (USER_ID, ROLE_ID),
                                         FOREIGN KEY (USER_ID) REFERENCES T_USERS(USER_ID)
                                             ON DELETE CASCADE,
                                         FOREIGN KEY (ROLE_ID) REFERENCES T_ROLES(ROLE_ID)
