@@ -38,6 +38,7 @@ public class Constants {
     public static final String ID = "id";
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
+    public static final String USERNAME_OR_EMAIL = "username or email";
 
     // Admin Role
     public static final String ADMINISTRATOR = "LECTORIA_ADMIN";
