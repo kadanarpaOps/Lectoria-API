@@ -19,7 +19,6 @@
 		<module>bootstrap</module>
         <module>users-module</module>
         <module>common</module>
-		<module>notifications-module</module>
     </modules>
 	<description/>
 

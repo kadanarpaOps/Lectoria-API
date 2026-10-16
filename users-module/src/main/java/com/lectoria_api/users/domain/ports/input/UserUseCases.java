@@ -11,7 +11,7 @@ public interface UserUseCases {
 
     PageResponse<UserModel> pageUsers(PaginationRequest paginationRequest, UserFilters userFilters);
     UserModel findUserById(UUID userId);
-    UserModel findUserByEmail(String userEmail);
+    UserModel findUserByUsernameOrEmail(String usernameOrEmail);
     void registerUser(UserModel user);
     void updateUserInformation(UserModel toUpdateInfo, UUID userId);
     void updateUserEmail(String email, UUID userId);
