@@ -42,7 +42,7 @@ public class UserRestMapper {
                     .profileImageUrl(userDetailsModel.getProfileImageUrl())
                     .registeredVerified(userDetailsModel.isRegisteredVerified())
                     .build();
-        };
+        }
         return ResUserDTO.builder()
                 .username(userModel.getUsername())
                 .email(userModel.getUserEmail())

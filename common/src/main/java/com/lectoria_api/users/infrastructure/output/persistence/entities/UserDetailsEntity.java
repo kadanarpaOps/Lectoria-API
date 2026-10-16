@@ -20,6 +20,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
+
 @Entity
 @Table(name = "T_USER_DETAILS")
 @AllArgsConstructor
@@ -48,12 +50,12 @@ public class UserDetailsEntity {
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(TIME_ZONE);
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.lastUpdatedAt = LocalDateTime.now();
+        this.lastUpdatedAt = LocalDateTime.now(TIME_ZONE);
     }
 
 }

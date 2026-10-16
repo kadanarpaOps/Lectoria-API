@@ -40,7 +40,7 @@ public class UserPersistenceMapper {
                     .registeredVerified(userDetailsModel.isRegisteredVerified())
                     .user(userEntity)
                     .build();
-        };
+        }
 
         userEntity.setUserDetails(userDetailsEntity);
 
@@ -58,7 +58,7 @@ public class UserPersistenceMapper {
                     .createdAt(userDetailsEntity.getCreatedAt())
                     .lastUpdatedAt(userDetailsEntity.getLastUpdatedAt())
                     .build();
-        };
+        }
         return UserModel.builder()
                 .userId(userEntity.getUserId())
                 .username(userEntity.getUsername())
