@@ -18,11 +18,25 @@ public class UserPersistenceMapper {
     public UserEntity toEntity(UserModel userModel) {
         if (userModel == null) return null;
 
-        UserEntity userEntity = UserEntity.builder()
+        UserDetails userDetailsModel = userModel.getUserDetails();
+        UserDetailsEntity userDetailsEntity =  new UserDetailsEntity();
+
+        if (userDetailsModel != null) {
+            userDetailsEntity = UserDetailsEntity.builder()
+                    .userDetailsId(userDetailsModel.getUserDetailsId())
+                    .profileImageUrl(userDetailsModel.getProfileImageUrl())
+                    .registeredVerified(userDetailsModel.isRegisteredVerified())
+                    .createdAt(userDetailsModel.getCreatedAt())
+                    .lastUpdatedAt(userDetailsModel.getLastUpdatedAt())
+                    .build();
+        }
+
+        return UserEntity.builder()
                 .userId(userModel.getUserId())
                 .username(userModel.getUsername())
                 .userEmail(userModel.getUserEmail())
                 .userEnabled(userModel.isUserEnabled())
+                .userDetails(userDetailsEntity)
                 .userRoles(
                         new ArrayList<>(
                                 userModel.getUserRoles().stream().map(
@@ -31,20 +45,6 @@ public class UserPersistenceMapper {
                         )
                 )
                 .build();
-
-        UserDetails userDetailsModel = userModel.getUserDetails();
-        UserDetailsEntity userDetailsEntity =  new UserDetailsEntity();
-        if (userDetailsModel != null) {
-            userDetailsEntity = UserDetailsEntity.builder()
-                    .profileImageUrl(userDetailsModel.getProfileImageUrl())
-                    .registeredVerified(userDetailsModel.isRegisteredVerified())
-                    .user(userEntity)
-                    .build();
-        }
-
-        userEntity.setUserDetails(userDetailsEntity);
-
-        return userEntity;
     }
 
     public UserModel toModel(UserEntity userEntity) {
@@ -53,6 +53,7 @@ public class UserPersistenceMapper {
         UserDetails userDetailsModel = new UserDetails();
         if (userDetailsEntity != null) {
             userDetailsModel = UserDetails.builder()
+                    .userDetailsId(userDetailsEntity.getUserDetailsId())
                     .profileImageUrl(userDetailsEntity.getProfileImageUrl())
                     .registeredVerified(userDetailsEntity.isRegisteredVerified())
                     .createdAt(userDetailsEntity.getCreatedAt())

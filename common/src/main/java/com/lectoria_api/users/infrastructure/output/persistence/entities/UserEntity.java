@@ -47,7 +47,8 @@ public class UserEntity {
     @Column(name = "USER_ENABLED")
     private boolean userEnabled;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "USER_DETAILS_ID", nullable = false, unique = true)
     private UserDetailsEntity userDetails;
 
 }

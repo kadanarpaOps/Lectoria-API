@@ -2,12 +2,9 @@ package com.lectoria_api.users.infrastructure.output.persistence.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -43,10 +40,6 @@ public class UserDetailsEntity {
     private boolean registeredVerified;
     @Column(name = "USER_PROFILE_IMAGE_URL")
     private String profileImageUrl;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false)
-    private UserEntity user;
 
     @PrePersist
     public void prePersist() {
