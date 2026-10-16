@@ -1,271 +1,286 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="es">
-<head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizaci&oacute;n de datos</title>
-    <!--[if mso]>
-    <style type="text/css">
-        body, table, td { font-family: Georgia, 'Times New Roman', serif !important; }
-    </style>
-    <![endif]-->
-    <style type="text/css">
-        body, table, td, p, a, li { margin: 0; padding: 0; border: 0; }
-        body { background-color: #13131a; }
-        img { border: 0; display: block; }
-        a { text-decoration: none; }
-        * { -webkit-text-size-adjust: none; text-size-adjust: none; }
+    <title>Alerta de Seguridad - Lectoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/poppins/v15/pxiHyp8kv8F7wRkVcEpBTMx8.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @media (max-width: 599px) {
+            .email-grid-col {
+                display: block !important;
+                width: 100% !important;
+                margin-bottom: 16px;
+            }
+            .email-grid-gap {
+                display: none !important;
+            }
+        }
     </style>
 </head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+<div aria-roledescription="email" lang="es" role="article" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background-color: #16161D;">
+    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; table-layout: fixed; background-color: #16161D;" width="100%">
+        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+            <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
 
-<!--
-    NOTAS THYMELEAF:
-    - th:each="campo : ${camposModificados}"  → lista de campos modificados (List<String>)
-    - th:text="${campo}"                       → nombre de cada campo
-    - th:text="${refCode}"                     → código de referencia (ej. SCR-SEC-88219)
-    - th:text="${fechaActualizacion}"          → fecha del evento (ej. AB 2024)
--->
-
-<body style="margin: 0; padding: 0; background-color: #13131a;">
-
-    <!-- Wrapper principal -->
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#13131a">
-        <tr>
-        <td align="center" valign="top">
-
-            <!-- Contenedor centrado 600px -->
-            <table width="600" border="0" cellspacing="0" cellpadding="0" style="width: 600px; max-width: 600px;">
-
-            <!-- ══════════════════════════════════════
-                HEADER
-            ══════════════════════════════════════ -->
-            <tr>
-                <td bgcolor="#16161d" style="background-color: #16161d; border-bottom: 1px solid #363646;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                    <td style="padding: 20px 32px;">
-                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 17px; font-weight: bold; font-style: normal; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
-                        Lectoria
-                        </span>
-                    </td>
-                    <td align="right" style="padding: 20px 32px 20px 0;">
-                        <table border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td style="padding-right: 12px;">
-                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #9a9aaa;">&#128269;</span>
-                            </td>
-                            <td>
-                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#128276;</span>
-                            </td>
-                        </tr>
-                        </table>
-                    </td>
+                <!-- HEADER -->
+                <table border="0" cellpadding="0" cellspacing="0" max-width="600" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 600px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                    <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 32px 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                    <td align="left" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.05em; color: #FF5D62;">Lectoria</span>
+                                    </td>
+                                    <td align="right" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                        <img src="https://drive.usercontent.google.com/download?id=1bPDwdJGpnDIyShoTcvzjS29ajdeKuvX7" alt="Cuenta" width="40" height="40" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 4px;">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
                     </tr>
+                    </tbody>
                 </table>
-                </td>
-            </tr>
 
-            <!-- ══════════════════════════════════════
-                CUERPO PRINCIPAL — TARJETA DE SEGURIDAD
-            ══════════════════════════════════════ -->
-            <tr>
-                <td bgcolor="#13131a" style="background-color: #13131a; padding: 40px 32px;">
+                <!-- MAIN CARD -->
+                <table border="0" cellpadding="0" cellspacing="0" max-width="800" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 700px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                    <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 24px; padding-right: 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; overflow: hidden; border-radius: 12px; background-color: #1b1b22; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                                <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                    <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 40px;">
+                                        
+                                        <!-- Logo Badge Circle -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; position: relative; padding-bottom: 32px;">
+                                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; height: 80px; width: 80px; border-radius: 9999px; background-color: rgba(255, 93, 98, 0.1);">
+                                                        <img src="https://drive.usercontent.google.com/download?id=1pw8FvxblOrtRPhXDlYCTJ0VGk7VRAPfL" alt="Lectoria Logo" width="60" height="60" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-left: 4px; margin-top: 12px;">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
 
-                <!-- Tarjeta -->
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1b1b22" style="background-color: #1b1b22; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden;">
-                    <tr>
-                    <td style="padding: 40px 40px 0 40px;">
+                                        <!-- H1 Title -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 24px;">
+                                                    <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 44px; font-weight: 700; letter-spacing: -0.05em; color: #DCD7BA;">
+                                                        Seguridad en tu <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #ff5d62;">Cuenta</span>
+                                                    </h1>
+                                                </td>
+                                            </tr>
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 40px;">
+                                                    <p class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; max-width: 500px; font-size: 20px; font-weight: 300; line-height: 1.625; letter-spacing: -0.05em; color: #9CABCA;">
+                                                        Detectamos cambios recientes en la configuración de tus datos de usuario. Revisa los detalles a continuación para asegurar la protección de tu perfil literario.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
 
-                        <!-- Ícono escudo + Título -->
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr valign="top">
+                                        <!-- Modified Fields Box -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-bottom: 28px;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <table border="0" cellpadding="24" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; border-radius: 12px; border: 1px solid rgba(255, 255, 254, 0.05); background-color: #292931; text-align: left;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td>
+                                                                <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0 0 16px; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #ff5d62;">
+                                                                    CAMPOS MODIFICADOS
+                                                                </p>
 
-                            <!-- Círculo con ícono escudo -->
-                            <td width="72" style="width: 72px; padding-right: 24px;">
-                            <table border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                <td width="72" height="72" bgcolor="#ff5d62" align="center" valign="middle"
-                                    style="background-color: #ff5d62; border-radius: 50%; width: 72px; height: 72px; text-align: center;">
-                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; line-height: 72px; color: #ffffff;">
-                                    &#128737;
-                                    </span>
-                                </td>
+                                                                <!-- Thymeleaf iteration -->
+                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0" th:each="campo, iterStat : ${camposModificados}">
+                                                                    <tr th:classappend="${!iterStat.first} ? 'campo-row' : ''">
+                                                                        <td th:style="${!iterStat.first} ? 'padding-top: 12px;' : ''" style="padding-bottom: 0;">
+                                                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                                                <tr valign="middle">
+                                                                                    <td style="padding-right: 12px;">
+                                                                                        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; width: 8px; height: 8px; border-radius: 9999px; background-color: #ff5d62;"></div>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 16px; font-weight: 500; letter-spacing: -0.02em; color: #DCD7BA;" th:text="${campo}">
+                                                                                            Campo
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- Fallback without Thymeleaf -->
+                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0" th:if="${camposModificados == null or camposModificados.empty}">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                                                <tr valign="middle">
+                                                                                    <td style="padding-right: 12px;">
+                                                                                        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; width: 8px; height: 8px; border-radius: 9999px; background-color: #ff5d62;"></div>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 16px; font-weight: 500; letter-spacing: -0.02em; color: #DCD7BA;">
+                                                                                            Contraseña
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding-top: 12px;">
+                                                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                                                <tr valign="middle">
+                                                                                    <td style="padding-right: 12px;">
+                                                                                        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; width: 8px; height: 8px; border-radius: 9999px; background-color: #ff5d62;"></div>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 16px; font-weight: 500; letter-spacing: -0.02em; color: #DCD7BA;">
+                                                                                            Biografía y Datos de Perfil
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- CTA Button -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-bottom: 28px;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <a class="font-body" href="#" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; display: inline-block; border-radius: 9999px; background-color: #ff5d62; padding: 10px 48px; font-size: 18px; font-weight: 700; color: #63000f; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); text-decoration: none;">
+                                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                                <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.05em;">Revisar mi cuenta</td>
+                                                                <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 8px;">
+                                                                    <img src="https://drive.usercontent.google.com/download?id=1GJYesHRY-p-LCaI90BjZuj_C4I_GDGtv" alt="Explorar" width="24" height="24" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 2px;">
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Security Warning Notice Box -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <table border="0" cellpadding="20" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; border-radius: 12px; border: 1px solid rgba(255, 93, 98, 0.2); background-color: rgba(46, 26, 27, 0.6); text-align: left;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 300; line-height: 1.6; letter-spacing: -0.02em; color: #9CABCA;">
+                                                                Si tú no realizaste estas modificaciones, te sugerimos cambiar tu contraseña de inmediato y ponerte en contacto con el equipo de soporte para proteger el acceso a tus obras.
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Tagline -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 40px;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td class="font-body" valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 12px; font-weight: 500; letter-spacing: -0.05em; color: #9CABCA;">PRIVACIDAD Y CONTROL DE CUENTA</td>
+                                                            <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 8px;">
+                                                                <img src="https://drive.usercontent.google.com/download?id=1RjUf_KZqo_C37_0GCb0gn8oQKZQJTd9c" alt="Seguridad" width="20" height="20" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
                                 </tr>
+                                </tbody>
                             </table>
-                            </td>
-
-                            <!-- Título -->
-                            <td valign="middle">
-                            <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 26px; font-weight: bold; line-height: 1.25; color: #e4e1eb; margin: 0;">
-                                Se han actualizado tus datos de cuenta
-                            </p>
-                            </td>
-
-                        </tr>
-                        </table>
-
-                    </td>
+                        </td>
                     </tr>
-
-                    <!-- Descripción -->
-                    <tr>
-                    <td style="padding: 20px 40px 0 40px;">
-                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.65; color: #9a9aaa; margin: 0;">
-                        Detectamos cambios recientes en la configuraci&oacute;n de tu perfil literario.
-                        Revisa los detalles a continuaci&oacute;n para asegurar la integridad de tus datos.
-                        </p>
-                    </td>
-                    </tr>
-
-                    <!-- Caja: Campos modificados -->
-                    <tr>
-                    <td style="padding: 24px 40px 0 40px;">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#16161d" style="background-color: #16161d; border-radius: 8px;">
-                        <tr>
-                            <td style="padding: 20px 24px;">
-
-                            <!-- Label "CAMPOS MODIFICADOS" -->
-                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 5px; text-transform: uppercase; color: #ff5d62; margin: 0 0 14px 0;">
-                                Campos Modificados
-                            </p>
-
-                            <!-- Lista de campos — Thymeleaf itera aquí -->
-                            <!-- Bloque th:block para iteración -->
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0" th:each="campo, iterStat : ${camposModificados}">
-                                <tr th:classappend="${!iterStat.first} ? 'campo-row' : ''">
-                                <td th:style="${!iterStat.first} ? 'padding-top: 12px;' : ''"
-                                    style="padding-bottom: 0;">
-                                    <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr valign="middle">
-                                        <td style="padding-right: 10px;">
-                                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #9a9aaa;">&#8635;</span>
-                                        </td>
-                                        <td>
-                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: #e4e1eb;" th:text="${campo}">
-                                            Campo
-                                        </span>
-                                        </td>
-                                    </tr>
-                                    </table>
-                                </td>
-                                </tr>
-                            </table>
-
-                            <!-- Fallback visible sin Thymeleaf -->
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0" th:if="${camposModificados == null or camposModificados.empty}">
-                                <tr>
-                                <td>
-                                    <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr valign="middle">
-                                        <td style="padding-right: 10px;">
-                                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #9a9aaa;">&#8635;</span>
-                                        </td>
-                                        <td>
-                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: #e4e1eb;">Contrase&ntilde;a</span>
-                                        </td>
-                                    </tr>
-                                    </table>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="padding-top: 12px;">
-                                    <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr valign="middle">
-                                        <td style="padding-right: 10px;">
-                                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #9a9aaa;">&#8635;</span>
-                                        </td>
-                                        <td>
-                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 16px; color: #e4e1eb;">Biograf&iacute;a</span>
-                                        </td>
-                                    </tr>
-                                    </table>
-                                </td>
-                                </tr>
-                            </table>
-
-                            </td>
-                        </tr>
-                        </table>
-                    </td>
-                    </tr>
-
-                    <!-- Botón CTA -->
-                    <tr>
-                    <td style="padding: 32px 40px 0 40px;">
-                        <table border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td bgcolor="#ff5d62" style="background-color: #ff5d62; border-radius: 6px;">
-                            <a href="#" style="display: block; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #16161d; text-decoration: none; padding: 14px 32px; text-align: center; border-radius: 6px;">
-                                Revisar mi cuenta
-                            </a>
-                            </td>
-                        </tr>
-                        </table>
-                    </td>
-                    </tr>
-
-                    <!-- Aviso de seguridad -->
-                    <tr>
-                    <td style="padding: 24px 40px 0 40px;">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#2e1a1b" style="background-color: #2e1a1b; border-radius: 8px;">
-                        <tr valign="top">
-                            <td width="32" style="padding: 16px 0 16px 20px; width: 32px;">
-                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#9888;</span>
-                            </td>
-                            <td style="padding: 16px 20px 16px 10px;">
-                            <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.55; color: #9a9aaa; margin: 0;">
-                                Si no fuiste t&uacute;, contacta a soporte inmediatamente para proteger tu acceso.
-                            </p>
-                            </td>
-                        </tr>
-                        </table>
-                    </td>
-                    </tr>
-
-                    <tr>
-                    <td style="padding: 20px 40px 28px 40px; border-top: 1px; margin-top: 24px;">
-                    </td>
-                    </tr>
-
+                    </tbody>
                 </table>
-                <!-- / Tarjeta -->
 
-                </td>
-            </tr>
+                <!-- Asterism & Footer -->
+                <table border="0" cellpadding="0" cellspacing="0" max-width="800" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 700px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <tr>
+                            <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                            <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
+                            </td>
+                        </tr>
 
-            <tr>
-                <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
-                <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
-                </td>
-            </tr>
+                        <!-- FOOTER -->
+                        <tr>
+                            <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style="padding: 32px; text-align: center;">
+                                            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                                                Lectoria
+                                            </p>
+                                            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                                © 2026 Lectoria.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <!-- ══════════════════════════════════════
-                FOOTER
-            ══════════════════════════════════════ -->
-                <tr>
-                    <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td style="padding: 32px; text-align: center;">
-                                    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
-                                        Lectoria
-                                        </p>
-                                    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
-                                        © 2026 Lectoria.
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
-            </table>
-            <!-- / Contenedor 600px -->
-
-        </td>
+            </td>
         </tr>
+        </tbody>
     </table>
-    <!-- / Wrapper -->
-
+</div>
 </body>
 </html>
