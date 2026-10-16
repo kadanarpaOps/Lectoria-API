@@ -14,6 +14,7 @@ public class Constants {
     public static final String USER_ROLES_LIST_CANT_BE_EMPTY_MESSAGE = "The role list of the user can't be empty";
     public static final String FAILED_OP_MESSAGE = "Failed %s because %s";
     public static final String ROLE_NOT_FOUND_IN_KEYCLOAK_MESSAGE = "Role %s does not exist in Authentication Server";
+    public static final String ADMIN_CANT_BE_DISABLED_MESSAGE = "Admin User can't be disabled";
 
     public static final String USER_INVALID_USERNAME_MESSAGE = "Invalid USCO code";
     public static final String USER_INVALID_EMAIL_MESSAGE = "Invalid email";

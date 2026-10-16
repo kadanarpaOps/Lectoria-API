@@ -1,8 +1,8 @@
 package com.lectoria_api.domain.models;
 
 import com.lectoria_api.domain.models.enums.VerificationStatus;
-import com.lectoria_api.common.domain.model.verification.VerificationType;
 import com.lectoria_api.users.domain.model.UserModel;
+import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

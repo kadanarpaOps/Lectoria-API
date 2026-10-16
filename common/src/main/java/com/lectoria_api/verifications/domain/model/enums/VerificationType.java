@@ -1,10 +1,11 @@
-package com.lectoria_api.common.domain.model.verification;
+package com.lectoria_api.verifications.domain.model.enums;
 
 public enum VerificationType {
 
     VERIFY_REGISTRY,
     FORGOT_PASSWORD,
     CHANGE_PASSWORD,
-    CHANGE_EMAIL
+    CHANGE_EMAIL,
+    DISABLE_ACCOUNT
 
 }

@@ -7,12 +7,12 @@ import com.lectoria_api.users.domain.model.UserModel;
 
 import java.util.UUID;
 
-public interface UserUseCases {
+public interface UserUseCases extends SharedUserUseCases {
 
     PageResponse<UserModel> pageUsers(PaginationRequest paginationRequest, UserFilters userFilters);
     UserModel findUserById(UUID userId);
-    UserModel findUserByUsernameOrEmail(String usernameOrEmail);
     void registerUser(UserModel user);
+    void verifyRegistry(String usernameOrEmail);
     void updateUserInformation(UserModel toUpdateInfo, UUID userId);
     void updateUserEmail(String email, UUID userId);
     void updateUserPassword(String password, UUID userId);

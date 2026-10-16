@@ -1,6 +1,5 @@
 package com.lectoria_api.application.service;
 
-import com.lectoria_api.common.domain.model.verification.VerificationType;
 import com.lectoria_api.domain.exceptions.business.NoAttemptsAvailableException;
 import com.lectoria_api.domain.exceptions.business.VerificationCodeIsExpiredException;
 import com.lectoria_api.domain.exceptions.business.VerificationInvalidCodeException;
@@ -10,19 +9,21 @@ import com.lectoria_api.domain.models.enums.VerificationStatus;
 import com.lectoria_api.domain.ports.input.VerificationUseCases;
 import com.lectoria_api.domain.ports.output.VerificationRepositoryPort;
 import com.lectoria_api.users.domain.model.UserModel;
-import com.lectoria_api.users.domain.ports.input.UserUseCases;
+import com.lectoria_api.users.domain.ports.input.SharedUserUseCases;
+import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class VerificationServicePort implements VerificationUseCases {
 
     private final VerificationRepositoryPort verificationRepository;
-    private final UserUseCases userService;
+    private final SharedUserUseCases userService;
 
     @Override
     public void createVerification(String usernameOrEmail, VerificationType verificationType, String email) {
@@ -72,14 +73,13 @@ public class VerificationServicePort implements VerificationUseCases {
 
     @Override
     @Transactional
-    public boolean existsVerifyCodeByUserIdAndVerificationType(UUID userId, VerificationType verificationType) {
+    public void existsVerifyCodeByUserIdAndVerificationType(UUID userId, VerificationType verificationType) {
         boolean exists = verificationRepository.existsByUserIdWithStatusVerifiedAndType(userId, verificationType);
         if (exists)  {
             verificationRepository.deleteByUserId(userId);
         } else {
             throw new VerificationNotFoundException();
         }
-        return true;
     }
 
     private void handleVerificationCreation(UserModel user, VerificationType verificationType) {

@@ -62,24 +62,6 @@ public class AuthUserRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/add-role")
-    public ResponseEntity<Void> addUserRole(@Valid @RequestBody UpdateUserRoleDTO userDTO) {
-        userService.addUserRole(
-                userDTO.getRole(),
-                authService.getAuthUserId()
-        );
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PatchMapping("/remove-role")
-    public ResponseEntity<Void> removeUserRole(@Valid @RequestBody UpdateUserRoleDTO userDTO) {
-        userService.removeUserRole(
-                userDTO.getRole(),
-                authService.getAuthUserId()
-        );
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
     @PatchMapping("/toggle-status")
     public ResponseEntity<Void> toggleUserStatus() {
         userService.toggleUserStatus(authService.getAuthUserId());

@@ -35,6 +35,12 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/verify-registry")
+    public ResponseEntity<Void> verifyRegistry(@RequestParam String usernameOrEmail) {
+        userService.verifyRegistry(usernameOrEmail);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @GetMapping
     public ResponseEntity<PageResponse<ResUserDTO>> pageUsers(
             @RequestParam(required = false) String username,

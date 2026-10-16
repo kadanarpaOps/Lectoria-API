@@ -1,6 +1,6 @@
 package com.lectoria_api.infrastructure.input.rest.dto;
 
-import com.lectoria_api.common.domain.model.verification.VerificationType;
+import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

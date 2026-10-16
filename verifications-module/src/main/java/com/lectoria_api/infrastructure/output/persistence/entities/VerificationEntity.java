@@ -1,10 +1,12 @@
 package com.lectoria_api.infrastructure.output.persistence.entities;
 
 import com.lectoria_api.domain.models.enums.VerificationStatus;
-import com.lectoria_api.common.domain.model.verification.VerificationType;
 import com.lectoria_api.users.infrastructure.output.persistence.entities.UserEntity;
+import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -46,8 +48,10 @@ public class VerificationEntity {
     private LocalDateTime creationDate;
     @Column(name = "VERIFICATION_EXPIRATION_DATE")
     private LocalDateTime expirationDate;
+    @Enumerated(EnumType.STRING)
     @Column(name = "VERIFICATION_TYPE")
     private VerificationType verificationType;
+    @Enumerated(EnumType.STRING)
     @Column(name = "VERIFICATION_STATUS")
     private VerificationStatus verificationStatus;
 

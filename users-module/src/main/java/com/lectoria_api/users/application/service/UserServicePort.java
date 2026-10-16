@@ -3,6 +3,7 @@ package com.lectoria_api.users.application.service;
 import com.lectoria_api.common.domain.model.PageResponse;
 import com.lectoria_api.common.domain.model.PaginationRequest;
 import com.lectoria_api.common.domain.model.PaginationResult;
+import com.lectoria_api.users.domain.exceptions.business.AdminCantBeDisabledException;
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
 import com.lectoria_api.users.domain.exceptions.business.SameFieldValueOnUpdateException;
 import com.lectoria_api.users.domain.exceptions.business.UserAlreadyHaveThatRoleException;
@@ -11,18 +12,22 @@ import com.lectoria_api.users.domain.exceptions.business.UserRolesListCantBeEmpt
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldAlreadyExistsException;
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldNotExistsException;
 import com.lectoria_api.users.domain.model.RoleModel;
+import com.lectoria_api.users.domain.model.UserDetails;
 import com.lectoria_api.users.domain.model.UserFilters;
 import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.users.domain.ports.input.RoleUseCases;
 import com.lectoria_api.users.domain.ports.input.UserUseCases;
 import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
 import com.lectoria_api.users.domain.ports.output.UserRepositoryPort;
+import com.lectoria_api.verifications.domain.model.enums.VerificationType;
+import com.lectoria_api.verifications.domain.ports.input.SharedVerificationUseCases;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,7 +49,8 @@ public class UserServicePort implements UserUseCases {
 
     private final UserRepositoryPort userRepository;
     private final KeycloakConnectorPort keycloakConnector;
-    private final RoleUseCases roleUseCases;
+    private final RoleUseCases roleService;
+    private final SharedVerificationUseCases verificationService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServicePort.class);
 
@@ -108,6 +114,13 @@ public class UserServicePort implements UserUseCases {
             roleModel.setRoleId(roleToAdd.getRoleId());
         });
 
+        UserDetails userDetails = UserDetails.builder()
+                .registeredVerified(false)
+                .build();
+
+        user.setUserEnabled(false);
+        user.setUserDetails(userDetails);
+
         LOG.info("[USER SERVICE] User to be created on Keycloak: {}", user);
 
         String userId = keycloakConnector.registerKeycloakUser(user);
@@ -117,11 +130,28 @@ public class UserServicePort implements UserUseCases {
 
         try {
             userRepository.save(user);
+            createRegistryVerification(user);
         } catch (Exception e) {
             keycloakConnector.rollbackKeycloakUserCreation(userId);
             throw new FailedOperationException(CREATION_OP, DATABASE_ERR_CONNECTION);
         }
+    }
 
+    @Override
+    @Transactional
+    public void verifyRegistry(String usernameOrEmail) {
+        UserModel user = findUserByUsernameOrEmail(usernameOrEmail);
+        validateVerification(user.getUserId(), VerificationType.VERIFY_REGISTRY);
+
+        user.setUserEnabled(true);
+        user.getUserDetails().setRegisteredVerified(true);
+
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
+        }
+        updateOnKeycloak(user);
     }
 
     /**
@@ -143,6 +173,12 @@ public class UserServicePort implements UserUseCases {
 
         if (toUpdateInfo.getUsername().equals(toUpdateUser.getUsername()))
             throw new SameFieldValueOnUpdateException(USERNAME);
+
+        boolean userExistsByUsername = userRepository.existsByFilters(
+                UserFilters.builder().username(toUpdateInfo.getUsername()).build());
+
+        if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
+
         toUpdateUser.setUsername(toUpdateInfo.getUsername());
 
         try {
@@ -160,6 +196,13 @@ public class UserServicePort implements UserUseCases {
 
         if (userToUpdate.getUserEmail().equals(email))
             throw new SameFieldValueOnUpdateException(EMAIL);
+
+        boolean userExistsByEmail = userRepository.existsByFilters(
+                UserFilters.builder().userEmail(email).build());
+
+        if (userExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
+
+        validateVerification(userToUpdate.getUserId(), VerificationType.CHANGE_EMAIL);
         userToUpdate.setUserEmail(email);
 
         try {
@@ -172,6 +215,7 @@ public class UserServicePort implements UserUseCases {
 
     @Override
     public void updateUserPassword(String newPassword, UUID userId) {
+        validateVerification(userId, VerificationType.CHANGE_PASSWORD);
         keycloakConnector.updateKeycloakUserCredentials(userId.toString(), newPassword);
     }
 
@@ -231,6 +275,16 @@ public class UserServicePort implements UserUseCases {
     @Transactional
     public void toggleUserStatus(UUID userId) {
         UserModel userToUpdate = findUserById(userId);
+        List<RoleModel> userRoles = userToUpdate.getUserRoles();
+
+        if (userToUpdate.isUserEnabled()) {
+            userRoles.forEach(roleModel -> {
+                if (roleModel.getRoleName().equals(ADMINISTRATOR)) {
+                    throw new AdminCantBeDisabledException();
+                }
+            });
+            validateVerification(userToUpdate.getUserId(), VerificationType.DISABLE_ACCOUNT);
+        }
 
         userToUpdate.setUserEnabled(!userToUpdate.isUserEnabled());
 
@@ -245,7 +299,7 @@ public class UserServicePort implements UserUseCases {
     private void resolveUserAvailability(UserModel user) {
 
         Optional<UserModel> optionalRegisteredUser = userRepository
-                .findUserByUsernameOrEmail(user.getUsername(), user.getUsername());
+                .findUserByUsernameOrEmail(user.getUsername(), user.getUserEmail());
 
         if (optionalRegisteredUser.isPresent()) {
             UserModel registeredUser = optionalRegisteredUser.get();
@@ -267,6 +321,15 @@ public class UserServicePort implements UserUseCases {
 
     }
 
+    private void createRegistryVerification(UserModel user) {
+        verificationService.createVerification(user, VerificationType.VERIFY_REGISTRY);
+    }
+
+    private void validateVerification(UUID userId, VerificationType verificationType) {
+        verificationService
+                .existsVerifyCodeByUserIdAndVerificationType(userId, verificationType);
+    }
+
     private void verifyIsValidRole(String roleModel) {
         if (roleModel.contains(ADMINISTRATOR)) {
             throw new FailedOperationException(CREATION_OP, String.format(USER_WITH_ROLE_INVALID, ADMINISTRATOR));
@@ -274,7 +337,7 @@ public class UserServicePort implements UserUseCases {
     }
 
     private RoleModel returnInnerRole(String roleName) {
-        return roleUseCases.findRoleByName(roleName);
+        return roleService.findRoleByName(roleName);
     }
 
     private void updateOnKeycloak(UserModel userToUpdate) {

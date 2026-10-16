@@ -7,11 +7,11 @@ CREATE TABLE IF NOT EXISTS T_USERS (
                                         USER_ID UUID NOT NULL PRIMARY KEY,
                                         USER_USERNAME VARCHAR(100) NOT NULL,
                                         USER_EMAIL VARCHAR(50) NOT NULL UNIQUE,
-                                        USER_ENABLED BOOLEAN DEFAULT TRUE
+                                        USER_ENABLED BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS T_USER_DETAILS (
-                                       USER_ID UUID NOT NULL,
+                                       USER_ID UUID NOT NULL UNIQUE,
                                        USER_DETAILS_ID UUID NOT NULL PRIMARY KEY,
                                        USER_CREATED_AT TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                                        USER_UPDATED_AT TIMESTAMP WITHOUT TIME ZONE,
