@@ -1,10 +1,10 @@
-package com.lectoria_api.notifications.infrastructure.input.dto;
+package com.lectoria_api.notifications.infrastructure.input.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.lectoria_api.notifications.infrastructure.input.dto.union.EmailNotificationRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.union.InAppNotificationRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.union.base.NotificationDataDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.EmailNotificationRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.InAppNotificationRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.base.NotificationDataDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

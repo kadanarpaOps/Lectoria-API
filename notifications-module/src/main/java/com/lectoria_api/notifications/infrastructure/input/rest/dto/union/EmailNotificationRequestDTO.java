@@ -1,6 +1,6 @@
-package com.lectoria_api.notifications.infrastructure.input.dto.union;
+package com.lectoria_api.notifications.infrastructure.input.rest.dto.union;
 
-import com.lectoria_api.notifications.infrastructure.input.dto.union.base.NotificationDataDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.base.NotificationDataDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

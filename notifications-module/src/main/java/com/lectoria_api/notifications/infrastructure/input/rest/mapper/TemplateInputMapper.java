@@ -1,10 +1,10 @@
-package com.lectoria_api.notifications.infrastructure.input.mapper;
+package com.lectoria_api.notifications.infrastructure.input.rest.mapper;
 
 import com.lectoria_api.common.domain.model.PageResponse;
 import com.lectoria_api.notifications.domain.model.EmailTemplateModel;
-import com.lectoria_api.notifications.infrastructure.input.dto.TemplateGetResponseDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.TemplatePatchRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.TemplatePostRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.TemplateGetResponseDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.TemplatePatchRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.TemplatePostRequestDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

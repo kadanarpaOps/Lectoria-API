@@ -26,17 +26,21 @@ public class SentNotificationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "NOTIFICATION_ID")
     private String notificationId;
-    @Column(nullable = false)
+    @Column(name = "USER_ID", nullable = false)
     private String userId;
-    @Column(nullable = false)
+    @Column(name = "NOTIFICATION_CONTENT", nullable = false)
     private String notificationContent;
-    @Column(nullable = false)
+    @Column(name = "NOTIFICATION_SHOWN", nullable = false)
     private boolean shown;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
+    @Column(name = "NOTIFICATION_CREATED_AT")
     private LocalDateTime createdAt;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
+    @Column(name = "NOTIFICATION_SHOWN_AT")
     private LocalDateTime shownAt;
 
 }

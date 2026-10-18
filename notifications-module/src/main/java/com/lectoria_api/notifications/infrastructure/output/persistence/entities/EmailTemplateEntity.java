@@ -30,16 +30,20 @@ public class EmailTemplateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "NOTIFICATION_TEMPLATE_ID")
     private String notificationTemplateId;
-    @Column(nullable = false, unique = true)
+    @Column(name = "NOTIFICATION_TEMPLATE_NAME", nullable = false, unique = true)
     private String templateName;
-    @Column(nullable = false)
+    @Column(name = "NOTIFICATION_TEMPLATE_SUBJECT", nullable = false)
     private String templateSubject;
-    @Column(nullable = false, unique = true)
+    @Column(name = "NOTIFICATION_TEMPLATE_LOCATION", nullable = false, unique = true)
     private String templateLocation;
 
+    @Column(name = "NOTIFICATION_TEMPLATE_CREATED_AT", nullable = false, unique = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
     private LocalDateTime createdAt;
+
+    @Column(name = "NOTIFICATION_TEMPLATE_UPDATED_AT", nullable = false, unique = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
     private LocalDateTime updatedAt;
 

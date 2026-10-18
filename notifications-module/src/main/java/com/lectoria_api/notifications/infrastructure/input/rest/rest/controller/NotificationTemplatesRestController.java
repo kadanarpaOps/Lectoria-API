@@ -1,13 +1,13 @@
-package com.lectoria_api.notifications.infrastructure.input.rest.controller;
+package com.lectoria_api.notifications.infrastructure.input.rest.rest.controller;
 
 import com.lectoria_api.common.domain.model.PageResponse;
 import com.lectoria_api.common.domain.model.PaginationRequest;
 import com.lectoria_api.notifications.domain.filters.TemplateFiltersModel;
 import com.lectoria_api.notifications.domain.ports.input.TemplateUseCases;
-import com.lectoria_api.notifications.infrastructure.input.dto.TemplateGetResponseDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.TemplatePatchRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.TemplatePostRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.mapper.TemplateInputMapper;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.TemplateGetResponseDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.TemplatePatchRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.TemplatePostRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.mapper.TemplateInputMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,14 +1,14 @@
-package com.lectoria_api.notifications.infrastructure.input.mapper;
+package com.lectoria_api.notifications.infrastructure.input.rest.mapper;
 
 import com.lectoria_api.notifications.domain.exceptions.business.NotFoundNotifierException;
 import com.lectoria_api.notifications.domain.model.NotificationModel;
 import com.lectoria_api.notifications.domain.model.union.EmailNotificationModel;
 import com.lectoria_api.notifications.domain.model.union.InAppNotificationModel;
 import com.lectoria_api.notifications.domain.model.union.NotificationData;
-import com.lectoria_api.notifications.infrastructure.input.dto.NotificationRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.union.EmailNotificationRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.union.InAppNotificationRequestDTO;
-import com.lectoria_api.notifications.infrastructure.input.dto.union.base.NotificationDataDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.NotificationRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.EmailNotificationRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.InAppNotificationRequestDTO;
+import com.lectoria_api.notifications.infrastructure.input.rest.dto.union.base.NotificationDataDTO;
 import org.springframework.stereotype.Component;
 
 @Component

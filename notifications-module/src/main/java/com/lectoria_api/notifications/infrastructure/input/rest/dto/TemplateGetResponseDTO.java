@@ -1,4 +1,4 @@
-package com.lectoria_api.notifications.infrastructure.input.dto;
+package com.lectoria_api.notifications.infrastructure.input.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
