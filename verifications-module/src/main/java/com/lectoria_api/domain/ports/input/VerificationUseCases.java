@@ -5,7 +5,8 @@ import com.lectoria_api.verifications.domain.ports.input.SharedVerificationUseCa
 
 public interface VerificationUseCases extends SharedVerificationUseCases {
 
-    void createVerification(String usernameOrEmail, VerificationType verificationType, String email);
-    void verifyCode(String usernameOrEmail, VerificationType verificationType, String code);
+    void createVerification(String username, String userEmail, VerificationType verificationType, String emailTobeNotified);
+    void verifyCode(String username, String email, VerificationType verificationType, String code);
+    void regenerateCode(String username, String email, VerificationType verificationType, String emailToBeNotified);
 
 }

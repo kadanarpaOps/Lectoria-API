@@ -9,9 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
-public class CreateVerificationDTO {
+public class RequestVerificationDTO {
 
-    private String usernameOrEmail;
+    private String username;
+    private String userEmail;
     private VerificationType verificationType;
     private String destinationEmail;
 

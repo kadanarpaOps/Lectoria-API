@@ -1,6 +1,6 @@
 package com.lectoria_api.domain.ports.output;
 
-import com.lectoria_api.domain.models.VerificationModel;
+import com.lectoria_api.verifications.domain.model.VerificationModel;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 
 import java.util.UUID;

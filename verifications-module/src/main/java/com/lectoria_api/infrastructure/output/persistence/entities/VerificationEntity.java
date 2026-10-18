@@ -1,6 +1,6 @@
 package com.lectoria_api.infrastructure.output.persistence.entities;
 
-import com.lectoria_api.domain.models.enums.VerificationStatus;
+import com.lectoria_api.verifications.domain.model.enums.VerificationStatus;
 import com.lectoria_api.users.infrastructure.output.persistence.entities.UserEntity;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import jakarta.persistence.Column;

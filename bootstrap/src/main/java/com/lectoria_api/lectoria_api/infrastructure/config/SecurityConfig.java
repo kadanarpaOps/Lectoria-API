@@ -48,7 +48,9 @@ public class SecurityConfig {
                                 "/api/auth/logout",
                                 "/api/auth/refresh-access",
                                 "/api/verifications",
-                                "/api/verifications/verify"
+                                "/api/verifications/verify",
+                                "/api/verifications/regenerate-code",
+                                "/api/verifications/verify/verification-existence"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -60,10 +62,13 @@ public class SecurityConfig {
                                 "/api/auth/user/info",
                                 "/api/auth/user/change-email",
                                 "/api/auth/user/change-password",
-                                "/api/auth/user/toggle-status"
+                                "/api/auth/user/disable-account"
                         ).authenticated()
                         .requestMatchers(
                                 HttpMethod.PATCH,
+                                "/api/auth/admin/users",
+                                "/api/auth/admin/find-user-by-username",
+                                "/api/auth/admin/find-user-by-email",
                                 "/api/auth/admin/add-role",
                                 "/api/auth/admin/remove-role",
                                 "/api/auth/admin/toggle-user-status"

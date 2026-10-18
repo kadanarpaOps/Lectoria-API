@@ -10,8 +10,7 @@ public interface KeycloakConnectorPort {
     String registerKeycloakUser(UserModel user) throws FailedOperationException, UserWithFieldNotExistsException, KeycloakRoleNotFoundException;
     void updateKeycloakUser(String userId, UserModel user) throws FailedOperationException;
     void updateKeycloakUserCredentials(String userId, String newPassword);
-    UserModel findKeycloakUserByEmail(String email) throws FailedOperationException, UserWithFieldNotExistsException;
-    void toggleKeycloakUserStatus(String userId) throws FailedOperationException;
+    void toggleKeycloakUserStatus(String userId, UserModel user) throws FailedOperationException;
     void rollbackKeycloakUserCreation(String userId) throws FailedOperationException;
 
 }

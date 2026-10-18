@@ -62,9 +62,9 @@ public class AuthUserRestController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/toggle-status")
-    public ResponseEntity<Void> toggleUserStatus() {
-        userService.toggleUserStatus(authService.getAuthUserId());
+    @PatchMapping("/disable-account")
+    public ResponseEntity<Void> disableUserAccount() {
+        userService.disableUserAccount(authService.getAuthUserId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

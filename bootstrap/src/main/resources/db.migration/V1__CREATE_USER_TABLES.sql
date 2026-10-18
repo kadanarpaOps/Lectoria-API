@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS T_USER_DETAILS (
 CREATE TABLE IF NOT EXISTS T_USERS (
                                         USER_ID UUID NOT NULL PRIMARY KEY,
                                         USER_USERNAME VARCHAR(100) NOT NULL,
-                                        USER_EMAIL VARCHAR(50) NOT NULL UNIQUE,
+                                        USER_EMAIL VARCHAR(50) NOT NULL,
                                         USER_ENABLED BOOLEAN DEFAULT FALSE,
                                         USER_DETAILS_ID UUID NOT NULL UNIQUE,
                                         FOREIGN KEY (USER_DETAILS_ID) REFERENCES T_USER_DETAILS(USER_DETAILS_ID)

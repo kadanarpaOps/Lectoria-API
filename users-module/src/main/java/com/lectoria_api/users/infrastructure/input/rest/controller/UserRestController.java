@@ -36,8 +36,11 @@ public class UserRestController {
     }
 
     @PostMapping("/verify-registry")
-    public ResponseEntity<Void> verifyRegistry(@RequestParam String usernameOrEmail) {
-        userService.verifyRegistry(usernameOrEmail);
+    public ResponseEntity<Void> verifyRegistry(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String email
+    ) {
+        userService.verifyRegistry(username, email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

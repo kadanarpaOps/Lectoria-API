@@ -1,7 +1,7 @@
 package com.lectoria_api.infrastructure.output.adapter;
 
-import com.lectoria_api.domain.models.VerificationModel;
-import com.lectoria_api.domain.models.enums.VerificationStatus;
+import com.lectoria_api.verifications.domain.model.VerificationModel;
+import com.lectoria_api.verifications.domain.model.enums.VerificationStatus;
 import com.lectoria_api.domain.ports.output.VerificationRepositoryPort;
 import com.lectoria_api.infrastructure.output.persistence.mapper.VerificationInfraMapper;
 import com.lectoria_api.infrastructure.output.persistence.repository.VerificationJpaRepository;

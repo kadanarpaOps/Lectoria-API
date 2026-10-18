@@ -1,6 +1,6 @@
-package com.lectoria_api.domain.models;
+package com.lectoria_api.verifications.domain.model;
 
-import com.lectoria_api.domain.models.enums.VerificationStatus;
+import com.lectoria_api.verifications.domain.model.enums.VerificationStatus;
 import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import lombok.AllArgsConstructor;
@@ -28,6 +28,8 @@ public class VerificationModel {
     private Integer attempts;
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
+    private LocalDateTime codeCreationDate;
+    private LocalDateTime codeExpirationDate;
     private VerificationType verificationType;
     private VerificationStatus verificationStatus;
 
@@ -39,15 +41,35 @@ public class VerificationModel {
     public void loadDates() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
         this.creationDate = now;
-        this.expirationDate = now.plusMinutes(5);
+        this.expirationDate = now.plusMinutes(30);
+        reloadCodeDates();
     }
 
-    public boolean isExpired() {
+    public void reloadCodeDates() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
+        this.codeCreationDate = now;
+        this.codeExpirationDate = now.plusMinutes(5);
+    }
+
+    public boolean isCodeExpired() {
+        return LocalDateTime.now(ZoneId.of("America/Bogota"))
+                .isAfter(codeExpirationDate);
+    }
+
+    public boolean isVerificationExpired() {
         return LocalDateTime.now(ZoneId.of("America/Bogota"))
                 .isAfter(expirationDate);
+    }
+
+    public void renewCode() {
+        generateCode();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
+        this.codeCreationDate = now;
+        this.codeExpirationDate = now.plusMinutes(5);
     }
 
     public boolean isValidCode(String code) {
         return this.code.equals(code);
     }
+
 }

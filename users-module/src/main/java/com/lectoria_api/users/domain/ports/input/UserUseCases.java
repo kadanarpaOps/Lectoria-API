@@ -9,15 +9,27 @@ import java.util.UUID;
 
 public interface UserUseCases extends SharedUserUseCases {
 
-    PageResponse<UserModel> pageUsers(PaginationRequest paginationRequest, UserFilters userFilters);
-    UserModel findUserById(UUID userId);
+    // Registry
     void registerUser(UserModel user);
-    void verifyRegistry(String usernameOrEmail);
+    void verifyRegistry(String username, String email);
+
+    // Find
+    PageResponse<UserModel> pageUsers(PaginationRequest paginationRequest, UserFilters userFilters);
+
+    // Update
     void updateUserInformation(UserModel toUpdateInfo, UUID userId);
     void updateUserEmail(String email, UUID userId);
     void updateUserPassword(String password, UUID userId);
+
+    // Just Admin Features
     void addUserRole(String newRole, UUID userId);
-    void removeUserRole(String newRole, UUID userId);
+    void removeUserRole(String removeRole, UUID userId);
     void toggleUserStatus(UUID userId);
+
+    // Disable Account
+    void disableUserAccount(UUID userId);
+
+    // Reactivate Account
+    void reactivateUserAccount(String username, String email, String newPassword);
 
 }

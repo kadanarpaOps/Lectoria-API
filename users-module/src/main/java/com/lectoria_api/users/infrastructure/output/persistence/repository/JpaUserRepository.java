@@ -13,9 +13,20 @@ import java.util.UUID;
 @Repository
 public interface JpaUserRepository extends JpaRepository<UserEntity, UUID>, JpaSpecificationExecutor<UserEntity> {
 
-    Optional<UserEntity> findByUsernameOrUserEmail(String username, String userEmail);
+    @Query("SELECT u FROM UserEntity u WHERE " +
+            "(u.username = :username) AND " +
+            "(u.userEnabled = :isEnabled)")
+    Optional<UserEntity> findAnyUserByUsername(
+            @Param("username") String username,
+            @Param("isEnabled") Boolean isEnabled
+    );
 
-    @Query("SELECT u FROM UserEntity u WHERE u.username = :value OR u.userEmail = :value")
-    Optional<UserEntity> findByUsernameOrUserEmail(@Param("value") String usernameOrEmail);
+    @Query("SELECT u FROM UserEntity u WHERE " +
+            "(u.username = :userEmail) AND " +
+            "(u.userEnabled = :isEnabled)")
+    Optional<UserEntity> findAnyUserByUserEmail(
+            @Param("userEmail") String username,
+            @Param("isEnabled") Boolean isEnabled
+    );
 
 }

@@ -11,7 +11,8 @@ import lombok.Setter;
 @Getter @Setter
 public class ValidateVerificationCodeDTO {
 
-    private String usernameOrEmail;
+    private String username;
+    private String userEmail;
     private String code;
     private VerificationType verificationType;
 

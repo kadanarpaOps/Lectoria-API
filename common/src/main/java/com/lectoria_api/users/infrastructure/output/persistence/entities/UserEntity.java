@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +17,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
 
 @Entity
 @Table(name = "T_USERS")
@@ -50,5 +55,12 @@ public class UserEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "USER_DETAILS_ID", nullable = false, unique = true)
     private UserDetailsEntity userDetails;
+
+    @PreUpdate
+    public void preUpdate() {
+        UserDetailsEntity userDetails = this.userDetails;
+        if (!Objects.isNull(userDetails))
+            userDetails.setLastUpdatedAt(LocalDateTime.now(TIME_ZONE));
+    }
 
 }

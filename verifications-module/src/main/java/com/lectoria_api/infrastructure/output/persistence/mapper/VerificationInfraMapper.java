@@ -1,6 +1,6 @@
 package com.lectoria_api.infrastructure.output.persistence.mapper;
 
-import com.lectoria_api.domain.models.VerificationModel;
+import com.lectoria_api.verifications.domain.model.VerificationModel;
 import com.lectoria_api.infrastructure.output.persistence.entities.VerificationEntity;
 import org.mapstruct.Mapper;
 
