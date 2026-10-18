@@ -58,7 +58,6 @@ public class UserEntity {
 
     @PreUpdate
     public void preUpdate() {
-        UserDetailsEntity userDetails = this.userDetails;
         if (!Objects.isNull(userDetails))
             userDetails.setLastUpdatedAt(LocalDateTime.now(TIME_ZONE));
     }

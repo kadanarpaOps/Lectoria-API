@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-import static com.lectoria_api.common.domain.constants.Constants.BLANK;
 import static com.lectoria_api.users.domain.constants.Constants.CREATION_OP;
 import static com.lectoria_api.users.domain.constants.Constants.DELETION_OP;
 import static com.lectoria_api.users.domain.constants.Constants.DISABLED_USER;
@@ -100,7 +99,8 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
         try {
             UserRepresentation userToKeycloak = keycloakRepository.getById(userId);
             userToKeycloak.setEnabled(!userToKeycloak.isEnabled());
-            if (userToKeycloak.isEnabled()) {
+            boolean userToKeycloakEnabled = userToKeycloak.isEnabled();
+            if (userToKeycloakEnabled) {
                 userToKeycloak.setUsername(user.getUsername());
                 userToKeycloak.setEmail(user.getUserEmail());
             } else {

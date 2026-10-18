@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,31 +41,31 @@ public class VerificationModel {
     }
 
     public void loadDates() {
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
+        LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         this.creationDate = now;
         this.expirationDate = now.plusMinutes(30);
         reloadCodeDates();
     }
 
     public void reloadCodeDates() {
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
+        LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         this.codeCreationDate = now;
         this.codeExpirationDate = now.plusMinutes(5);
     }
 
     public boolean isCodeExpired() {
-        return LocalDateTime.now(ZoneId.of("America/Bogota"))
+        return LocalDateTime.now(TIME_ZONE)
                 .isAfter(codeExpirationDate);
     }
 
     public boolean isVerificationExpired() {
-        return LocalDateTime.now(ZoneId.of("America/Bogota"))
+        return LocalDateTime.now(TIME_ZONE)
                 .isAfter(expirationDate);
     }
 
     public void renewCode() {
         generateCode();
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
+        LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         this.codeCreationDate = now;
         this.codeExpirationDate = now.plusMinutes(5);
     }

@@ -21,9 +21,9 @@ import com.lectoria_api.users.domain.ports.input.UserUseCases;
 import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
 import com.lectoria_api.users.domain.ports.output.UserRepositoryPort;
 import com.lectoria_api.verifications.domain.model.VerificationModel;
-import com.lectoria_api.verifications.domain.model.enums.VerificationStatus;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import com.lectoria_api.verifications.domain.ports.input.SharedVerificationUseCases;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +53,9 @@ public class UserServicePort implements UserUseCases {
     private final KeycloakConnectorPort keycloakConnector;
     private final RoleUseCases roleService;
     private final SharedVerificationUseCases verificationService;
+
+    @Resource
+    private UserServicePort userServicePort;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServicePort.class);
 
@@ -315,7 +318,7 @@ public class UserServicePort implements UserUseCases {
     @Transactional
     public void disableUserAccount(UUID userId) {
         validateVerification(userId, VerificationType.DISABLE_ACCOUNT);
-        toggleUserStatus(userId);
+        userServicePort.toggleUserStatus(userId);
     }
 
     @Override
@@ -325,64 +328,63 @@ public class UserServicePort implements UserUseCases {
 
         validateVerification(foundUser.getUserId(), VerificationType.REACTIVATE_ACCOUNT);
         keycloakConnector.updateKeycloakUserCredentials(foundUser.toString(), newPassword);
-        toggleUserStatus(foundUser.getUserId());
+        userServicePort.toggleUserStatus(foundUser.getUserId());
     }
 
     private void resolveUserAvailability(UserModel user) {
 
+        validateEnabledUserAbsence(user);
+
+        userRepository.findAnyUserByUsername(user.getUsername(), false)
+                .ifPresent(disabledUser ->
+                        handleUnverifiedDisabledUser(disabledUser, disabledUser.getUsername(), null)
+                );
+
+        userRepository.findAnyUserByUserEmail(user.getUserEmail(), false)
+                .ifPresent(disabledUser ->
+                        handleUnverifiedDisabledUser(disabledUser, null, disabledUser.getUserEmail())
+                );
+
+    }
+
+    private void validateEnabledUserAbsence(UserModel user) {
         boolean enabledUserExistsByUsername = userRepository.existsByFilters(
                 UserFilters.builder()
                         .username(user.getUsername())
                         .userStatus(true)
                         .build()
         );
-
         if (enabledUserExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
 
         boolean enabledUserExistsByEmail = userRepository.existsByFilters(
                 UserFilters.builder()
-                        .username(user.getUsername())
+                        .userEmail(user.getUserEmail())
                         .userStatus(true)
                         .build()
         );
-
         if (enabledUserExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
+    }
 
-        Optional<UserModel> optionalDisabledUserByUsername = userRepository
-                .findAnyUserByUsername(user.getUsername(), false);
-
-        if (optionalDisabledUserByUsername.isPresent()) {
-            UserModel disabledUserByUsername = optionalDisabledUserByUsername.get();
-            if (!disabledUserByUsername.getUserDetails().isRegisteredVerified()) {
-                VerificationModel foundVerification = verificationService.verifyVerificationExistence(
-                        disabledUserByUsername.getUsername(),
-                        null,
-                        VerificationType.VERIFY_REGISTRY
-                );
-                if (foundVerification != null)
-                    throw new UserWithFieldAlreadyExistsException(USERNAME);
-                else
-                    userRepository.delete(disabledUserByUsername.getUserId());
-            }
+    private void handleUnverifiedDisabledUser(UserModel disabledUser, String username, String email) {
+        VerificationModel foundVerification = null;
+        if (disabledUser.getUserDetails().isRegisteredVerified()) {
+            foundVerification = verificationService.verifyVerificationExistence(
+                    username,
+                    email,
+                    VerificationType.REACTIVATE_ACCOUNT
+            );
+        } else {
+            foundVerification = verificationService.verifyVerificationExistence(
+                    username,
+                    email,
+                    VerificationType.VERIFY_REGISTRY
+            );
+            if (foundVerification == null)
+                userRepository.delete(disabledUser.getUserId());
         }
 
-        Optional<UserModel> optionalDisabledUserByEmail = userRepository
-                .findAnyUserByUserEmail(user.getUserEmail(), false);
-
-        if (optionalDisabledUserByEmail.isPresent()) {
-            UserModel disabledUserByEmail = optionalDisabledUserByEmail.get();
-            if (!disabledUserByEmail.getUserDetails().isRegisteredVerified()) {
-                VerificationModel foundVerification = verificationService.verifyVerificationExistence(
-                        disabledUserByEmail.getUserEmail(),
-                        null,
-                        VerificationType.VERIFY_REGISTRY
-                );
-                if (foundVerification != null)
-                    throw new UserWithFieldAlreadyExistsException(USERNAME);
-                else
-                    userRepository.delete(disabledUserByEmail.getUserId());
-            }
-        }
+        if (foundVerification != null)
+            throw new UserWithFieldAlreadyExistsException(username != null ? USERNAME : EMAIL);
     }
 
     private void createRegistryVerification(UserModel user) {
