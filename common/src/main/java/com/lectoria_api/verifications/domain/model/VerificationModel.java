@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.UUID;
 
 import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;

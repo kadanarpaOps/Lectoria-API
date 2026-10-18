@@ -55,7 +55,7 @@ public class UserServicePort implements UserUseCases {
     private final SharedVerificationUseCases verificationService;
 
     @Resource
-    private UserServicePort userServicePort;
+    private UserServicePort userServicePortResource;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServicePort.class);
 
@@ -318,7 +318,7 @@ public class UserServicePort implements UserUseCases {
     @Transactional
     public void disableUserAccount(UUID userId) {
         validateVerification(userId, VerificationType.DISABLE_ACCOUNT);
-        userServicePort.toggleUserStatus(userId);
+        userServicePortResource.toggleUserStatus(userId);
     }
 
     @Override
@@ -328,7 +328,7 @@ public class UserServicePort implements UserUseCases {
 
         validateVerification(foundUser.getUserId(), VerificationType.REACTIVATE_ACCOUNT);
         keycloakConnector.updateKeycloakUserCredentials(foundUser.toString(), newPassword);
-        userServicePort.toggleUserStatus(foundUser.getUserId());
+        userServicePortResource.toggleUserStatus(foundUser.getUserId());
     }
 
     private void resolveUserAvailability(UserModel user) {
