@@ -1,219 +1,213 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código de verificación</title>
-    <!--[if mso]>
-    <style type="text/css">
-        body, table, td { font-family: Georgia, 'Times New Roman', serif !important; }
-    </style>
-    <![endif]-->
-    <style type="text/css">
-        body, table, td, p, a, li { margin: 0; padding: 0; border: 0; }
-        body { background-color: #13131a; }
-        img { border: 0; display: block; }
-        a { text-decoration: none; }
-        * { -webkit-text-size-adjust: none; text-size-adjust: none; }
+    <title>Código de verificación - Lectoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/poppins/v15/pxiHyp8kv8F7wRkVcEpBTMx8.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @media (max-width: 599px) {
+            .email-grid-col {
+                display: block !important;
+                width: 100% !important;
+                margin-bottom: 16px;
+            }
+            .email-grid-gap {
+                display: none !important;
+            }
+        }
     </style>
 </head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+<div aria-roledescription="email" lang="es" role="article" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background-color: #16161D;">
+    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; table-layout: fixed; background-color: #16161D;" width="100%">
+        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+            <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
 
-<!--
-    VARIABLES THYMELEAF (Map<String, String> dataValues):
-    - ${username}        → nombre del usuario  (ej. "solaris_writer")
-    - ${otpCode}         → código OTP de 6 dígitos (ej. "482 917")
-    - ${expiresIn}       → minutos de vigencia (ej. "10")
-    - ${refCode}         → código de referencia (ej. "OTP-VER-39471")
-    - ${fechaSolicitud}  → fecha legible del evento (ej. "Mayo 2026")
--->
-
-<body style="margin: 0; padding: 0; background-color: #13131a;">
-
-    <!-- Wrapper principal -->
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#13131a">
-        <tr>
-            <td align="center" valign="top">
-
-                <!-- Contenedor centrado 600px -->
-                <table width="600" border="0" cellspacing="0" cellpadding="0" style="width: 600px; max-width: 600px;">
-
-                    <!--HEADER-->
-                    <tr>
-                        <td bgcolor="#16161d" style="background-color: #16161d; border-bottom: 1px solid #363646;">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td style="padding: 20px 32px;">
-                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 17px; font-weight: bold; font-style: normal; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
-                                            Lectoria
-                                        </span>
+                <!-- HEADER -->
+                <table border="0" cellpadding="0" cellspacing="0" max-width="600" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 600px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                    <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 32px 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                    <td align="left" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.05em; color: #FF5D62;">Lectoria</span>
                                     </td>
-                                    <td align="right" style="padding: 20px 32px 20px 0;">
-                                        <table border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td style="padding-right: 12px;">
-                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #9a9aaa;">&#128274;</span>
-                                                </td>
-                                                <td>
-                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#128273;</span>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td align="right" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                        <img src="https://drive.usercontent.google.com/download?id=1bPDwdJGpnDIyShoTcvzjS29ajdeKuvX7" alt="Cuenta" width="40" height="40" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 4px;">
                                     </td>
                                 </tr>
+                                </tbody>
                             </table>
                         </td>
                     </tr>
+                    </tbody>
+                </table>
 
-                    <!-- CUERPO PRINCIPAL — TARJETA OTP -->
-                    <tr>
-                        <td bgcolor="#13131a" style="background-color: #13131a; padding: 40px 32px;">
+                <!-- MAIN CARD -->
+                <table border="0" cellpadding="0" cellspacing="0" max-width="800" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 700px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                    <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 24px; padding-right: 24px;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; overflow: hidden; border-radius: 12px; background-color: #1b1b22; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                                <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                    <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 40px;">
+                                        
+                                        <!-- Logo Badge Circle -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; position: relative; padding-bottom: 32px;">
+                                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; height: 80px; width: 80px; border-radius: 9999px; background-color: rgba(255, 93, 98, 0.1);">
+                                                        <img src="https://drive.usercontent.google.com/download?id=1pw8FvxblOrtRPhXDlYCTJ0VGk7VRAPfL" alt="Lectoria Logo" width="60" height="60" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-left: 4px; margin-top: 12px;">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
 
-                            <!-- Tarjeta -->
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1b1b22"
-       style="background-color: #1b1b22; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden;">
-                                <tr>
-                                    <td style="padding: 40px 40px 0 40px;">
+                                        <!-- H1 Title -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 24px;">
+                                                    <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 48px; font-weight: 700; letter-spacing: -0.05em; color: #DCD7BA;">
+                                                        Código de <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #ff5d62;">Acceso</span>
+                                                    </h1>
+                                                </td>
+                                            </tr>
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-bottom: 40px;">
+                                                    <p class="font-body" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; max-width: 480px; font-size: 20px; font-weight: 300; line-height: 1.625; letter-spacing: -0.05em; color: #9CABCA;">
+                                                        Hola <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #ff5d62; font-weight: 600;" th:text="${username}">escritor</span>, recibimos una solicitud de verificación para tu cuenta en Lectoria. Usa el siguiente código para completar el proceso.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
 
-                                        <!-- Ícono + Título -->
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr valign="top">
-
-                                                <!-- Círculo con ícono llave -->
-                                                <td width="72" style="width: 72px; padding-right: 24px;">
-                                                    <table border="0" cellspacing="0" cellpadding="0">
-                                                        <tr>
-                                                            <td width="72" height="72" bgcolor="#ff5d62" align="center" valign="middle"
-                                                                style="background-color: #ff5d62; border-radius: 50%; width: 72px; height: 72px; text-align: center;">
-                                                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; line-height: 72px; color: #ffffff;">
-                                                                    &#128273;
-                                                                </span>
+                                        <!-- OTP Box -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-bottom: 24px;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <table border="0" cellpadding="32" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; border-radius: 12px; border: 1px solid rgba(255, 255, 254, 0.05); background-color: #292931; text-align: center;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                                <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0 0 16px; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #ff5d62;">
+                                                                    CÓDIGO DE VERIFICACIÓN
+                                                                </p>
+                                                                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 48px; font-weight: 800; letter-spacing: 12px; color: #DCD7BA; padding: 10px 0; text-align: center;" th:text="${otpCode}">
+                                                                    482 917
+                                                                </div>
+                                                                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin-top: 16px; font-size: 14px; font-weight: 400; color: #9CABCA;">
+                                                                    Expira en <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #ff5d62; font-weight: 700;" th:text="${expiresIn}">10</span> minutos
+                                                                </div>
                                                             </td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>
                                                 </td>
-
-                                                <!-- Título -->
-                                                <td valign="middle">
-                                                    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 26px; font-weight: bold; line-height: 1.25; color: #e4e1eb; margin: 0;">
-                                                        Tu código de acceso temporal
-                                                    </p>
-                                                </td>
-
                                             </tr>
+                                            </tbody>
                                         </table>
 
-                                    </td>
-                                </tr>
-
-                                <!-- Saludo personalizado -->
-                                <tr>
-                                    <td style="padding: 20px 40px 0 40px;">
-                                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.65; color: #9a9aaa; margin: 0;">
-                                            Hola, <span style="color: #e4e1eb;" th:text="${username}">escritor</span>.
-                                            Recibimos una solicitud de verificaci&oacute;n para tu cuenta en Lectoria.
-                                            Usa el siguiente c&oacute;digo para completar el proceso — es v&aacute;lido por
-                                            <span style="color: #ff5d62;" th:text="${expiresIn}">10</span> minutos.
-                                        </p>
-                                    </td>
-                                </tr>
-
-                                <!-- Caja: Código OTP -->
-                                <tr>
-                                    <td style="padding: 24px 40px 0 40px;">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#16161d"
-                                               style="background-color: #16161d; border-radius: 8px; border: 1px solid #2e1a1b;">
-                                            <tr>
-                                                <td align="center" style="padding: 32px 24px;">
-
-                                                    <!-- Etiqueta -->
-                                                    <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 5px; text-transform: uppercase; color: #ff5d62; margin: 0 0 20px 0;">
-                                                        Código de verificación
-                                                    </p>
-
-                                                    <!-- Código OTP -->
-                                                    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 48px; font-weight: bold; letter-spacing: 12px; color: #e4e1eb; margin: 0; line-height: 1;"
-                                                       th:text="${otpCode}">
-                                                    </p>
-
-                                                    <!-- Barra de expiración decorativa -->
-                                                    <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 24px;">
-                                                        <tr valign="middle">
-                                                            <td style="padding-right: 8px;">
-                                                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #9a9aaa;">&#9201;</span>
-                                                            </td>
-                                                            <td>
-                                                                <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #9a9aaa;">
-                                                                    Expira en <span style="color: #ff5d62;" th:text="${expiresIn}">10</span> minutos
-                                                                </span>
+                                        <!-- Security Notice Box -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <table border="0" cellpadding="20" cellspacing="0" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; border-radius: 12px; border: 1px solid rgba(255, 93, 98, 0.2); background-color: rgba(46, 26, 27, 0.6); text-align: left;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 300; line-height: 1.6; letter-spacing: -0.02em; color: #9CABCA;">
+                                                                Si no solicitaste este código, puedes ignorar este correo. Tu cuenta permanece protegida y nunca compartas este código con nadie; el equipo de Lectoria jamás te lo solicitará.
                                                             </td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>
-
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
-                                    </td>
-                                </tr>
 
-                                <!-- Aviso de seguridad -->
-                                <tr>
-                                    <td style="padding: 24px 40px 0 40px;">
-                                        <table width="100%" border="0" cellspacing="" cellpadding="0" bgcolor="#2e1a1b"
-                                               style="background-color: #2e1a1b; border-radius: 8px;">
-                                            <tr valign="top">
-                                                <td width="32" style="padding: 16px 0 16px 20px; width: 32px;">
-                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #ff5d62;">&#9888;</span>
-                                                </td>
-                                                <td style="padding: 16px 20px 16px 10px;">
-                                                    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.55; color: #9a9aaa; margin: 0;">
-                                                        Si no solicitaste este c&oacute;digo, ignora este correo. Tu cuenta permanece segura.
-                                                        Nunca compartas este c&oacute;digo con nadie.
-                                                        Lectoria jam&aacute;s te lo pedir&aacute;.
-                                                    </p>
+                                        <!-- Tagline -->
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-top: 40px;">
+                                            <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                            <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                        <tr style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            <td class="font-body" valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; margin: 0; font-size: 12px; font-weight: 500; letter-spacing: -0.05em; color: #9CABCA;">PROTECCIÓN Y SEGURIDAD LECTORIA</td>
+                                                            <td valign="middle" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding-left: 8px;">
+                                                                <img src="https://drive.usercontent.google.com/download?id=1RjUf_KZqo_C37_0GCb0gn8oQKZQJTd9c" alt="Seguridad" width="20" height="20" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
+
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td style="padding: 20px 40px 28px 40px; border-top: 1px; margin-top: 24px;">
-                                    </td>
-                                </tr>
+                                </tbody>
                             </table>
                         </td>
                     </tr>
+                    </tbody>
+                </table>
 
-                    <tr>
-                        <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
-                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
-                        </td>
-                    </tr>
+                <!-- Asterism & Footer -->
+                <table border="0" cellpadding="0" cellspacing="0" max-width="800" role="presentation" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 700px;">
+                    <tbody style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;">
+                        <tr>
+                            <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                            <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
+                            </td>
+                        </tr>
 
-                    <!-- FOOTER -->
-                    <tr>
-                        <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td style="padding: 32px; text-align: center;">
-                                        <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                        <!-- FOOTER -->
+                        <tr>
+                            <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style="padding: 32px; text-align: center;">
+                                            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
                                                 Lectoria
                                             </p>
-                                        <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
-                                            © 2026 Lectoria.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
+                                            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                                © 2026 Lectoria.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <!-- / Contenedor 600px -->
 
             </td>
         </tr>
+        </tbody>
     </table>
-    <!-- / Wrapper -->
-
+</div>
 </body>
 </html>

@@ -35,6 +35,7 @@ import static com.lectoria_api.users.domain.constants.Constants.ID;
 import static com.lectoria_api.users.domain.constants.Constants.KEYCLOAK_ERR_CONNECTION;
 import static com.lectoria_api.users.domain.constants.Constants.UPDATE_OP;
 import static com.lectoria_api.users.domain.constants.Constants.USERNAME;
+import static com.lectoria_api.users.domain.constants.Constants.USERNAME_OR_EMAIL;
 import static com.lectoria_api.users.domain.constants.Constants.USER_WITH_ROLE_INVALID;
 
 @Service
@@ -81,10 +82,10 @@ public class    UserServicePort implements UserUseCases {
     }
 
     @Override
-    public UserModel findUserByEmail(String userEmail) {
-        Optional<UserModel> optionalUser = userRepository.findUserByEmail(userEmail);
+    public UserModel findUserByUsernameOrEmail(String usernameOrEmail) {
+        Optional<UserModel> optionalUser = userRepository.findUserByUsernameOrEmail(usernameOrEmail);
         if (optionalUser.isEmpty()) {
-            throw new UserWithFieldNotExistsException(EMAIL);
+            throw new UserWithFieldNotExistsException(USERNAME_OR_EMAIL);
         }
         return optionalUser.get();
     }
@@ -98,15 +99,8 @@ public class    UserServicePort implements UserUseCases {
      */
     @Override
     public void registerUser(UserModel user) {
-        boolean userExistsByUsername = userRepository.existsByFilters(
-                UserFilters.builder().username(user.getUsername()).build());
 
-        if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
-
-        boolean userExistsByEmail = userRepository.existsByFilters(
-                UserFilters.builder().userEmail(user.getUserEmail()).build());
-
-        if (userExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
+        resolveUserAvailability(user);
 
         user.getUserRoles().forEach(roleModel -> {
             verifyIsValidRole(roleModel.getRoleName());
@@ -246,6 +240,31 @@ public class    UserServicePort implements UserUseCases {
             throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
         }
         toggleKeycloakUserStatus(userToUpdate.getUserId().toString());
+    }
+
+    private void resolveUserAvailability(UserModel user) {
+
+        Optional<UserModel> optionalRegisteredUser = userRepository
+                .findUserByUsernameOrEmail(user.getUsername(), user.getUsername());
+
+        if (optionalRegisteredUser.isPresent()) {
+            UserModel registeredUser = optionalRegisteredUser.get();
+
+            if (registeredUser.getUserDetails().isRegisteredVerified()) {
+                boolean userExistsByUsername = userRepository.existsByFilters(
+                        UserFilters.builder().username(user.getUsername()).build());
+
+                if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
+
+                boolean userExistsByEmail = userRepository.existsByFilters(
+                        UserFilters.builder().userEmail(user.getUserEmail()).build());
+
+                if (userExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
+            } else {
+                userRepository.delete(registeredUser.getUserId());
+            }
+        }
+
     }
 
     private void verifyIsValidRole(String roleModel) {

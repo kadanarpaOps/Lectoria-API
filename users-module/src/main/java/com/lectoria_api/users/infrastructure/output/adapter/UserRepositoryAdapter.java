@@ -57,8 +57,13 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public Optional<UserModel> findUserByEmail(String email) {
-        return userRepository.findByUserEmail(email).map(userMapper::toModel);
+    public Optional<UserModel> findUserByUsernameOrEmail(String username, String email) {
+        return userRepository.findByUsernameOrUserEmail(username, email);
+    }
+
+    @Override
+    public Optional<UserModel> findUserByUsernameOrEmail(String usernameOrEmail) {
+        return userRepository.findByUsernameOrUserEmail(usernameOrEmail);
     }
 
     @Override
@@ -72,4 +77,10 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     public void save(UserModel user) {
         userRepository.save(userMapper.toEntity(user));
     }
+
+    @Override
+    public void delete(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+
 }
