@@ -10,7 +10,6 @@
     <artifactId>verifications-module</artifactId>
     <version>${parent.version}</version>
 
-
     <dependencies>
         <!-- Business Dependencies -->
         <dependency>
@@ -18,10 +17,13 @@
             <artifactId>common</artifactId>
             <version>${parent.version}</version>
         </dependency>
+
+        <!-- Lombok -->
         <dependency>
-            <groupId>com.lectoria-api</groupId>
-            <artifactId>users-module</artifactId>
-            <version>${parent.version}</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Open Feign -->
@@ -30,6 +32,7 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>5.0.2</version>
         </dependency>
+
         <!-- Feign Form Encoder -->
         <dependency>
             <groupId>io.github.openfeign.form</groupId>

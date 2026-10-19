@@ -13,11 +13,13 @@
     <version>${parent.version}</version>
 
     <dependencies>
+        <!-- Business Dependencies -->
         <dependency>
             <groupId>com.lectoria-api</groupId>
             <artifactId>common</artifactId>
             <version>${parent.version}</version>
         </dependency>
+
         <!-- Open Feign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

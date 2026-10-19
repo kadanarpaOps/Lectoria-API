@@ -1,7 +1,6 @@
 package com.lectoria_api.users.infrastructure.output.adapter;
 
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
-import com.lectoria_api.users.domain.exceptions.business.UserWithFieldNotExistsException;
 import com.lectoria_api.users.domain.exceptions.keycloak.KeycloakRoleNotFoundException;
 import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
@@ -19,6 +18,7 @@ import java.util.Collections;
 
 import static com.lectoria_api.users.domain.constants.Constants.CREATION_OP;
 import static com.lectoria_api.users.domain.constants.Constants.DELETION_OP;
+import static com.lectoria_api.users.domain.constants.Constants.DISABLED_USER;
 import static com.lectoria_api.users.domain.constants.Constants.FIELD_WITH_VALUE_NOT_EXIST;
 import static com.lectoria_api.users.domain.constants.Constants.ID;
 import static com.lectoria_api.users.domain.constants.Constants.KEYCLOAK_ERR_CONNECTION;
@@ -95,19 +95,18 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
     }
 
     @Override
-    public UserModel findKeycloakUserByEmail(String email) throws FailedOperationException, UserWithFieldNotExistsException {
-        UserRepresentation userFromKeycloak = keycloakRepository.getByEmail(email);
-        if (userFromKeycloak == null) {
-            return null;
-        }
-        return keycloakMapper.toModel(userFromKeycloak);
-    }
-
-    @Override
-    public void toggleKeycloakUserStatus(String userId) throws FailedOperationException {
+    public void toggleKeycloakUserStatus(String userId, UserModel user) throws FailedOperationException {
         try {
             UserRepresentation userToKeycloak = keycloakRepository.getById(userId);
             userToKeycloak.setEnabled(!userToKeycloak.isEnabled());
+            boolean userToKeycloakEnabled = userToKeycloak.isEnabled();
+            if (userToKeycloakEnabled) {
+                userToKeycloak.setUsername(user.getUsername());
+                userToKeycloak.setEmail(user.getUserEmail());
+            } else {
+                userToKeycloak.setUsername(DISABLED_USER + userToKeycloak.getId());
+                userToKeycloak.setEmail(DISABLED_USER + userToKeycloak.getId() + userToKeycloak.getEmail());
+            }
             keycloakRepository.update(userId, userToKeycloak);
         } catch(RuntimeException e) {
             throw new FailedOperationException(UPDATE_OP, KEYCLOAK_ERR_CONNECTION);

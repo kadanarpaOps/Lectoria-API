@@ -17,5 +17,6 @@ public class ResUserDTO {
     private String username;
     private String email;
     private List<String> userRoles;
+    private ResUserDetailsDTO userDetails;
 
 }
