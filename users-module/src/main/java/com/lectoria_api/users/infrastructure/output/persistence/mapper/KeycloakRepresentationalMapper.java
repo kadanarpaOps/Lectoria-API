@@ -16,6 +16,7 @@ public class KeycloakRepresentationalMapper {
         userRepresentation.setUsername(userModel.getUsername());
         userRepresentation.setEmail(userModel.getUserEmail());
         userRepresentation.setEnabled(userModel.isUserEnabled());
+        userRepresentation.setEmailVerified(userModel.getUserDetails().isRegisteredVerified());
         if (userModel.getUserId() != null) {
             userRepresentation.setId(userModel.getUserId().toString());
         }

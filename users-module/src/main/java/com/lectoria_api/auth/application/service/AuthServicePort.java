@@ -1,7 +1,7 @@
 package com.lectoria_api.auth.application.service;
 
 import com.lectoria_api.auth.domain.exceptions.auth.InvalidRefreshAccessAttemptException;
-import com.lectoria_api.auth.domain.exceptions.auth.NoAuthenticationFoundExcepcion;
+import com.lectoria_api.auth.domain.exceptions.auth.NoAuthenticationFoundException;
 import com.lectoria_api.auth.domain.model.LoginRequest;
 import com.lectoria_api.auth.domain.model.LoginResponse;
 import com.lectoria_api.auth.domain.model.RefreshAccessResponse;
@@ -29,7 +29,7 @@ public class AuthServicePort implements AuthUseCases {
      * This method takes care of the User Logging in process, this means the request to
      * the External Service <strong>Keycloak</strong> to validate the user credentials
      * and ask for an <code>accessToken</code> and <code>refreshToken</code>
-     * @param loginRequest
+     * @param loginRequest the Login Request Model
      * @return A data object that contains both the <code>accessToken</code> and <code>refreshToken</code>
      * with its lifespans
      */
@@ -88,10 +88,10 @@ public class AuthServicePort implements AuthUseCases {
         Authentication actualAuthentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (actualAuthentication == null || actualAuthentication.getPrincipal() == null)
-            throw new NoAuthenticationFoundExcepcion();
+            throw new NoAuthenticationFoundException();
 
         Jwt tokenCredentials = (Jwt) actualAuthentication.getCredentials();
-        if (tokenCredentials == null) throw new NoAuthenticationFoundExcepcion();
+        if (tokenCredentials == null) throw new NoAuthenticationFoundException();
 
         Map<String, Object> claims = tokenCredentials.getClaims();
 

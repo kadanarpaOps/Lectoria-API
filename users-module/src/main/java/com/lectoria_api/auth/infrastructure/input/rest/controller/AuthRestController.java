@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.lectoria_api.auth.domain.constants.Constants.ACCESS_TOKEN;
-import static com.lectoria_api.auth.domain.constants.Constants.BLANK;
 import static com.lectoria_api.auth.domain.constants.Constants.COOKIE_PATH;
 import static com.lectoria_api.auth.domain.constants.Constants.HTTP_ONLY;
 import static com.lectoria_api.auth.domain.constants.Constants.REFRESH_TOKEN;
 import static com.lectoria_api.auth.domain.constants.Constants.ZERO;
+import static com.lectoria_api.common.domain.constants.Constants.BLANK;
 
 @RestController
 @RequestMapping("/api/auth")

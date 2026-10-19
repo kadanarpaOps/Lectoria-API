@@ -41,17 +41,38 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/users",
+                                "/api/users/verify-registry",
                                 "/api/auth/login",
                                 "/api/auth/validate/access",
                                 "/api/auth/validate/session",
                                 "/api/auth/logout",
-                                "/api/auth/refresh-access"
+                                "/api/auth/refresh-access",
+                                "/api/verifications",
+                                "/api/verifications/verify",
+                                "/api/verifications/regenerate-code",
+                                "/api/verifications/verify/verification-existence"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/users",
                                 "/api/auth/user/profile"
                         ).authenticated()
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/api/auth/user/info",
+                                "/api/auth/user/change-email",
+                                "/api/auth/user/change-password",
+                                "/api/auth/user/disable-account"
+                        ).authenticated()
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/api/auth/admin/users",
+                                "/api/auth/admin/find-user-by-username",
+                                "/api/auth/admin/find-user-by-email",
+                                "/api/auth/admin/add-role",
+                                "/api/auth/admin/remove-role",
+                                "/api/auth/admin/toggle-user-status"
+                        ).hasRole("LECTORIA_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth -> oauth

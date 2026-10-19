@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,6 +32,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 ErrorResponseDTO.builder()
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(ex.getMessage())
+                        .details(doDetails(ex))
+                        .timestamp(now())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleNoResourceFoundException(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorResponseDTO.builder()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
                         .message(ex.getMessage())
                         .details(doDetails(ex))
                         .timestamp(now())

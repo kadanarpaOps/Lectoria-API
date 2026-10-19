@@ -40,6 +40,4 @@ public class RegisterUserDTO {
     @NotEmpty(message = "Role List must not be empty")
     private List<String> roleNames;
 
-    private Boolean isEnabled;
-
 }

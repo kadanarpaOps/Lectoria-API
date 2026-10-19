@@ -1,11 +1,11 @@
 package com.lectoria_api.infrastructure.output.adapter;
 
-import com.lectoria_api.domain.models.VerificationModel;
-import com.lectoria_api.domain.models.enums.VerificationStatus;
-import com.lectoria_api.common.domain.model.verification.VerificationType;
+import com.lectoria_api.verifications.domain.model.VerificationModel;
+import com.lectoria_api.verifications.domain.model.enums.VerificationStatus;
 import com.lectoria_api.domain.ports.output.VerificationRepositoryPort;
 import com.lectoria_api.infrastructure.output.persistence.mapper.VerificationInfraMapper;
 import com.lectoria_api.infrastructure.output.persistence.repository.VerificationJpaRepository;
+import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,7 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class VerificationRepositoryAdapter implements VerificationRepositoryPort {
+
     private final VerificationJpaRepository jpaRepository;
     private final VerificationInfraMapper mapper;
 
