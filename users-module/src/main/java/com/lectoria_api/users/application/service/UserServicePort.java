@@ -64,7 +64,7 @@ public class UserServicePort implements UserUseCases {
      * request, returning a proper Data Object containing all the pagination metadata and the list
      * of found users in the inner Database
      * @param paginationRequest the page request, contains page size and number
-     * @param userFilters the filter series like usco code, full name, etc.
+     * @param userFilters the filter series like username, email, etc.
      * @return the proper Data Object that contains the metadata and list of found users
      */
     @Override
