@@ -3,6 +3,7 @@ package com.lectoria_api.users.application.service;
 import com.lectoria_api.common.domain.model.PageResponse;
 import com.lectoria_api.common.domain.model.PaginationRequest;
 import com.lectoria_api.common.domain.model.PaginationResult;
+import com.lectoria_api.notifications.application.utils.NotificationBuilderUtil;
 import com.lectoria_api.users.domain.exceptions.InvalidParametersForUserSearchException;
 import com.lectoria_api.users.domain.exceptions.business.AdminCantBeDisabledException;
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
@@ -23,10 +24,10 @@ import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
 import com.lectoria_api.verifications.domain.model.VerificationModel;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import com.lectoria_api.verifications.domain.ports.input.SharedVerificationUseCases;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,16 +47,17 @@ import static com.lectoria_api.users.domain.constants.Constants.USERNAME;
 import static com.lectoria_api.users.domain.constants.Constants.USER_WITH_ROLE_INVALID;
 
 @Service
-@RequiredArgsConstructor
-public class    UserServicePort implements UserUseCases {
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
+public class UserServicePort implements UserUseCases {
 
     private final UserRepositoryPort userRepository;
     private final KeycloakConnectorPort keycloakConnector;
     private final RoleUseCases roleService;
     private final SharedVerificationUseCases verificationService;
+    private final NotificationBuilderUtil notificationBuilderUtil;
 
-    @Resource
-    private UserServicePort userServicePortResource;
+    @Lazy
+    private final UserServicePort self;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServicePort.class);
 
@@ -167,6 +169,8 @@ public class    UserServicePort implements UserUseCases {
             throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
         }
         updateOnKeycloak(foundUser);
+
+        notificationBuilderUtil.sendSuccessVerifyNotification(foundUser.getUsername(), foundUser.getUserEmail());
     }
 
     /**
@@ -190,7 +194,10 @@ public class    UserServicePort implements UserUseCases {
             throw new SameFieldValueOnUpdateException(USERNAME);
 
         boolean userExistsByUsername = userRepository.existsByFilters(
-                UserFilters.builder().username(toUpdateInfo.getUsername()).build());
+                UserFilters.builder()
+                        .username(toUpdateInfo.getUsername())
+                        .userStatus(true)
+                        .build());
 
         if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
 
@@ -213,7 +220,10 @@ public class    UserServicePort implements UserUseCases {
             throw new SameFieldValueOnUpdateException(EMAIL);
 
         boolean userExistsByEmail = userRepository.existsByFilters(
-                UserFilters.builder().userEmail(email).build());
+                UserFilters.builder()
+                        .userEmail(email)
+                        .userStatus(true)
+                        .build());
 
         if (userExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
 
@@ -318,7 +328,7 @@ public class    UserServicePort implements UserUseCases {
     @Transactional
     public void disableUserAccount(UUID userId) {
         validateVerification(userId, VerificationType.DISABLE_ACCOUNT);
-        userServicePortResource.toggleUserStatus(userId);
+        self.toggleUserStatus(userId);
     }
 
     @Override
@@ -328,7 +338,7 @@ public class    UserServicePort implements UserUseCases {
 
         validateVerification(foundUser.getUserId(), VerificationType.REACTIVATE_ACCOUNT);
         keycloakConnector.updateKeycloakUserCredentials(foundUser.toString(), newPassword);
-        userServicePortResource.toggleUserStatus(foundUser.getUserId());
+        self.toggleUserStatus(foundUser.getUserId());
     }
 
     private void resolveUserAvailability(UserModel user) {

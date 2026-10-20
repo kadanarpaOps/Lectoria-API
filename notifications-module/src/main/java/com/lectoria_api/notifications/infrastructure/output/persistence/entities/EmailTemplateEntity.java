@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
+
 @Entity
 @Table(name = "T_NOTIFICATION_TEMPLATES")
 @Getter
@@ -49,12 +51,12 @@ public class EmailTemplateEntity {
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
+        createdAt = LocalDateTime.now(TIME_ZONE).truncatedTo(ChronoUnit.SECONDS);
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.SECONDS);
+        updatedAt = LocalDateTime.now(TIME_ZONE).truncatedTo(ChronoUnit.SECONDS);
     }
 
 }

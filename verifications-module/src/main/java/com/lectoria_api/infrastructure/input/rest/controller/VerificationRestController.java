@@ -67,9 +67,12 @@ public class VerificationRestController {
                 username, email, verificationType
         );
         ResponseVerificationExistenceDTO response = ResponseVerificationExistenceDTO.builder()
-                .exists(existingVerification != null)
+                .exists(
+                        existingVerification != null)
                 .verificationStatus(
                         existingVerification != null ? existingVerification.getVerificationStatus() : null)
+                .expirationDate(
+                        existingVerification != null ? existingVerification.getExpirationDate() : null)
                 .build();
 
         return ResponseEntity.ok(response);

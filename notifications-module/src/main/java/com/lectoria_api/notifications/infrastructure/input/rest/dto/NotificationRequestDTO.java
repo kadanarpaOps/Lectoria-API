@@ -11,7 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static com.lectoria_api.notifications.domain.constants.NotificationTypes.*;
+import static com.lectoria_api.notifications.domain.constants.NotificationTypes.EMAIL;
+import static com.lectoria_api.notifications.domain.constants.NotificationTypes.IN_APP;
 
 @Getter
 @Setter

@@ -13,7 +13,9 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.lectoria_api.common.domain.constants.Constants.CODE_EXPIRATION_MINUTES;
 import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
+import static com.lectoria_api.common.domain.constants.Constants.VERIFICATION_EXPIRATION_MINUTES;
 
 @Getter
 @Setter
@@ -42,14 +44,14 @@ public class VerificationModel {
     public void loadDates() {
         LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         this.creationDate = now;
-        this.expirationDate = now.plusMinutes(30);
+        this.expirationDate = now.plusMinutes(VERIFICATION_EXPIRATION_MINUTES);
         reloadCodeDates();
     }
 
     public void reloadCodeDates() {
         LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         this.codeCreationDate = now;
-        this.codeExpirationDate = now.plusMinutes(5);
+        this.codeExpirationDate = now.plusMinutes(CODE_EXPIRATION_MINUTES);
     }
 
     public boolean isCodeExpired() {
@@ -66,7 +68,7 @@ public class VerificationModel {
         generateCode();
         LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         this.codeCreationDate = now;
-        this.codeExpirationDate = now.plusMinutes(5);
+        this.codeExpirationDate = now.plusMinutes(CODE_EXPIRATION_MINUTES);
     }
 
     public boolean isValidCode(String code) {

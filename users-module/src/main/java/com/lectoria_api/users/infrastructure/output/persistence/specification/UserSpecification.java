@@ -29,7 +29,7 @@ public class UserSpecification {
             }
 
             if (filters.getUserStatus() != null) {
-                predicates.add(cb.equal(root.get("userStatus"), filters.getUserStatus()));
+                predicates.add(cb.equal(root.get("userEnabled"), filters.getUserStatus()));
             }
 
             if (filters.getUserRolesNames() != null && !filters.getUserRolesNames().isEmpty()) {
