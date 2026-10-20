@@ -13,4 +13,7 @@ public class Constants {
     // Cookie Resolver
     public static final String COOKIE_ACCESS_TOKEN = "access_token";
 
+    // User Constants
+    public static final String LECTORIA_ADMIN = "LECTORIA_ADMIN";
+
 }

@@ -6,9 +6,9 @@ import com.lectoria_api.notifications.domain.ports.output.MailSenderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.lectoria_api.notifications.domain.constants.NotificationTypes.EMAIL;
+import static com.lectoria_api.notifications.domain.constants.NotificationTypes.EMAIL_SERVICE;
 
-@Service(EMAIL)
+@Service(EMAIL_SERVICE)
 @RequiredArgsConstructor
 public class EmailNotifier implements Notifier {
 

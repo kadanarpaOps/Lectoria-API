@@ -6,9 +6,9 @@ import com.lectoria_api.notifications.domain.ports.output.SentNotificationReposi
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.lectoria_api.notifications.domain.constants.NotificationTypes.IN_APP;
+import static com.lectoria_api.notifications.domain.constants.NotificationTypes.IN_APP_SERVICE;
 
-@Service(IN_APP)
+@Service(IN_APP_SERVICE)
 @RequiredArgsConstructor
 public class ApplicationNotifier implements Notifier {
 

@@ -16,7 +16,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;

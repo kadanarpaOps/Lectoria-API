@@ -10,7 +10,7 @@ import java.util.Map;
 
 import static com.lectoria_api.notifications.domain.constants.NotificationTemplates.OTP_VERIFICATION;
 import static com.lectoria_api.notifications.domain.constants.NotificationTemplates.SUCCESS_REGISTRY;
-import static com.lectoria_api.notifications.domain.constants.NotificationTypes.EMAIL;
+import static com.lectoria_api.notifications.domain.constants.NotificationTypes.EMAIL_SERVICE;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class NotificationBuilderUtil {
                 .build();
 
         NotificationModel notification = NotificationModel.builder()
-                .notificationType(EMAIL)
+                .notificationType(EMAIL_SERVICE)
                 .notificationData(notificationData)
                 .build();
 
