@@ -23,8 +23,7 @@ public class Constants {
 
     // Verification Types Constraints
     public static final Set<VerificationType> ALLOWED_VERIFICATION_TYPES_PUBLIC_CREATION = Set.of(
-            VerificationType.FORGOT_PASSWORD,
-            VerificationType.FORGOT_EMAIL
+            VerificationType.FORGOT_PASSWORD
     );
 
     public static final Set<VerificationType> ALLOWED_VERIFICATION_TYPES_AUTHENTICATED_CREATION = Set.of(

@@ -21,6 +21,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.lectoria_api.lectoria_api.domain.constants.Constants.LECTORIA_ADMIN;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -48,8 +50,15 @@ public class SecurityConfig {
                                 "/api/auth/logout",
                                 "/api/auth/refresh-access",
                                 "/api/verifications",
-                                "/api/verifications/verify",
-                                "/api/verifications/regenerate-code",
+                                "/api/verifications/verify"
+                        ).permitAll()
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/api/auth/user/activate-account",
+                                "/api/verifications/regenerate-code"
+                        ).permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
                                 "/api/verifications/verify/verification-existence"
                         ).permitAll()
                         .requestMatchers(
@@ -65,14 +74,28 @@ public class SecurityConfig {
                                 "/api/auth/user/disable-account"
                         ).authenticated()
                         .requestMatchers(
-                                HttpMethod.PATCH,
+                                HttpMethod.GET,
                                 "/api/auth/admin/users",
                                 "/api/auth/admin/find-user-by-username",
                                 "/api/auth/admin/find-user-by-email",
+                                "/api/notifications/templates"
+                        ).hasRole(LECTORIA_ADMIN)
+                        .requestMatchers(
+                                HttpMethod.PATCH,
                                 "/api/auth/admin/add-role",
                                 "/api/auth/admin/remove-role",
-                                "/api/auth/admin/toggle-user-status"
-                        ).hasRole("LECTORIA_ADMIN")
+                                "/api/auth/admin/toggle-user-status",
+                                "/api/notifications/templates/{templateName}"
+                        ).hasRole(LECTORIA_ADMIN)
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/notifications/send",
+                                "/api/notifications/templates"
+                        ).hasRole(LECTORIA_ADMIN)
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/notifications/templates/{templateId}"
+                        ).hasRole(LECTORIA_ADMIN)
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth -> oauth

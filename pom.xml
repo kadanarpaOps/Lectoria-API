@@ -20,6 +20,7 @@
         <module>users-module</module>
         <module>common</module>
 		<module>verifications-module</module>
+        <module>notifications-module</module>
     </modules>
 	<description/>
 

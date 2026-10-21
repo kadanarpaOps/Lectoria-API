@@ -1,6 +1,8 @@
 package com.lectoria_api.application.service;
 
+import com.lectoria_api.common.domain.constants.Constants;
 import com.lectoria_api.domain.exceptions.business.ExistingVerificationRequestIsPendingException;
+import com.lectoria_api.notifications.application.utils.NotificationBuilderUtil;
 import com.lectoria_api.users.domain.exceptions.InvalidParametersForUserSearchException;
 import com.lectoria_api.domain.exceptions.business.NoAttemptsAvailableException;
 import com.lectoria_api.domain.exceptions.business.VerificationCodeIsExpiredException;
@@ -35,6 +37,7 @@ public class VerificationServicePort implements VerificationUseCases {
     private final VerificationRepositoryPort verificationRepository;
     private final SharedUserUseCases userService;
     private final SharedAuthUseCases authService;
+    private final NotificationBuilderUtil notificationBuilderUtil;
 
     @Override
     public void createVerification(String username, String userEmail, VerificationType verificationType, String emailToBeNotified) {
@@ -44,12 +47,12 @@ public class VerificationServicePort implements VerificationUseCases {
 
         UserModel existingUser = resolveExistingUser(authUserId,  username, userEmail);
 
-        handleVerificationCreation(existingUser, verificationType);
+        handleVerificationCreation(existingUser, verificationType, emailToBeNotified != null ? emailToBeNotified : userEmail);
     }
 
     @Override
     public void createVerification(UserModel user, VerificationType verificationType) {
-        handleVerificationCreation(user, verificationType);
+        handleVerificationCreation(user, verificationType, user.getUserEmail());
     }
 
     @Override
@@ -82,7 +85,14 @@ public class VerificationServicePort implements VerificationUseCases {
 
         existingVerification.generateCode();
         existingVerification.setAttempts(5);
-        existingVerification.reloadCodeDates();
+        existingVerification.renewCode();
+
+        sendNotification(
+                username,
+                existingVerification.getCode(),
+                emailToBeNotified
+        );
+
         verificationRepository.save(existingVerification);
     }
 
@@ -174,7 +184,7 @@ public class VerificationServicePort implements VerificationUseCases {
         return foundUser;
     }
 
-    private void handleVerificationCreation(UserModel user, VerificationType verificationType) {
+    private void handleVerificationCreation(UserModel user, VerificationType verificationType, String receiverEmail) {
 
         VerificationModel verificationModel = new VerificationModel();
 
@@ -195,7 +205,23 @@ public class VerificationServicePort implements VerificationUseCases {
         verificationModel.setVerificationType(verificationType);
         verificationModel.setVerificationStatus(VerificationStatus.PENDING);
         verificationModel.setUser(user);
+
+        sendNotification(
+                user.getUsername(),
+                verificationModel.getCode(),
+                receiverEmail
+        );
+
         verificationRepository.save(verificationModel);
+    }
+
+    private void sendNotification(String username, String otp, String receiverEmail) {
+        notificationBuilderUtil.sendOtpNotification(
+                username,
+                otp,
+                String.valueOf(Constants.CODE_EXPIRATION_MINUTES),
+                receiverEmail
+        );
     }
 
 }

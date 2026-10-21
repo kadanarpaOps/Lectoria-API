@@ -9,6 +9,7 @@ import com.lectoria_api.users.infrastructure.output.persistence.repository.Keycl
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,16 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
             userId = keycloakRepository.save(keycloakUser);
         } catch (RuntimeException e) {
             LOG.error("[KEYCLOAK_CONNECTOR] Error Creating User: {}", e.getMessage());
+            throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
+        }
+
+        try {
+            for (String role : keycloakUser.getRealmRoles()) {
+                RoleRepresentation toAddRole = keycloakRepository.getRoleByName(role);
+                keycloakRepository.assignRole(toAddRole, userId);
+            }
+        } catch  (RuntimeException e) {
+            rollbackKeycloakUserCreation(userId);
             throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
         }
 
