@@ -67,6 +67,16 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    public boolean existsByUsernameAndStatus(String username, Boolean isEnabled) {
+        return userRepository.existsByUsernameAndUserEnabled(username, isEnabled);
+    }
+
+    @Override
+    public boolean existsByEmailAndStatus(String email, Boolean isEnabled) {
+        return userRepository.existsByUserEmailAndUserEnabled(email, isEnabled);
+    }
+
+    @Override
     public boolean existsByFilters(UserFilters filters) {
         return userRepository.exists(
                 UserSpecification.withFilters(filters)

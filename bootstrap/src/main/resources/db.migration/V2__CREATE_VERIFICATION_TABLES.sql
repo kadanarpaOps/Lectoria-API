@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS T_USER_VERIFICATIONS (
                                         VERIFICATION_ATTEMPTS INT,
                                         VERIFICATION_CREATION_DATE TIMESTAMP WITHOUT TIME ZONE,
                                         VERIFICATION_EXPIRATION_DATE TIMESTAMP WITHOUT TIME ZONE,
+                                        VERIFICATION_CODE_CREATION_DATE TIMESTAMP WITHOUT TIME ZONE,
+                                        VERIFICATION_CODE_EXPIRATION_DATE TIMESTAMP WITHOUT TIME ZONE,
                                         VERIFICATION_TYPE VARCHAR(50),
                                         VERIFICATION_STATUS VARCHAR(50),
                                         FOREIGN KEY (USER_ID) REFERENCES T_USERS(USER_ID)

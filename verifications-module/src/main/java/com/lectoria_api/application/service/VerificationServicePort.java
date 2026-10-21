@@ -45,9 +45,9 @@ public class VerificationServicePort implements VerificationUseCases {
 
         resolveVerificationCreationAvailability(authUserId, verificationType);
 
-        UserModel existingUser = resolveExistingUser(authUserId,  username, userEmail);
+        UserModel existingUser = resolveExistingUser(authUserId,  username, userEmail, verificationType);
 
-        handleVerificationCreation(existingUser, verificationType, emailToBeNotified != null ? emailToBeNotified : userEmail);
+        handleVerificationCreation(existingUser, verificationType, emailToBeNotified != null ? emailToBeNotified : existingUser.getUserEmail());
     }
 
     @Override
@@ -83,14 +83,16 @@ public class VerificationServicePort implements VerificationUseCases {
     public void regenerateCode(String username, String email, VerificationType verificationType, String emailToBeNotified) {
         VerificationModel existingVerification = resolveVerificationAvailability(username, email, verificationType);
 
+        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType);
+
         existingVerification.generateCode();
         existingVerification.setAttempts(5);
         existingVerification.renewCode();
 
         sendNotification(
-                username,
+                existingUser.getUsername(),
                 existingVerification.getCode(),
-                emailToBeNotified
+                emailToBeNotified != null ? emailToBeNotified : existingUser.getUserEmail()
         );
 
         verificationRepository.save(existingVerification);
@@ -98,7 +100,7 @@ public class VerificationServicePort implements VerificationUseCases {
 
     @Override
     public VerificationModel verifyVerificationExistence(String username, String email, VerificationType verificationType) {
-        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email);
+        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType);
 
         VerificationModel existingVerification = verificationRepository.findByUserIdAndVerificationType(
                 existingUser.getUserId(),
@@ -128,7 +130,7 @@ public class VerificationServicePort implements VerificationUseCases {
     }
 
     private VerificationModel resolveVerificationAvailability(String username, String email, VerificationType verificationType) {
-        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email);
+        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType);
 
         VerificationModel existingVerification = verificationRepository.findByUserIdAndVerificationType(
                 existingUser.getUserId(),
@@ -159,15 +161,17 @@ public class VerificationServicePort implements VerificationUseCases {
     private void resolveVerificationCreationAvailability(UUID authUserId, VerificationType verificationType) {
         if (authUserId != null) {
             if (!ALLOWED_VERIFICATION_TYPES_AUTHENTICATED_CREATION.contains(verificationType))
-                throw new WrongVerificationCreationRequestScopeException(AUTH_SCOPE);
+                throw new WrongVerificationCreationRequestScopeException(PUBLIC_SCOPE);
             return;
         }
         if (!ALLOWED_VERIFICATION_TYPES_PUBLIC_CREATION.contains(verificationType))
-            throw new WrongVerificationCreationRequestScopeException(PUBLIC_SCOPE);
+            throw new WrongVerificationCreationRequestScopeException(AUTH_SCOPE);
     }
 
-    private UserModel resolveExistingUser(UUID authUserId, String username, String email) {
+    private UserModel resolveExistingUser(UUID authUserId, String username, String email, VerificationType verificationType) {
         UserModel foundUser = new UserModel();
+        boolean userEnabled = !VerificationType.VERIFY_REGISTRY.equals(verificationType) && !VerificationType.REACTIVATE_ACCOUNT.equals(verificationType);
+
         if (authUserId != null)
             foundUser = userService.findUserById(authUserId);
         else {
@@ -176,9 +180,9 @@ public class VerificationServicePort implements VerificationUseCases {
             if (searchByUsername && searchByEmail)
                 throw new InvalidParametersForUserSearchException();
             if (searchByUsername)
-                foundUser = userService.findAnyUserByUsername(username, true);
+                foundUser = userService.findAnyUserByUsername(username, userEnabled);
             if (searchByEmail)
-                foundUser = userService.findAnyUserByUserEmail(email, true);
+                foundUser = userService.findAnyUserByUserEmail(email, userEnabled);
         }
 
         return foundUser;
