@@ -1,5 +1,6 @@
 package com.lectoria_api.users.application.service;
 
+import com.lectoria_api.auth.domain.ports.input.AuthUseCases;
 import com.lectoria_api.common.domain.model.PageResponse;
 import com.lectoria_api.common.domain.model.PaginationRequest;
 import com.lectoria_api.common.domain.model.PaginationResult;
@@ -53,6 +54,7 @@ public class UserServicePort implements UserUseCases {
     private final UserRepositoryPort userRepository;
     private final KeycloakConnectorPort keycloakConnector;
     private final RoleUseCases roleService;
+    private final AuthUseCases authService;
     private final SharedVerificationUseCases verificationService;
     private final NotificationBuilderUtil notificationBuilderUtil;
 
@@ -71,6 +73,11 @@ public class UserServicePort implements UserUseCases {
      */
     @Override
     public PageResponse<UserModel> pageUsers(PaginationRequest paginationRequest, UserFilters userFilters) {
+        userFilters.setUserStatus(true);
+        userFilters.setIsRegistryVerified(true);
+        userFilters.setExcludedUsers(List.of(authService.getAuthUserId()));
+        userFilters.setExcludedRolesNames(List.of(ADMINISTRATOR));
+
         PaginationResult<UserModel> pageResult = userRepository.pageUsers(paginationRequest, userFilters);
 
         return PageResponse.<UserModel>builder()
@@ -193,13 +200,9 @@ public class UserServicePort implements UserUseCases {
         if (toUpdateInfo.getUsername().equals(toUpdateUser.getUsername()))
             throw new SameFieldValueOnUpdateException(USERNAME);
 
-        boolean userExistsByUsername = userRepository.existsByFilters(
-                UserFilters.builder()
-                        .username(toUpdateInfo.getUsername())
-                        .userStatus(true)
-                        .build());
-
-        if (userExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
+        if (userRepository.existsByUsernameAndStatus(toUpdateInfo.getUsername(), true)) {
+            throw new UserWithFieldAlreadyExistsException(USERNAME);
+        }
 
         toUpdateUser.setUsername(toUpdateInfo.getUsername());
 
@@ -219,13 +222,9 @@ public class UserServicePort implements UserUseCases {
         if (userToUpdate.getUserEmail().equals(email))
             throw new SameFieldValueOnUpdateException(EMAIL);
 
-        boolean userExistsByEmail = userRepository.existsByFilters(
-                UserFilters.builder()
-                        .userEmail(email)
-                        .userStatus(true)
-                        .build());
-
-        if (userExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
+        if (userRepository.existsByEmailAndStatus(email, true)) {
+            throw new UserWithFieldAlreadyExistsException(EMAIL);
+        }
 
         validateVerification(userToUpdate.getUserId(), VerificationType.CHANGE_EMAIL);
         userToUpdate.setUserEmail(email);
@@ -358,21 +357,13 @@ public class UserServicePort implements UserUseCases {
     }
 
     private void validateEnabledUserAbsence(UserModel user) {
-        boolean enabledUserExistsByUsername = userRepository.existsByFilters(
-                UserFilters.builder()
-                        .username(user.getUsername())
-                        .userStatus(true)
-                        .build()
-        );
-        if (enabledUserExistsByUsername) throw new UserWithFieldAlreadyExistsException(USERNAME);
+        if(userRepository.existsByUsernameAndStatus(user.getUsername(), true)) {
+            throw new UserWithFieldAlreadyExistsException(USERNAME);
+        }
 
-        boolean enabledUserExistsByEmail = userRepository.existsByFilters(
-                UserFilters.builder()
-                        .userEmail(user.getUserEmail())
-                        .userStatus(true)
-                        .build()
-        );
-        if (enabledUserExistsByEmail) throw new UserWithFieldAlreadyExistsException(EMAIL);
+        if(userRepository.existsByEmailAndStatus(user.getUserEmail(), true)) {
+            throw new UserWithFieldAlreadyExistsException(EMAIL);
+        }
     }
 
     private void handleUnverifiedDisabledUser(UserModel disabledUser, String username, String email) {
@@ -389,8 +380,10 @@ public class UserServicePort implements UserUseCases {
                     email,
                     VerificationType.VERIFY_REGISTRY
             );
-            if (foundVerification == null)
+            if (foundVerification == null) {
                 userRepository.delete(disabledUser.getUserId());
+                keycloakConnector.rollbackKeycloakUserCreation(disabledUser.getUserId().toString());
+            }
         }
 
         if (foundVerification != null)

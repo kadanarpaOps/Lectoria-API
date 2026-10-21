@@ -15,6 +15,8 @@ public interface UserRepositoryPort {
     Optional<UserModel> findAnyUserByUsername(String username, Boolean isEnabled);
     Optional<UserModel> findAnyUserByUserEmail(String userEmail, Boolean isEnabled);
     boolean existsByFilters(UserFilters filters);
+    boolean existsByUsernameAndStatus(String username, Boolean isEnabled);
+    boolean existsByEmailAndStatus(String email, Boolean isEnabled);
     void save(UserModel user);
     void delete(UUID userId);
 

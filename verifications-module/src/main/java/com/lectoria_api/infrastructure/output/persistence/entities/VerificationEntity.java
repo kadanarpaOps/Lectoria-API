@@ -37,7 +37,7 @@ public class VerificationEntity {
     private UUID verificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = ""), nullable = false)
+    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "USER_ID"), nullable = false)
     private UserEntity user;
 
     @Column(name = "VERIFICATION_CODE")
@@ -48,6 +48,10 @@ public class VerificationEntity {
     private LocalDateTime creationDate;
     @Column(name = "VERIFICATION_EXPIRATION_DATE")
     private LocalDateTime expirationDate;
+    @Column(name = "VERIFICATION_CODE_CREATION_DATE")
+    private LocalDateTime codeCreationDate;
+    @Column(name = "VERIFICATION_CODE_EXPIRATION_DATE")
+    private LocalDateTime codeExpirationDate;
     @Enumerated(EnumType.STRING)
     @Column(name = "VERIFICATION_TYPE")
     private VerificationType verificationType;

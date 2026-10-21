@@ -22,11 +22,14 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, UUID>, JpaS
     );
 
     @Query("SELECT u FROM UserEntity u WHERE " +
-            "(u.username = :userEmail) AND " +
+            "(u.userEmail = :userEmail) AND " +
             "(u.userEnabled = :isEnabled)")
     Optional<UserEntity> findAnyUserByUserEmail(
             @Param("userEmail") String username,
             @Param("isEnabled") Boolean isEnabled
     );
 
+    boolean existsByUsernameAndUserEnabled(String username, boolean userEnabled);
+
+    boolean existsByUserEmailAndUserEnabled(String userEmail, boolean userEnabled);
 }
