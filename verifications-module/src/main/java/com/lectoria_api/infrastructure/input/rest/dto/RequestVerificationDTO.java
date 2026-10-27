@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
@@ -13,6 +15,7 @@ public class RequestVerificationDTO {
 
     private String username;
     private String userEmail;
+    private UUID optionalUserId;
     private VerificationType verificationType;
     private String destinationEmail;
 

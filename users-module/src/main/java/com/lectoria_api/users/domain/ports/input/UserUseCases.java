@@ -21,11 +21,6 @@ public interface UserUseCases extends SharedUserUseCases {
     void updateUserEmail(String email, UUID userId);
     void updateUserPassword(String password, UUID userId);
 
-    // Just Admin Features
-    void addUserRole(String newRole, UUID userId);
-    void removeUserRole(String removeRole, UUID userId);
-    void toggleUserStatus(UUID userId);
-
     // Disable Account
     void disableUserAccount(UUID userId);
 

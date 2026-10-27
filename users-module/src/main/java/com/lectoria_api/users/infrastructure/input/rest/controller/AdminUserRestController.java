@@ -1,6 +1,6 @@
 package com.lectoria_api.users.infrastructure.input.rest.controller;
 
-import com.lectoria_api.users.domain.ports.input.UserUseCases;
+import com.lectoria_api.users.domain.ports.input.AdminUseCases;
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserRoleDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AdminUserRestController {
 
-    private final UserUseCases userService;
+    private final AdminUseCases adminService;
 
     @PatchMapping("/add-role")
     public ResponseEntity<Void> addUserRole(@Valid @RequestBody UpdateUserRoleDTO userDTO) {
-        userService.addUserRole(
+        adminService.addUserRole(
                 userDTO.getRole(),
                 userDTO.getUserId()
         );
@@ -32,7 +32,7 @@ public class AdminUserRestController {
 
     @PatchMapping("/remove-role")
     public ResponseEntity<Void> removeUserRole(@Valid @RequestBody UpdateUserRoleDTO userDTO) {
-        userService.removeUserRole(
+        adminService.removeUserRole(
                 userDTO.getRole(),
                 userDTO.getUserId()
         );
@@ -41,7 +41,7 @@ public class AdminUserRestController {
 
     @PatchMapping("/toggle-user-status")
     public ResponseEntity<Void> toggleUserStatus(@RequestParam UUID userId) {
-        userService.toggleUserStatus(userId);
+        adminService.toggleUserStatus(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

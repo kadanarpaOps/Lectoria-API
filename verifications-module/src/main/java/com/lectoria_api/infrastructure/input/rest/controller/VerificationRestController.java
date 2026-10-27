@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/verifications")
 @RequiredArgsConstructor
@@ -30,7 +32,8 @@ public class VerificationRestController {
                 requestVerificationDTO.getUsername(),
                 requestVerificationDTO.getUserEmail(),
                 requestVerificationDTO.getVerificationType(),
-                requestVerificationDTO.getDestinationEmail()
+                requestVerificationDTO.getDestinationEmail(),
+                requestVerificationDTO.getOptionalUserId()
         );
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -41,7 +44,8 @@ public class VerificationRestController {
                 verificationCodeDTO.getUsername(),
                 verificationCodeDTO.getUserEmail(),
                 verificationCodeDTO.getVerificationType(),
-                verificationCodeDTO.getCode()
+                verificationCodeDTO.getCode(),
+                verificationCodeDTO.getOptionalUserId()
         );
         return ResponseEntity.ok().build();
     }
@@ -52,7 +56,8 @@ public class VerificationRestController {
                 regenerateCodeDTO.getUsername(),
                 regenerateCodeDTO.getUserEmail(),
                 regenerateCodeDTO.getVerificationType(),
-                regenerateCodeDTO.getDestinationEmail()
+                regenerateCodeDTO.getDestinationEmail(),
+                regenerateCodeDTO.getOptionalUserId()
         );
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -61,10 +66,11 @@ public class VerificationRestController {
     public ResponseEntity<ResponseVerificationExistenceDTO> verifyVerificationExistence(
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String email,
+            @RequestParam(required = false) UUID optionalUserId,
             @RequestParam VerificationType verificationType
     ) {
         VerificationModel existingVerification = verificationService.verifyVerificationExistence(
-                username, email, verificationType
+                username, email, verificationType, optionalUserId
         );
         ResponseVerificationExistenceDTO response = ResponseVerificationExistenceDTO.builder()
                 .exists(

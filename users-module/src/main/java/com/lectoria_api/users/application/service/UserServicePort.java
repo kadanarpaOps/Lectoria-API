@@ -9,9 +9,6 @@ import com.lectoria_api.users.domain.exceptions.InvalidParametersForUserSearchEx
 import com.lectoria_api.users.domain.exceptions.business.AdminCantBeDisabledException;
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
 import com.lectoria_api.users.domain.exceptions.business.SameFieldValueOnUpdateException;
-import com.lectoria_api.users.domain.exceptions.business.UserAlreadyHaveThatRoleException;
-import com.lectoria_api.users.domain.exceptions.business.UserNotHaveThatRoleException;
-import com.lectoria_api.users.domain.exceptions.business.UserRolesListCantBeEmptyException;
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldAlreadyExistsException;
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldNotExistsException;
 import com.lectoria_api.users.domain.model.RoleModel;
@@ -245,86 +242,6 @@ public class UserServicePort implements UserUseCases {
 
     @Override
     @Transactional
-    public void addUserRole(String newRole, UUID userId) {
-        UserModel userToAddRole = findUserById(userId);
-
-        verifyIsValidRole(newRole);
-        userToAddRole.getUserRoles().forEach(roleModel -> {
-            if (roleModel.getRoleName().equals(newRole)) {
-                throw new UserAlreadyHaveThatRoleException(newRole);
-            }
-        });
-
-        RoleModel roleToAdd = returnInnerRole(newRole);
-        userToAddRole.getUserRoles().add(roleToAdd);
-
-        try {
-            userRepository.save(userToAddRole);
-        } catch (Exception e) {
-            throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
-        }
-        updateOnKeycloak(userToAddRole);
-    }
-
-    @Override
-    @Transactional
-    public void removeUserRole(String removeRole, UUID userId) {
-        UserModel userToRemoveRole = findUserById(userId);
-
-        RoleModel roleToRemove = null;
-        for (RoleModel roleModel : userToRemoveRole.getUserRoles()) {
-            if (roleModel.getRoleName().equals(removeRole)) {
-                roleToRemove = roleModel;
-                break;
-            }
-        }
-
-        if (roleToRemove == null)
-            throw new UserNotHaveThatRoleException(removeRole);
-
-        if (userToRemoveRole.isUserEnabled() && removeRole.equals(ADMINISTRATOR))
-            throw new AdminCantBeDisabledException();
-
-        userToRemoveRole.getUserRoles().remove(roleToRemove);
-
-        if (userToRemoveRole.getUserRoles().isEmpty()) {
-            throw new UserRolesListCantBeEmptyException();
-        }
-
-        try {
-            userRepository.save(userToRemoveRole);
-        } catch (Exception e) {
-            throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
-        }
-        updateOnKeycloak(userToRemoveRole);
-    }
-
-    @Override
-    @Transactional
-    public void toggleUserStatus(UUID userId) {
-        UserModel userToUpdate = findUserById(userId);
-        List<RoleModel> userRoles = userToUpdate.getUserRoles();
-
-        if (userToUpdate.isUserEnabled()) {
-            userRoles.forEach(roleModel -> {
-                if (roleModel.getRoleName().equals(ADMINISTRATOR)) {
-                    throw new AdminCantBeDisabledException();
-                }
-            });
-        }
-
-        userToUpdate.setUserEnabled(!userToUpdate.isUserEnabled());
-
-        try {
-            userRepository.save(userToUpdate);
-        } catch (Exception e) {
-            throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
-        }
-        toggleKeycloakUserStatus(userToUpdate.getUserId().toString(), userToUpdate);
-    }
-
-    @Override
-    @Transactional
     public void disableUserAccount(UUID userId) {
         validateVerification(userId, VerificationType.DISABLE_ACCOUNT);
         self.toggleUserStatus(userId);
@@ -344,14 +261,14 @@ public class UserServicePort implements UserUseCases {
 
         validateEnabledUserAbsence(user);
 
-        userRepository.findAnyUserByUsername(user.getUsername(), false)
-                .ifPresent(disabledUser ->
-                        handleUnverifiedDisabledUser(disabledUser, disabledUser.getUsername(), null)
+        userRepository.findAnyUsersByUsername(user.getUsername(), false)
+                .forEach(disabledUser ->
+                        handleUnverifiedDisabledUser(disabledUser, true)
                 );
 
-        userRepository.findAnyUserByUserEmail(user.getUserEmail(), false)
-                .ifPresent(disabledUser ->
-                        handleUnverifiedDisabledUser(disabledUser, null, disabledUser.getUserEmail())
+        userRepository.findAnyUsersByUserEmail(user.getUserEmail(), false)
+                .forEach(disabledUser ->
+                        handleUnverifiedDisabledUser(disabledUser, false)
                 );
 
     }
@@ -366,18 +283,16 @@ public class UserServicePort implements UserUseCases {
         }
     }
 
-    private void handleUnverifiedDisabledUser(UserModel disabledUser, String username, String email) {
+    private void handleUnverifiedDisabledUser(UserModel disabledUser, boolean searchingByUsername) {
         VerificationModel foundVerification;
         if (disabledUser.getUserDetails().isRegisteredVerified()) {
             foundVerification = verificationService.verifyVerificationExistence(
-                    username,
-                    email,
+                    disabledUser,
                     VerificationType.REACTIVATE_ACCOUNT
             );
         } else {
             foundVerification = verificationService.verifyVerificationExistence(
-                    username,
-                    email,
+                    disabledUser,
                     VerificationType.VERIFY_REGISTRY
             );
             if (foundVerification == null) {
@@ -387,7 +302,7 @@ public class UserServicePort implements UserUseCases {
         }
 
         if (foundVerification != null)
-            throw new UserWithFieldAlreadyExistsException(username != null ? USERNAME : EMAIL);
+            throw new UserWithFieldAlreadyExistsException(searchingByUsername ? USERNAME : EMAIL);
     }
 
     private void createRegistryVerification(UserModel user) {
@@ -416,6 +331,29 @@ public class UserServicePort implements UserUseCases {
         } catch (Exception e) {
             throw new FailedOperationException(UPDATE_OP, KEYCLOAK_ERR_CONNECTION);
         }
+    }
+
+    @Transactional
+    public void toggleUserStatus(UUID userId) {
+        UserModel userToUpdate = findUserById(userId);
+        List<RoleModel> userRoles = userToUpdate.getUserRoles();
+
+        if (userToUpdate.isUserEnabled()) {
+            userRoles.forEach(roleModel -> {
+                if (roleModel.getRoleName().equals(ADMINISTRATOR)) {
+                    throw new AdminCantBeDisabledException();
+                }
+            });
+        }
+
+        userToUpdate.setUserEnabled(!userToUpdate.isUserEnabled());
+
+        try {
+            userRepository.save(userToUpdate);
+        } catch (Exception e) {
+            throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
+        }
+        toggleKeycloakUserStatus(userToUpdate.getUserId().toString(), userToUpdate);
     }
 
     private void toggleKeycloakUserStatus(String userId, UserModel user) {
