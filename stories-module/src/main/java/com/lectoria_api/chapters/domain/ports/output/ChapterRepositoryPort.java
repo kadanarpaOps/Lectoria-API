@@ -1,14 +1,21 @@
 package com.lectoria_api.chapters.domain.ports.output;
 
-import com.lectoria_api.common.domain.model.PageResponse;
+import com.lectoria_api.chapters.domain.model.ChapterFilters;
+import com.lectoria_api.chapters.domain.model.ChapterModel;
+import com.lectoria_api.common.domain.model.PaginationRequest;
+import com.lectoria_api.common.domain.model.PaginationResult;
 
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface ChapterRepositoryPort {
-    Map<String, Object> createChapter(Map<String, Object> input);
-    Map<String, Object> chapter(String id);
-    PageResponse<Map<String, Object>> chapters(String storyId, Map<String, String> query, boolean owned);
-    Map<String, Object> updateChapter(String id, Map<String, Object> input);
-    Map<String, Object> toggleChapter(String id);
-    void deleteChapter(String storyId, String chapterId);
+    ChapterModel save(ChapterModel chapter);
+    Optional<ChapterModel> findById(UUID id);
+    Optional<ChapterModel> findByIdAndStoryId(UUID chapterId, UUID storyId);
+    PaginationResult<ChapterModel> chapters(ChapterFilters filters, PaginationRequest request);
+    boolean existsByStoryIdAndOrder(UUID storyId, Integer order);
+    boolean existsByStoryIdAndOrderAndIdNot(UUID storyId, Integer order, UUID chapterId);
+    long countByStoryId(UUID storyId);
+    int maxOrderByStoryId(UUID storyId);
+    void delete(ChapterModel chapter);
 }

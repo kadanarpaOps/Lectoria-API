@@ -1,14 +1,22 @@
 package com.lectoria_api.comments.domain.ports.output;
 
-import com.lectoria_api.common.domain.model.PageResponse;
+import com.lectoria_api.comments.domain.model.CommentFilters;
+import com.lectoria_api.comments.domain.model.CommentModel;
+import com.lectoria_api.common.domain.model.PaginationRequest;
+import com.lectoria_api.common.domain.model.PaginationResult;
 
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface CommentRepositoryPort {
-    Map<String, Object> createComment(Map<String, Object> input);
-    Map<String, Object> comment(String id);
-    PageResponse<Map<String, Object>> comments(String parentId, boolean byStory, Map<String, String> query);
-    Map<String, Object> updateComment(String id, Map<String, Object> input);
-    void deleteComment(String id);
-    Map<String, Object> toggleLike(String commentId, String userId);
+    CommentModel save(CommentModel comment);
+    Optional<CommentModel> findById(UUID id);
+    PaginationResult<CommentModel> comments(CommentFilters filters, PaginationRequest request);
+    void delete(CommentModel comment);
+    boolean likeExists(UUID commentId, UUID userId);
+    void saveLike(UUID commentId, UUID userId);
+    void deleteLike(UUID commentId, UUID userId);
+    long countLikes(UUID commentId);
+    long countByStoryId(UUID storyId);
+    long countByChapterId(UUID chapterId);
 }

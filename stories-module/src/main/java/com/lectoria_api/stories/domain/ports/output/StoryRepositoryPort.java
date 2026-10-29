@@ -1,30 +1,44 @@
 package com.lectoria_api.stories.domain.ports.output;
 
-import com.lectoria_api.common.domain.model.PageResponse;
+import com.lectoria_api.common.domain.model.PaginationRequest;
+import com.lectoria_api.common.domain.model.PaginationResult;
+import com.lectoria_api.stories.domain.model.BasicInfoModel;
+import com.lectoria_api.stories.domain.model.FavoriteModel;
+import com.lectoria_api.stories.domain.model.RatingModel;
+import com.lectoria_api.stories.domain.model.StoryFilters;
+import com.lectoria_api.stories.domain.model.StoryModel;
+import com.lectoria_api.stories.domain.model.ViewModel;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface StoryRepositoryPort {
-    Map<String, Object> create(Map<String, Object> input);
-    Map<String, Object> findById(String id);
-    Map<String, Object> findByTitle(String title);
-    Map<String, Object> update(String id, Map<String, Object> input);
-    Map<String, Object> delete(String id);
-    Map<String, Object> toggleHidden(String id);
-    PageResponse<Map<String, Object>> search(Map<String, String> filters, String ownerId);
-    Map<String, Object> lastModified(String userId);
-    List<Map<String, Object>> genres();
-    Map<String, Object> genreById(String id);
-    Map<String, Object> genreByName(String name);
-    void updateTags(String storyId, List<String> tagNames);
-    PageResponse<Map<String, Object>> searchTags(String name, int limit, int offset);
-    Map<String, Object> rate(Map<String, Object> input);
-    Map<String, Object> rating(String storyId, String userId);
-    Map<String, Object> favorite(String storyId, String userId, boolean add);
-    boolean favoriteExists(String storyId, String userId);
-    PageResponse<Map<String, Object>> favorites(String userId, Map<String, String> filters);
-    Map<String, Object> createView(String storyId, String userId);
-    Map<String, Object> setCover(String id, String url, String publicId);
-    Map<String, Object> removeCover(String id);
+    StoryModel save(StoryModel story);
+    Optional<StoryModel> findById(UUID id);
+    Optional<StoryModel> findByTitle(String title);
+    boolean existsByTitle(String title);
+    boolean existsByTitleAndIdNot(String title, UUID id);
+    void delete(UUID id);
+    PaginationResult<StoryModel> search(StoryFilters filters, PaginationRequest request);
+    Optional<StoryModel> lastModified(UUID userId);
+    List<BasicInfoModel> genres();
+    Optional<BasicInfoModel> genreById(UUID id);
+    Optional<BasicInfoModel> genreByName(String name);
+    Optional<BasicInfoModel> tagByName(String name);
+    BasicInfoModel saveTag(BasicInfoModel tag);
+    PaginationResult<BasicInfoModel> searchTags(String name, PaginationRequest request);
+    Optional<RatingModel> rating(UUID storyId, UUID userId);
+    RatingModel saveRating(RatingModel rating);
+    long ratingCount(UUID storyId);
+    java.math.BigDecimal ratingSum(UUID storyId);
+    java.math.BigDecimal averageRating(UUID storyId);
+    boolean favoriteExists(UUID storyId, UUID userId);
+    FavoriteModel saveFavorite(FavoriteModel favorite);
+    void deleteFavorite(UUID storyId, UUID userId);
+    long countFavorites(UUID storyId);
+    PaginationResult<StoryModel> favorites(UUID userId, PaginationRequest request);
+    Optional<ViewModel> view(UUID storyId, UUID userId);
+    ViewModel saveView(ViewModel view);
+    long countViews(UUID storyId);
 }

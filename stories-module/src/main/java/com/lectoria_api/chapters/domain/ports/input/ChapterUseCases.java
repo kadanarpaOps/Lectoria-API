@@ -1,14 +1,17 @@
 package com.lectoria_api.chapters.domain.ports.input;
 
+import com.lectoria_api.chapters.domain.model.ChapterFilters;
+import com.lectoria_api.chapters.domain.model.ChapterModel;
 import com.lectoria_api.common.domain.model.PageResponse;
 
-import java.util.Map;
+import java.util.UUID;
 
 public interface ChapterUseCases {
-    Map<String, Object> createChapter(Map<String, Object> input);
-    Map<String, Object> chapter(String id);
-    PageResponse<Map<String, Object>> chapters(String storyId, Map<String, String> query, boolean owned);
-    Map<String, Object> updateChapter(String id, Map<String, Object> input);
-    Map<String, Object> toggleChapter(String id);
-    void deleteChapter(String storyId, String chapterId);
+    ChapterModel createChapter(UUID storyId);
+    ChapterModel chapter(UUID id);
+    PageResponse<ChapterModel> chapters(ChapterFilters filters, boolean owned);
+    ChapterModel updateChapter(UUID id, ChapterModel input);
+    ChapterModel toggleChapter(UUID id);
+    void deleteChapter(UUID storyId, UUID chapterId);
+    void updateCommentCount(UUID chapterId, int count);
 }

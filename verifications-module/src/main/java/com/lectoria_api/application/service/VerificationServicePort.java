@@ -218,10 +218,14 @@ public class VerificationServicePort implements VerificationUseCases {
                 verificationType
         );
 
-        if (optionalExistingVerification != null && !optionalExistingVerification.isVerificationExpired()) {
-            throw new ExistingVerificationRequestIsPendingException();
-        } else if (optionalExistingVerification != null) {
-            verificationRepository.deleteById(optionalExistingVerification.getVerificationId());
+        if (optionalExistingVerification != null) {
+            if (optionalExistingVerification.isVerificationExpired()
+                    || (optionalExistingVerification.getVerificationStatus() == VerificationStatus.VERIFIED
+                    && canReplaceVerifiedVerification(verificationType))) {
+                verificationRepository.deleteById(optionalExistingVerification.getVerificationId());
+            } else {
+                throw new ExistingVerificationRequestIsPendingException();
+            }
         }
 
         verificationModel.generateCode();
@@ -238,6 +242,13 @@ public class VerificationServicePort implements VerificationUseCases {
         );
 
         verificationRepository.save(verificationModel);
+    }
+
+    private boolean canReplaceVerifiedVerification(VerificationType verificationType) {
+        return verificationType == VerificationType.FORGOT_PASSWORD
+                || verificationType == VerificationType.CHANGE_EMAIL
+                || verificationType == VerificationType.CHANGE_PASSWORD
+                || verificationType == VerificationType.DISABLE_ACCOUNT;
     }
 
     private void sendNotification(String username, String otp, String receiverEmail) {
