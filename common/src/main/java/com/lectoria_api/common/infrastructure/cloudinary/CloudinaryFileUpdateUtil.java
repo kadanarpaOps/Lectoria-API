@@ -2,7 +2,6 @@ package com.lectoria_api.common.infrastructure.cloudinary;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +25,10 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 public class CloudinaryFileUpdateUtil {
     private static final long MAX_IMAGE_SIZE = 10L * 1024 * 1024;
     private static final Logger LOG = LoggerFactory.getLogger(CloudinaryFileUpdateUtil.class);
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
     @Value("${cloudinary.cloud_name:}")
