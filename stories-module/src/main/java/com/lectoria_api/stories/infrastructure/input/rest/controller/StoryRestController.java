@@ -31,7 +31,7 @@ public class StoryRestController {
     private final CloudinaryFileUpdateUtil cloudinary;
     private final ViewTrackingClient viewTracking;
     private final StoryRestMapper mapper;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> create(@RequestBody Map<String, Object> input) {
