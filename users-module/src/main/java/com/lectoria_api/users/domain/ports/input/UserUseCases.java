@@ -18,6 +18,7 @@ public interface UserUseCases extends SharedUserUseCases {
 
     // Update
     void updateUserInformation(UserModel toUpdateInfo, UUID userId);
+    void updateUserProfileImage(String profileImageUrl, UUID userId);
     void updateUserEmail(String email, UUID userId);
     void updateUserPassword(String password, UUID userId);
 

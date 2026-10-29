@@ -30,6 +30,11 @@
             <artifactId>notifications-module</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.lectoria-api</groupId>
+            <artifactId>stories-module</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

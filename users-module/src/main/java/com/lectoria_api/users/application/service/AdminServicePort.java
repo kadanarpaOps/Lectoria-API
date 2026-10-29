@@ -142,6 +142,15 @@ public class AdminServicePort implements AdminUseCases {
         toggleKeycloakUserStatus(userToUpdate.getUserId().toString(), userToUpdate);
     }
 
+    @Override
+    public PageResponse<UserModel> pageUsers(PaginationRequest pagination, UserFilters filters) {
+        PaginationResult<UserModel> pageResult = userRepository.pageUsers(pagination, filters);
+        return PageResponse.<UserModel>builder()
+                .data(pageResult.getContent())
+                .metaData(pageResult.toMetaData())
+                .build();
+    }
+
     private void verifyIsValidRole(String roleModel) {
         if (roleModel.contains(ADMINISTRATOR)) {
             throw new FailedOperationException(CREATION_OP, String.format(USER_WITH_ROLE_INVALID, ADMINISTRATOR));

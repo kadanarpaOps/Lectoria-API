@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,19 @@ public class GlobalExceptionHandler {
                 ErrorResponseDTO.builder()
                         .statusCode(HttpStatus.UNAUTHORIZED.value())
                         .message(ex.getMessage())
+                        .details(doDetails(ex))
+                        .timestamp(now())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResponseStatusException(ResponseStatusException ex) {
+        HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
+        return ResponseEntity.status(status).body(
+                ErrorResponseDTO.builder()
+                        .statusCode(status.value())
+                        .message(ex.getReason() == null ? status.getReasonPhrase() : ex.getReason())
                         .details(doDetails(ex))
                         .timestamp(now())
                         .build()

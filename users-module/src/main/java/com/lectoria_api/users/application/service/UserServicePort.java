@@ -213,6 +213,21 @@ public class UserServicePort implements UserUseCases {
 
     @Override
     @Transactional
+    public void updateUserProfileImage(String profileImageUrl, UUID userId) {
+        UserModel user = findUserById(userId);
+        if (user.getUserDetails() == null) {
+            user.setUserDetails(UserDetails.builder().build());
+        }
+        user.getUserDetails().setProfileImageUrl(profileImageUrl);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new FailedOperationException(UPDATE_OP, DATABASE_ERR_CONNECTION);
+        }
+    }
+
+    @Override
+    @Transactional
     public void updateUserEmail(String email, UUID userId) {
         UserModel userToUpdate = findUserById(userId);
 
