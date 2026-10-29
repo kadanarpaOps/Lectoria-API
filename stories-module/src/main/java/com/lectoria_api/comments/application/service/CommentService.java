@@ -14,6 +14,7 @@ import com.lectoria_api.common.domain.model.PaginationRequest;
 import com.lectoria_api.common.domain.model.PaginationResult;
 import com.lectoria_api.stories.domain.ports.input.StoryUseCases;
 import com.lectoria_api.users.domain.ports.input.SharedAuthUseCases;
+import com.lectoria_api.users.domain.ports.input.SharedUserUseCases;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class CommentService implements CommentUseCases {
     private static final int MAX_PAGE_SIZE = 100;
     private final CommentRepositoryPort comments;
     private final SharedAuthUseCases authService;
+    private final SharedUserUseCases users;
     private final StoryUseCases stories;
     private final ChapterUseCases chapters;
 
@@ -34,6 +36,7 @@ public class CommentService implements CommentUseCases {
     public CommentModel createComment(CommentModel input) {
         validateComment(input, true);
         UUID userId = authService.getAuthUserId();
+        String username = users.findUserById(userId).getUsername();
         UUID storyId = input.getStoryId();
         UUID chapterId = input.getChapterId();
         if (chapterId != null) {
@@ -44,7 +47,7 @@ public class CommentService implements CommentUseCases {
             storyId = chapter.getStoryId();
         }
         stories.story(storyId);
-        CommentModel comment = CommentModel.builder().id(UUID.randomUUID()).username(input.getUsername().trim())
+        CommentModel comment = CommentModel.builder().id(UUID.randomUUID()).username(username)
                 .userId(userId.toString()).content(input.getContent().trim()).likes(0)
                 .storyId(storyId).chapterId(chapterId).build();
         CommentModel saved = comments.save(comment);
@@ -126,12 +129,6 @@ public class CommentService implements CommentUseCases {
         if (input == null) throw new InvalidCommentDataException("Comment data is required");
         if (creating && (input.getStoryId() == null && input.getChapterId() == null)) {
             throw new InvalidCommentDataException("storyId or chapterId is required");
-        }
-        if (creating && (input.getUsername() == null || input.getUsername().isBlank())) {
-            throw new InvalidCommentDataException("username is required");
-        }
-        if (creating && input.getUsername().length() > 120) {
-            throw new InvalidCommentDataException("username must be 120 characters or fewer");
         }
         if (creating && (input.getContent() == null || input.getContent().isBlank())) {
             throw new InvalidCommentDataException("content is required");
