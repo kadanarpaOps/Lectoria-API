@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter @Setter
 public class AdministrativeResUserDTO extends ResUserDTO {
 
-    private String userId;
     private Boolean isEnabled;
 
 }

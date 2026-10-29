@@ -106,6 +106,29 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
     }
 
     @Override
+    public void modifyKeycloakUserRole(String userId, String role, boolean addRole) throws FailedOperationException {
+        UserRepresentation userFromKeycloak = this.findUserFromKeycloakById(userId);
+        RoleRepresentation keycloakRole;
+
+        try {
+            keycloakRole = keycloakRepository.getRoleByName(role);
+        } catch (NotFoundException e) {
+            throw new KeycloakRoleNotFoundException(role);
+        } catch  (RuntimeException e) {
+            throw new FailedOperationException(UPDATE_OP, KEYCLOAK_ERR_CONNECTION);
+        }
+
+        try {
+            if (addRole)
+                keycloakRepository.assignRole(keycloakRole, userId);
+            else
+                keycloakRepository.removeRole(keycloakRole, userId);
+        } catch  (RuntimeException e) {
+            throw new FailedOperationException(UPDATE_OP, KEYCLOAK_ERR_CONNECTION);
+        }
+    }
+
+    @Override
     public void toggleKeycloakUserStatus(String userId, UserModel user) throws FailedOperationException {
         try {
             UserRepresentation userToKeycloak = keycloakRepository.getById(userId);

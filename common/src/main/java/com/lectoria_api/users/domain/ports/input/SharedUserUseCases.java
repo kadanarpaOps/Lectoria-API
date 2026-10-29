@@ -2,6 +2,7 @@ package com.lectoria_api.users.domain.ports.input;
 
 import com.lectoria_api.users.domain.model.UserModel;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface SharedUserUseCases {

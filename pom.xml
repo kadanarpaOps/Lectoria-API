@@ -21,6 +21,7 @@
         <module>common</module>
 		<module>verifications-module</module>
         <module>notifications-module</module>
+        <module>stories-module</module>
     </modules>
 	<description/>
 

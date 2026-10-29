@@ -5,6 +5,7 @@ import com.lectoria_api.common.domain.model.PaginationResult;
 import com.lectoria_api.users.domain.model.UserFilters;
 import com.lectoria_api.users.domain.model.UserModel;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,8 @@ public interface UserRepositoryPort {
     Optional<UserModel> findUserById(UUID userId);
     Optional<UserModel> findAnyUserByUsername(String username, Boolean isEnabled);
     Optional<UserModel> findAnyUserByUserEmail(String userEmail, Boolean isEnabled);
+    List<UserModel> findAnyUsersByUsername(String username, Boolean isEnabled);
+    List<UserModel> findAnyUsersByUserEmail(String userEmail, Boolean isEnabled);
     boolean existsByFilters(UserFilters filters);
     boolean existsByUsernameAndStatus(String username, Boolean isEnabled);
     boolean existsByEmailAndStatus(String email, Boolean isEnabled);

@@ -14,6 +14,7 @@ import java.util.List;
 @Getter @Setter
 public class ResUserDTO {
 
+    private String userId;
     private String username;
     private String email;
     private List<String> userRoles;

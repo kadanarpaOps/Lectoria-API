@@ -40,12 +40,12 @@ public class VerificationServicePort implements VerificationUseCases {
     private final NotificationBuilderUtil notificationBuilderUtil;
 
     @Override
-    public void createVerification(String username, String userEmail, VerificationType verificationType, String emailToBeNotified) {
+    public void createVerification(String username, String userEmail, VerificationType verificationType, String emailToBeNotified, UUID disabledUserId) {
         UUID authUserId = resolveAuthUserId();
 
         resolveVerificationCreationAvailability(authUserId, verificationType);
 
-        UserModel existingUser = resolveExistingUser(authUserId,  username, userEmail, verificationType);
+        UserModel existingUser = resolveExistingUser(authUserId,  username, userEmail, verificationType, disabledUserId);
 
         handleVerificationCreation(existingUser, verificationType, emailToBeNotified != null ? emailToBeNotified : existingUser.getUserEmail());
     }
@@ -56,8 +56,8 @@ public class VerificationServicePort implements VerificationUseCases {
     }
 
     @Override
-    public void verifyCode(String username, String email, VerificationType verificationType, String code) {
-        VerificationModel existingVerification = resolveVerificationAvailability(username, email, verificationType);
+    public void verifyCode(String username, String email, VerificationType verificationType, String code, UUID disabledUserId) {
+        VerificationModel existingVerification = resolveVerificationAvailability(username, email, verificationType, disabledUserId);
 
         if (existingVerification.isCodeExpired()) {
             throw new VerificationCodeIsExpiredException();
@@ -80,10 +80,10 @@ public class VerificationServicePort implements VerificationUseCases {
     }
 
     @Override
-    public void regenerateCode(String username, String email, VerificationType verificationType, String emailToBeNotified) {
-        VerificationModel existingVerification = resolveVerificationAvailability(username, email, verificationType);
+    public void regenerateCode(String username, String email, VerificationType verificationType, String emailToBeNotified, UUID disabledUserId) {
+        VerificationModel existingVerification = resolveVerificationAvailability(username, email, verificationType, disabledUserId);
 
-        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType);
+        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType, disabledUserId);
 
         existingVerification.generateCode();
         existingVerification.setAttempts(5);
@@ -99,8 +99,26 @@ public class VerificationServicePort implements VerificationUseCases {
     }
 
     @Override
-    public VerificationModel verifyVerificationExistence(String username, String email, VerificationType verificationType) {
-        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType);
+    public VerificationModel verifyVerificationExistence(UserModel user, VerificationType verificationType) {
+        VerificationModel existingVerification = verificationRepository.findByUserIdAndVerificationType(
+                user.getUserId(),
+                verificationType
+        );
+
+        if (existingVerification == null)
+            return null;
+
+        if (existingVerification.isVerificationExpired()) {
+            verificationRepository.deleteById(existingVerification.getVerificationId());
+            return null;
+        }
+
+        return existingVerification;
+    }
+
+    @Override
+    public VerificationModel verifyVerificationExistence(String username, String email, VerificationType verificationType, UUID disabledUserId) {
+        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType, disabledUserId);
 
         VerificationModel existingVerification = verificationRepository.findByUserIdAndVerificationType(
                 existingUser.getUserId(),
@@ -129,8 +147,8 @@ public class VerificationServicePort implements VerificationUseCases {
         }
     }
 
-    private VerificationModel resolveVerificationAvailability(String username, String email, VerificationType verificationType) {
-        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType);
+    private VerificationModel resolveVerificationAvailability(String username, String email, VerificationType verificationType, UUID disabledUserId) {
+        UserModel existingUser = resolveExistingUser(resolveAuthUserId(), username, email, verificationType, disabledUserId);
 
         VerificationModel existingVerification = verificationRepository.findByUserIdAndVerificationType(
                 existingUser.getUserId(),
@@ -168,9 +186,12 @@ public class VerificationServicePort implements VerificationUseCases {
             throw new WrongVerificationCreationRequestScopeException(AUTH_SCOPE);
     }
 
-    private UserModel resolveExistingUser(UUID authUserId, String username, String email, VerificationType verificationType) {
+    private UserModel resolveExistingUser(UUID authUserId, String username, String email, VerificationType verificationType, UUID disabledUserId) {
         UserModel foundUser = new UserModel();
         boolean userEnabled = !VerificationType.VERIFY_REGISTRY.equals(verificationType) && !VerificationType.REACTIVATE_ACCOUNT.equals(verificationType);
+
+        if (VerificationType.REACTIVATE_ACCOUNT.equals(verificationType))
+            return userService.findUserById(disabledUserId);
 
         if (authUserId != null)
             foundUser = userService.findUserById(authUserId);
@@ -197,10 +218,14 @@ public class VerificationServicePort implements VerificationUseCases {
                 verificationType
         );
 
-        if (optionalExistingVerification != null && !optionalExistingVerification.isVerificationExpired()) {
-            throw new ExistingVerificationRequestIsPendingException();
-        } else if (optionalExistingVerification != null) {
-            verificationRepository.deleteById(optionalExistingVerification.getVerificationId());
+        if (optionalExistingVerification != null) {
+            if (optionalExistingVerification.isVerificationExpired()
+                    || (optionalExistingVerification.getVerificationStatus() == VerificationStatus.VERIFIED
+                    && canReplaceVerifiedVerification(verificationType))) {
+                verificationRepository.deleteById(optionalExistingVerification.getVerificationId());
+            } else {
+                throw new ExistingVerificationRequestIsPendingException();
+            }
         }
 
         verificationModel.generateCode();
@@ -217,6 +242,13 @@ public class VerificationServicePort implements VerificationUseCases {
         );
 
         verificationRepository.save(verificationModel);
+    }
+
+    private boolean canReplaceVerifiedVerification(VerificationType verificationType) {
+        return verificationType == VerificationType.FORGOT_PASSWORD
+                || verificationType == VerificationType.CHANGE_EMAIL
+                || verificationType == VerificationType.CHANGE_PASSWORD
+                || verificationType == VerificationType.DISABLE_ACCOUNT;
     }
 
     private void sendNotification(String username, String otp, String receiverEmail) {

@@ -3,10 +3,12 @@ package com.lectoria_api.domain.ports.input;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import com.lectoria_api.verifications.domain.ports.input.SharedVerificationUseCases;
 
+import java.util.UUID;
+
 public interface VerificationUseCases extends SharedVerificationUseCases {
 
-    void createVerification(String username, String userEmail, VerificationType verificationType, String emailTobeNotified);
-    void verifyCode(String username, String email, VerificationType verificationType, String code);
-    void regenerateCode(String username, String email, VerificationType verificationType, String emailToBeNotified);
+    void createVerification(String username, String userEmail, VerificationType verificationType, String emailTobeNotified, UUID optionalUserID);
+    void verifyCode(String username, String email, VerificationType verificationType, String code, UUID optionalUserID);
+    void regenerateCode(String username, String email, VerificationType verificationType, String emailToBeNotified, UUID optionalUserId);
 
 }
