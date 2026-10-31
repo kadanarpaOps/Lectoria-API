@@ -13,6 +13,8 @@ import com.lectoria_api.stories.domain.exceptions.InvalidStoryDataException;
 import com.lectoria_api.stories.domain.exceptions.StoryNotFoundException;
 import com.lectoria_api.stories.domain.exceptions.StoryOwnershipException;
 import com.lectoria_api.stories.domain.exceptions.StoryTitleAlreadyExistsException;
+import com.lectoria_api.users.domain.exceptions.InvalidParametersForUserSearchException;
+import com.lectoria_api.users.domain.exceptions.business.UserWithFieldNotExistsException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +65,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             InvalidStoryDataException.class,
             InvalidChapterDataException.class,
-            InvalidCommentDataException.class
+            InvalidCommentDataException.class,
+            InvalidParametersForUserSearchException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleInvalidDomainData(RuntimeException ex) {
         return domainError(ex, HttpStatus.BAD_REQUEST);
@@ -73,7 +76,8 @@ public class GlobalExceptionHandler {
             StoryNotFoundException.class,
             GenreNotFoundException.class,
             ChapterNotFoundException.class,
-            CommentNotFoundException.class
+            CommentNotFoundException.class,
+            UserWithFieldNotExistsException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleDomainNotFound(RuntimeException ex) {
         return domainError(ex, HttpStatus.NOT_FOUND);

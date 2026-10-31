@@ -116,6 +116,11 @@ public class UserServicePort implements UserUseCases {
         return optionalUser.get();
     }
 
+    @Override
+    public boolean existsUserByUserEmail(String userEmail, Boolean isEnabled) {
+        return userRepository.existsByEmailAndStatus(userEmail, isEnabled);
+    }
+
     /**
      * This method contains the business logic to create a user in the Inner DB and stablish the
      * connection with Keycloak via Adapter, also, verify that the introduced Usco Code and Email
@@ -256,6 +261,13 @@ public class UserServicePort implements UserUseCases {
     }
 
     @Override
+    public void resetUserPassword(String username, String email, String newPassword) {
+        UserModel user = resolveUserFromPublicScope(username, email, true);
+        validateVerification(user.getUserId(), VerificationType.FORGOT_PASSWORD);
+        keycloakConnector.updateKeycloakUserCredentials(user.getUserId().toString(), newPassword);
+    }
+
+    @Override
     @Transactional
     public void disableUserAccount(UUID userId) {
         validateVerification(userId, VerificationType.DISABLE_ACCOUNT);
@@ -380,17 +392,21 @@ public class UserServicePort implements UserUseCases {
     }
 
     private UserModel resolveUserFromPublicScope(String username, String email) {
+        return resolveUserFromPublicScope(username, email, false);
+    }
+
+    private UserModel resolveUserFromPublicScope(String username, String email, boolean enabled) {
         UserModel foundUser = new UserModel();
 
         boolean searchByUsername = username != null && !username.isEmpty();
         boolean searchByEmail = email != null && !email.isEmpty();
 
-        if (searchByUsername && searchByEmail)
+        if (searchByUsername == searchByEmail)
             throw new InvalidParametersForUserSearchException();
         if (searchByUsername)
-            foundUser = findAnyUserByUsername(username, false);
+            foundUser = findAnyUserByUsername(username, enabled);
         if (searchByEmail)
-            foundUser = findAnyUserByUserEmail(email, false);
+            foundUser = findAnyUserByUserEmail(email, enabled);
 
         return foundUser;
     }

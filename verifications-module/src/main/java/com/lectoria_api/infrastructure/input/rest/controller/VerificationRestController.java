@@ -9,6 +9,7 @@ import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
+import static com.lectoria_api.common.domain.constants.Constants.CODE_EXPIRATION_MINUTES;
 
 @RestController
 @RequestMapping("/api/verifications")
@@ -72,13 +76,22 @@ public class VerificationRestController {
         VerificationModel existingVerification = verificationService.verifyVerificationExistence(
                 username, email, verificationType, optionalUserId
         );
+        if (existingVerification == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No active verification was found");
+        }
         ResponseVerificationExistenceDTO response = ResponseVerificationExistenceDTO.builder()
-                .exists(
-                        existingVerification != null)
-                .verificationStatus(
-                        existingVerification != null ? existingVerification.getVerificationStatus() : null)
-                .expirationDate(
-                        existingVerification != null ? existingVerification.getExpirationDate() : null)
+                .exists(true)
+                .verificationStatus(existingVerification.getVerificationStatus())
+                .expirationDate(existingVerification.getExpirationDate())
+                .codeExpirationDate(existingVerification.getCodeExpirationDate())
+                .expirationEpochMillis(existingVerification.getExpirationDate().atZone(TIME_ZONE).toInstant().toEpochMilli())
+                .codeExpirationEpochMillis(existingVerification.getCodeExpirationDate().atZone(TIME_ZONE).toInstant().toEpochMilli())
+                .destinationEmail(existingVerification.getVerificationType() == VerificationType.CHANGE_EMAIL
+                        ? existingVerification.getDestinationEmail()
+                        : null)
+                .resendLimitReached(existingVerification.getVerificationType() == VerificationType.VERIFY_REGISTRY
+                        && existingVerification.getCodeCreationDate().isAfter(
+                        existingVerification.getCreationDate().plusMinutes(CODE_EXPIRATION_MINUTES)))
                 .build();
 
         return ResponseEntity.ok(response);

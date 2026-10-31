@@ -10,5 +10,6 @@ public interface SharedUserUseCases {
     UserModel findUserById(UUID userId);
     UserModel findAnyUserByUsername(String username, Boolean isEnabled);
     UserModel findAnyUserByUserEmail(String userEmail, Boolean isEnabled);
+    boolean existsUserByUserEmail(String userEmail, Boolean isEnabled);
 
 }
