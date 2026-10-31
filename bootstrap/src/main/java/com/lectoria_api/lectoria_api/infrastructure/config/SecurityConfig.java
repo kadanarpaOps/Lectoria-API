@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/users",
+                                "/api/users/forgot-password",
                                 "/api/users/verify-registry",
                                 "/api/auth/login",
                                 "/api/auth/validate/access",

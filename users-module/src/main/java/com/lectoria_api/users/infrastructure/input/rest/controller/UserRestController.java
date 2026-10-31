@@ -6,6 +6,7 @@ import com.lectoria_api.users.domain.model.UserFilters;
 import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.users.domain.ports.input.UserUseCases;
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.RegisterUserDTO;
+import com.lectoria_api.users.infrastructure.input.rest.dto.in.ResetPasswordDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.ResUserDTO;
 import com.lectoria_api.users.infrastructure.input.rest.mapper.UserRestMapper;
 import jakarta.validation.Valid;
@@ -42,6 +43,12 @@ public class UserRestController {
     ) {
         userService.verifyRegistry(username, email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordDTO request) {
+        userService.resetUserPassword(request.getUsername(), request.getUserEmail(), request.getNewPassword());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

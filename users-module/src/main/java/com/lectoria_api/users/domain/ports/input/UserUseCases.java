@@ -21,6 +21,7 @@ public interface UserUseCases extends SharedUserUseCases {
     void updateUserProfileImage(String profileImageUrl, UUID userId);
     void updateUserEmail(String email, UUID userId);
     void updateUserPassword(String password, UUID userId);
+    void resetUserPassword(String username, String email, String newPassword);
 
     // Disable Account
     void disableUserAccount(UUID userId);
