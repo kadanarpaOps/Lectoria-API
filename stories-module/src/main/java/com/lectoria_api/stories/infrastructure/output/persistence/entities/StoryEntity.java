@@ -20,6 +20,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -104,7 +106,7 @@ public class StoryEntity {
 
     @PrePersist
     void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         if (createdAt == null) createdAt = now;
         if (lastActivityAt == null) lastActivityAt = createdAt;
         if (coverUrl == null) coverUrl = "";
@@ -121,7 +123,7 @@ public class StoryEntity {
 
     @PreUpdate
     void preUpdate() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         updatedAt = now;
         lastActivityAt = now;
     }

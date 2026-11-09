@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
 import java.util.UUID;
 
 @Entity
@@ -35,6 +37,6 @@ public class FavoriteEntity {
 
     @PrePersist
     void prePersist() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
+        if (createdAt == null) createdAt = LocalDateTime.now(TIME_ZONE);
     }
 }

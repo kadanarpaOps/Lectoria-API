@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
 import java.util.UUID;
 
 @Entity
@@ -38,13 +40,13 @@ public class ViewEntity {
 
     @PrePersist
     void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(TIME_ZONE);
         if (createdAt == null) createdAt = now;
         if (updatedAt == null) updatedAt = now;
     }
 
     @PreUpdate
     void preUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(TIME_ZONE);
     }
 }

@@ -31,6 +31,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -169,7 +171,7 @@ public class GlobalExceptionHandler {
     }
 
     private LocalDateTime now() {
-        return LocalDateTime.now(ZoneId.of("UTC-5"));
+        return LocalDateTime.now(TIME_ZONE);
     }
 
 }

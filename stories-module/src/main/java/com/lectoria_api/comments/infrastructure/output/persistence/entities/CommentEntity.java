@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
+import static com.lectoria_api.common.domain.constants.Constants.TIME_ZONE;
 import java.util.UUID;
 
 @Entity
@@ -45,12 +47,12 @@ public class CommentEntity {
 
     @PrePersist
     void prePersist() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
+        if (createdAt == null) createdAt = LocalDateTime.now(TIME_ZONE);
         if (likes == null) likes = 0;
     }
 
     @PreUpdate
     void preUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(TIME_ZONE);
     }
 }
