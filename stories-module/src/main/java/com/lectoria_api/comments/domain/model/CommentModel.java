@@ -1,0 +1,27 @@
+package com.lectoria_api.comments.domain.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CommentModel {
+    private UUID id;
+    private String username;
+    private String userId;
+    private String content;
+    private Integer likes;
+    private UUID storyId;
+    private UUID chapterId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+}

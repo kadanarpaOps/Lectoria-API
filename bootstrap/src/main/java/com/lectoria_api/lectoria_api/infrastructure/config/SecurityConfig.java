@@ -41,8 +41,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(
+                                "/api/story/**",
+                                "/api/chapter/**",
+                                "/api/comment/**",
+                                "/api/favorite/**",
+                                "/api/genre/**",
+                                "/api/rating/**",
+                                "/api/tag/**",
+                                "/api/view/**"
+                        ).authenticated()
+                        .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/users",
+                                "/api/users/forgot-password",
                                 "/api/users/verify-registry",
                                 "/api/auth/login",
                                 "/api/auth/validate/access",
@@ -71,8 +82,10 @@ public class SecurityConfig {
                                 "/api/auth/user/info",
                                 "/api/auth/user/change-email",
                                 "/api/auth/user/change-password",
-                                "/api/auth/user/disable-account"
+                                "/api/auth/user/disable-account",
+                                "/api/auth/user/profile-image"
                         ).authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/auth/user/profile-image").authenticated()
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/auth/admin/users",

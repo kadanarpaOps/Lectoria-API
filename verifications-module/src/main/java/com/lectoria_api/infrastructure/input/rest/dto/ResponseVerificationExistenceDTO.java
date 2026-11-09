@@ -21,6 +21,12 @@ public class ResponseVerificationExistenceDTO {
     VerificationStatus verificationStatus;
     @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime expirationDate;
+    @JsonFormat(pattern = DATE_FORMAT)
+    private LocalDateTime codeExpirationDate;
+    private Long expirationEpochMillis;
+    private Long codeExpirationEpochMillis;
+    private String destinationEmail;
+    private boolean resendLimitReached;
 
 
 }

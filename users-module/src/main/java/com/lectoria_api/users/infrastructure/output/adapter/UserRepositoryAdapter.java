@@ -67,6 +67,16 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    public List<UserModel> findAnyUsersByUsername(String username, Boolean isEnabled) {
+        return userRepository.findAnyUsersByUsername(username, isEnabled).stream().map(userMapper::toModel).toList();
+    }
+
+    @Override
+    public List<UserModel> findAnyUsersByUserEmail(String userEmail, Boolean isEnabled) {
+        return userRepository.findAnyUsersByUserEmail(userEmail, isEnabled).stream().map(userMapper::toModel).toList();
+    }
+
+    @Override
     public boolean existsByUsernameAndStatus(String username, Boolean isEnabled) {
         return userRepository.existsByUsernameAndUserEnabled(username, isEnabled);
     }

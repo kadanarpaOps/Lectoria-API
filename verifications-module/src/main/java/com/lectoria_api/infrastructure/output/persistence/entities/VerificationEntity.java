@@ -52,6 +52,8 @@ public class VerificationEntity {
     private LocalDateTime codeCreationDate;
     @Column(name = "VERIFICATION_CODE_EXPIRATION_DATE")
     private LocalDateTime codeExpirationDate;
+    @Column(name = "VERIFICATION_DESTINATION_EMAIL")
+    private String destinationEmail;
     @Enumerated(EnumType.STRING)
     @Column(name = "VERIFICATION_TYPE")
     private VerificationType verificationType;

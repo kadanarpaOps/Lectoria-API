@@ -55,6 +55,9 @@ cloudinary:
   api_key: ${CLOUDINARY_API_KEY_SPRING}
   api_secret: ${CLOUDINARY_API_SECRET_SPRING}
 
+view:
+  url: ${VIEW_URL:}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

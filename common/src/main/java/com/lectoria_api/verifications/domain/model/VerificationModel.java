@@ -33,6 +33,7 @@ public class VerificationModel {
     private LocalDateTime expirationDate;
     private LocalDateTime codeCreationDate;
     private LocalDateTime codeExpirationDate;
+    private String destinationEmail;
     private VerificationType verificationType;
     private VerificationStatus verificationStatus;
 

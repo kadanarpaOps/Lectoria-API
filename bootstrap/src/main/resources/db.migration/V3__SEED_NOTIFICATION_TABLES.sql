@@ -11,21 +11,21 @@ VALUES
         gen_random_uuid(),
         'SUCCESS_REGISTRY',
         'Bienvenido a Lectoria!',
-        '/welcome',
+        'welcome',
         current_date
     ),
     (
         gen_random_uuid(),
         'OTP_VERIFICATION',
         'Tu Código de Verificación',
-        '/otpVerification',
+        'otpVerification',
         current_date
     ),
     (
         gen_random_uuid(),
         'SUCCESS_UPDATE_INFORMATION',
         'Se han modificado tus datos satisfactoriamente',
-        '/updateInformationAlert',
+        'updateInformationAlert',
         current_date
     )
 ON CONFLICT (NOTIFICATION_TEMPLATE_NAME) DO NOTHING;

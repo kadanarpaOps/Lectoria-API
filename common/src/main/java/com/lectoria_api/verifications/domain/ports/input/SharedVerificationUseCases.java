@@ -10,6 +10,7 @@ public interface SharedVerificationUseCases {
 
     void createVerification(UserModel user, VerificationType verificationType);
     void existsSuccessVerificationByUserIdAndVerificationType(UUID userId, VerificationType verificationType);
-    VerificationModel verifyVerificationExistence(String username, String email, VerificationType verificationType);
+    VerificationModel verifyVerificationExistence(UserModel user, VerificationType verificationType);
+    VerificationModel verifyVerificationExistence(String username, String email, VerificationType verificationType, UUID disabledUserId);
 
 }

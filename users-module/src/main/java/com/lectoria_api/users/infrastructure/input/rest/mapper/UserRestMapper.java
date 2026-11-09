@@ -6,6 +6,7 @@ import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.RegisterUserDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserProfileDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.ResUserDTO;
+import com.lectoria_api.users.infrastructure.input.rest.dto.out.AdministrativeResUserDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.ResUserDetailsDTO;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +45,7 @@ public class UserRestMapper {
                     .build();
         }
         return ResUserDTO.builder()
+                .userId(userModel.getUserId() == null ? null : userModel.getUserId().toString())
                 .username(userModel.getUsername())
                 .email(userModel.getUserEmail())
                 .userRoles(userModel.getUserRoles().stream().map(
@@ -51,6 +53,19 @@ public class UserRestMapper {
                 ).toList())
                 .userDetails(resUserDetails)
                 .build();
+    }
+
+    public AdministrativeResUserDTO toAdministrativeResDto(UserModel userModel) {
+        if (userModel == null) return null;
+        ResUserDTO base = toResDto(userModel);
+        AdministrativeResUserDTO result = new AdministrativeResUserDTO();
+        result.setUserId(userModel.getUserId() == null ? null : userModel.getUserId().toString());
+        result.setUsername(base.getUsername());
+        result.setEmail(base.getEmail());
+        result.setUserRoles(base.getUserRoles());
+        result.setUserDetails(base.getUserDetails());
+        result.setIsEnabled(userModel.isUserEnabled());
+        return result;
     }
 
 }
