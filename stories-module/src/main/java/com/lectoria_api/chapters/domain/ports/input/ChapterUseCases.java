@@ -11,6 +11,7 @@ public interface ChapterUseCases {
     ChapterModel chapter(UUID id);
     PageResponse<ChapterModel> chapters(ChapterFilters filters, boolean owned);
     ChapterModel updateChapter(UUID id, ChapterModel input);
+    void moveChapterOrder(UUID id, Integer targetOrder);
     ChapterModel toggleChapter(UUID id);
     void deleteChapter(UUID storyId, UUID chapterId);
     void updateCommentCount(UUID chapterId, int count);

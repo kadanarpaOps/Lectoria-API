@@ -80,6 +80,16 @@ public class StoryRestController {
         return mapper.toPageResponse(stories.search(mapper.toFilters(filters)));
     }
 
+    @GetMapping("/by-user/{userId}")
+    public Map<String, Object> publicStoriesByUser(
+            @PathVariable UUID userId,
+            @RequestParam(required = false, defaultValue = "0") int offset,
+            @RequestParam(required = false, defaultValue = "12") int limit,
+            @RequestParam(required = false, defaultValue = "true") boolean newestFirst
+    ) {
+        return mapper.toPageResponse(stories.publicStoriesByUser(userId, offset, limit, newestFirst));
+    }
+
     @GetMapping("/mine")
     public Map<String, Object> own(@ModelAttribute StoryFiltersRequest filters) {
         return mapper.toPageResponse(stories.searchOwnStories(mapper.toFilters(filters)));

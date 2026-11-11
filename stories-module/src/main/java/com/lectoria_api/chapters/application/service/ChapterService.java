@@ -85,6 +85,21 @@ public class ChapterService implements ChapterUseCases {
 
     @Override
     @Transactional
+    public void moveChapterOrder(UUID id, Integer targetOrder) {
+        if (targetOrder == null) throw new InvalidChapterDataException("Chapter order is required");
+        ChapterModel chapter = chapter(id);
+        ensureOwnedStory(chapter.getStoryId());
+        int chapterCount = Math.toIntExact(chapters.countByStoryId(chapter.getStoryId()));
+        if (targetOrder < 1 || targetOrder > chapterCount) {
+            throw new InvalidChapterDataException("Chapter order must be between 1 and the total number of chapters");
+        }
+        if (chapter.getOrder() != targetOrder) {
+            chapters.moveChapterOrder(chapter.getStoryId(), id, targetOrder);
+        }
+    }
+
+    @Override
+    @Transactional
     public ChapterModel toggleChapter(UUID id) {
         ChapterModel chapter = chapter(id);
         ensureOwnedStory(chapter.getStoryId());

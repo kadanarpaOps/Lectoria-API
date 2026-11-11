@@ -17,5 +17,6 @@ public interface ChapterRepositoryPort {
     boolean existsByStoryIdAndOrderAndIdNot(UUID storyId, Integer order, UUID chapterId);
     long countByStoryId(UUID storyId);
     int maxOrderByStoryId(UUID storyId);
+    void moveChapterOrder(UUID storyId, UUID chapterId, int targetOrder);
     void delete(ChapterModel chapter);
 }

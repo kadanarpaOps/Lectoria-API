@@ -22,6 +22,7 @@ public interface StoryUseCases {
     void ensureOwnedStory(UUID id);
     boolean isOwnedStory(UUID id);
     PageResponse<StoryModel> search(StoryFilters filters);
+    PageResponse<StoryModel> publicStoriesByUser(UUID userId, int offset, int limit, boolean newestFirst);
     PageResponse<StoryModel> searchOwnStories(StoryFilters filters);
     StoryModel lastModified();
     List<BasicInfoModel> genres();

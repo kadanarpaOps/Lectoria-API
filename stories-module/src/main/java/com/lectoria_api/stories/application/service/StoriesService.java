@@ -136,6 +136,17 @@ public class StoriesService implements StoryUseCases {
     }
 
     @Override
+    public PageResponse<StoryModel> publicStoriesByUser(UUID userId, int offset, int limit, boolean newestFirst) {
+        if (userId == null) throw new InvalidStoryDataException("El identificador del usuario es obligatorio.");
+        StoryFilters filters = StoryFilters.builder()
+                .ownerId(userId)
+                .hidden(false)
+                .newestFirst(newestFirst)
+                .build();
+        return response(stories.search(filters, pagination(null, null, offset, limit)));
+    }
+
+    @Override
     public PageResponse<StoryModel> searchOwnStories(StoryFilters filters) {
         if (filters == null) filters = new StoryFilters();
         filters.setOwnerId(authService.getAuthUserId());
