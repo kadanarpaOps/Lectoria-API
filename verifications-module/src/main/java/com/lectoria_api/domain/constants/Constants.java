@@ -29,7 +29,8 @@ public class Constants {
     public static final Set<VerificationType> ALLOWED_VERIFICATION_TYPES_AUTHENTICATED_CREATION = Set.of(
             VerificationType.CHANGE_PASSWORD,
             VerificationType.CHANGE_EMAIL,
-            VerificationType.DISABLE_ACCOUNT
+            VerificationType.DISABLE_ACCOUNT,
+            VerificationType.REACTIVATE_ACCOUNT
     );
 
 }

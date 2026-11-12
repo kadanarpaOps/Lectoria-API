@@ -17,8 +17,10 @@ import com.lectoria_api.users.domain.exceptions.InvalidParametersForUserSearchEx
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldNotExistsException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,31 +33,40 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponseDTO> handleAuthenticationException(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 ErrorResponseDTO.builder()
                         .statusCode(HttpStatus.UNAUTHORIZED.value())
-                        .message(ex.getMessage())
+                        .message(publicMessage(HttpStatus.UNAUTHORIZED))
                         .details(doDetails(ex))
                         .timestamp(now())
                         .build()
         );
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccessDeniedException(AccessDeniedException ex) {
+        return domainError(ex, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorResponseDTO> handleResponseStatusException(ResponseStatusException ex) {
-        HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
-        return ResponseEntity.status(status).body(
+        HttpStatusCode statusCode = ex.getStatusCode();
+        HttpStatus status = HttpStatus.resolve(statusCode.value());
+        return ResponseEntity.status(statusCode).body(
                 ErrorResponseDTO.builder()
-                        .statusCode(status.value())
-                        .message(ex.getReason() == null ? status.getReasonPhrase() : ex.getReason())
+                        .statusCode(statusCode.value())
+                        .message(publicMessage(status == null ? HttpStatus.INTERNAL_SERVER_ERROR : status))
                         .details(doDetails(ex))
                         .timestamp(now())
                         .build()
@@ -99,10 +110,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGeneralException(Exception ex) {
+        LOG.error("Error interno al procesar la solicitud", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 ErrorResponseDTO.builder()
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message(ex.getMessage())
+                        .message(publicMessage(HttpStatus.INTERNAL_SERVER_ERROR))
                         .details(doDetails(ex))
                         .timestamp(now())
                         .build()
@@ -114,7 +126,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ErrorResponseDTO.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
-                        .message(ex.getMessage())
+                        .message(publicMessage(HttpStatus.NOT_FOUND))
                         .details(doDetails(ex))
                         .timestamp(now())
                         .build()
@@ -128,8 +140,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponseDTO.builder()
                         .statusCode(HttpStatus.BAD_REQUEST.value())
-                        .message("Invalid Input Parameters")
-                        .details(doDetails(ex, errors))
+                        .message("Los datos enviados no son válidos. Revísalos e inténtalo nuevamente.")
+                        .details(doDetails(ex, errors.keySet().stream()
+                                .collect(Collectors.toMap(field -> field, field -> "El valor proporcionado no es válido."))))
                         .timestamp(now())
                         .build()
         );
@@ -148,13 +161,28 @@ public class GlobalExceptionHandler {
 
     private ErrorDetailsDTO doDetails(Exception ex) {
         return ErrorDetailsDTO.builder()
-                .errorName(ex.getClass().getSimpleName())
+                .errorName("Error de solicitud")
                 .build();
     }
 
     private ResponseEntity<ErrorResponseDTO> domainError(Exception ex, HttpStatus status) {
         return ResponseEntity.status(status).body(ErrorResponseDTO.builder()
-                .statusCode(status.value()).message(ex.getMessage()).details(doDetails(ex)).timestamp(now()).build());
+                .statusCode(status.value()).message(publicMessage(status)).details(doDetails(ex)).timestamp(now()).build());
+    }
+
+    private String publicMessage(HttpStatus status) {
+        return switch (status) {
+            case BAD_REQUEST -> "Los datos enviados no son válidos. Revísalos e inténtalo nuevamente.";
+            case UNAUTHORIZED -> "Tu sesión no es válida o ha caducado. Inicia sesión nuevamente.";
+            case FORBIDDEN -> "No tienes permiso para realizar esta acción.";
+            case NOT_FOUND -> "No se encontró la información solicitada.";
+            case CONFLICT -> "La solicitud entra en conflicto con la información existente.";
+            case TOO_MANY_REQUESTS -> "Has realizado demasiados intentos. Espera un momento e inténtalo nuevamente.";
+            case PAYLOAD_TOO_LARGE -> "El archivo supera el tamaño permitido.";
+            case BAD_GATEWAY, SERVICE_UNAVAILABLE, GATEWAY_TIMEOUT ->
+                    "No se pudo completar la operación por un problema con un servicio externo. Inténtalo más tarde.";
+            default -> "Ocurrió un error al procesar la solicitud. Inténtalo más tarde.";
+        };
     }
 
     public Map<String, String> getValidationErrors(BindingResult errors) {

@@ -17,6 +17,7 @@ public interface UserRepositoryPort {
     Optional<UserModel> findAnyUserByUserEmail(String userEmail, Boolean isEnabled);
     List<UserModel> findAnyUsersByUsername(String username, Boolean isEnabled);
     List<UserModel> findAnyUsersByUserEmail(String userEmail, Boolean isEnabled);
+    List<UserModel> findEnabledUsersByRoleName(String roleName);
     boolean existsByFilters(UserFilters filters);
     boolean existsByUsernameAndStatus(String username, Boolean isEnabled);
     boolean existsByEmailAndStatus(String email, Boolean isEnabled);

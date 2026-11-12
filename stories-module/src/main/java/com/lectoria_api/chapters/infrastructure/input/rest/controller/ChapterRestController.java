@@ -56,4 +56,12 @@ public class ChapterRestController {
     public Map<String, Object> update(@PathVariable UUID id, @RequestBody Map<String, Object> input) {
         return mapper.toResponse(chapters.updateChapter(id, mapper.toModel(input)));
     }
+
+    @PatchMapping("/order/{id}")
+    public ResponseEntity<Void> moveOrder(@PathVariable UUID id, @RequestBody MoveChapterOrderRequest request) {
+        chapters.moveChapterOrder(id, request.order());
+        return ResponseEntity.noContent().build();
+    }
+
+    public record MoveChapterOrderRequest(Integer order) {}
 }

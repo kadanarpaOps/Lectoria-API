@@ -121,6 +121,11 @@ public class UserServicePort implements UserUseCases {
         return userRepository.existsByEmailAndStatus(userEmail, isEnabled);
     }
 
+    @Override
+    public List<UserModel> findEnabledUsersByRoleName(String roleName) {
+        return userRepository.findEnabledUsersByRoleName(roleName);
+    }
+
     /**
      * This method contains the business logic to create a user in the Inner DB and stablish the
      * connection with Keycloak via Adapter, also, verify that the introduced Usco Code and Email
@@ -280,7 +285,7 @@ public class UserServicePort implements UserUseCases {
         UserModel foundUser = resolveUserFromPublicScope(username, email);
 
         validateVerification(foundUser.getUserId(), VerificationType.REACTIVATE_ACCOUNT);
-        keycloakConnector.updateKeycloakUserCredentials(foundUser.toString(), newPassword);
+        keycloakConnector.updateKeycloakUserCredentials(foundUser.getUserId().toString(), newPassword);
         self.toggleUserStatus(foundUser.getUserId());
     }
 

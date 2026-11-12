@@ -8,6 +8,7 @@ import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserProfile
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.ResUserDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.AdministrativeResUserDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.ResUserDetailsDTO;
+import com.lectoria_api.users.infrastructure.input.rest.dto.out.PublicUserDirectoryEntryDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -52,6 +53,16 @@ public class UserRestMapper {
                         RoleModel::getRoleName
                 ).toList())
                 .userDetails(resUserDetails)
+                .build();
+    }
+
+    public PublicUserDirectoryEntryDTO toPublicDirectoryEntry(UserModel userModel) {
+        if (userModel == null) return null;
+        return PublicUserDirectoryEntryDTO.builder()
+                .userId(userModel.getUserId() == null ? null : userModel.getUserId().toString())
+                .username(userModel.getUsername())
+                .profileImageUrl(userModel.getUserDetails() == null
+                        ? null : userModel.getUserDetails().getProfileImageUrl())
                 .build();
     }
 

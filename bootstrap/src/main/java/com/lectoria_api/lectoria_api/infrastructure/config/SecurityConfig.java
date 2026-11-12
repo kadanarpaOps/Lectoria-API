@@ -33,6 +33,7 @@ public class SecurityConfig {
 
     private final KeycloakAuthConverter authConverter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -55,6 +56,7 @@ public class SecurityConfig {
                                 "/api/users",
                                 "/api/users/forgot-password",
                                 "/api/users/verify-registry",
+                                "/api/requests/reactivate",
                                 "/api/auth/login",
                                 "/api/auth/validate/access",
                                 "/api/auth/validate/session",
@@ -93,6 +95,7 @@ public class SecurityConfig {
                                 "/api/auth/admin/find-user-by-email",
                                 "/api/notifications/templates"
                         ).hasRole(LECTORIA_ADMIN)
+                        .requestMatchers("/api/requests/admin/**").hasRole(LECTORIA_ADMIN)
                         .requestMatchers(
                                 HttpMethod.PATCH,
                                 "/api/auth/admin/add-role",
@@ -122,6 +125,7 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
                 )
                 .build();
     }
