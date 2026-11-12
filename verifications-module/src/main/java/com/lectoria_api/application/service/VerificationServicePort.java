@@ -287,6 +287,11 @@ public class VerificationServicePort implements VerificationUseCases {
         );
 
         if (optionalExistingVerification != null) {
+            if (verificationType == VerificationType.FORGOT_PASSWORD
+                    && optionalExistingVerification.getVerificationStatus() == VerificationStatus.PENDING
+                    && !optionalExistingVerification.isVerificationExpired()) {
+                return;
+            }
             if ((verificationType == VerificationType.CHANGE_EMAIL
                     && !java.util.Objects.equals(optionalExistingVerification.getDestinationEmail(), receiverEmail))
                     || optionalExistingVerification.isVerificationExpired()

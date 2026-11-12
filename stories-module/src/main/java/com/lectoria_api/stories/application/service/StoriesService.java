@@ -17,6 +17,7 @@ import com.lectoria_api.stories.domain.model.ViewModel;
 import com.lectoria_api.stories.domain.ports.input.StoryUseCases;
 import com.lectoria_api.stories.domain.ports.output.StoryRepositoryPort;
 import com.lectoria_api.users.domain.ports.input.SharedAuthUseCases;
+import com.lectoria_api.users.domain.ports.input.SharedUserUseCases;
 import com.lectoria_api.users.domain.ports.input.StoryCollaborationUseCases;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class StoriesService implements StoryUseCases {
     private static final List<String> STORY_STATUSES = List.of("IN_PROGRESS", "COMPLETED", "ABANDONED", "PAUSED");
     private final StoryRepositoryPort stories;
     private final SharedAuthUseCases authService;
+    private final SharedUserUseCases users;
     private final StoryCollaborationUseCases collaboration;
 
     @Override
@@ -61,7 +63,7 @@ public class StoriesService implements StoryUseCases {
                 .secondaryGenre(resolveOptionalGenre(input.getSecondaryGenre()))
                 .tags(resolveTags(input.getTags()))
                 .build();
-        return stories.save(story);
+        return withAuthorUsername(stories.save(story));
     }
 
     @Override
@@ -70,7 +72,7 @@ public class StoriesService implements StoryUseCases {
         if (Boolean.TRUE.equals(story.getHidden()) && !collaboration.canEditStory(id)) {
             throw new StoryNotFoundException();
         }
-        return story;
+        return withAuthorUsername(story);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class StoriesService implements StoryUseCases {
         if (Boolean.TRUE.equals(story.getHidden()) && !collaboration.canEditStory(story.getId())) {
             throw new StoryNotFoundException();
         }
-        return story;
+        return withAuthorUsername(story);
     }
 
     @Override
@@ -100,7 +102,7 @@ public class StoriesService implements StoryUseCases {
         }
         if (input.getHidden() != null) story.setHidden(input.getHidden());
         if (input.getTags() != null) story.setTags(resolveTags(input.getTags()));
-        return stories.save(story);
+        return withAuthorUsername(stories.save(story));
     }
 
     @Override
@@ -116,7 +118,7 @@ public class StoriesService implements StoryUseCases {
     public StoryModel toggleHidden(UUID id) {
         StoryModel story = requireOwnedStory(id);
         story.setHidden(!Boolean.TRUE.equals(story.getHidden()));
-        return stories.save(story);
+        return withAuthorUsername(stories.save(story));
     }
 
     @Override
@@ -141,7 +143,7 @@ public class StoriesService implements StoryUseCases {
             if (Boolean.TRUE.equals(filters.getHidden())) filters.setOwnerId(authService.getAuthUserId());
             else filters.setHidden(false);
         }
-        return response(stories.search(filters, pagination(filters.getPageNumber(), filters.getPageSize(),
+        return storyResponse(stories.search(filters, pagination(filters.getPageNumber(), filters.getPageSize(),
                 filters.getOffset(), filters.getLimit())));
     }
 
@@ -153,7 +155,7 @@ public class StoriesService implements StoryUseCases {
                 .hidden(false)
                 .newestFirst(newestFirst)
                 .build();
-        return response(stories.search(filters, pagination(null, null, offset, limit)));
+        return storyResponse(stories.search(filters, pagination(null, null, offset, limit)));
     }
 
     @Override
@@ -165,7 +167,7 @@ public class StoriesService implements StoryUseCases {
 
     @Override
     public StoryModel lastModified() {
-        return stories.lastModified(authService.getAuthUserId()).orElse(null);
+        return stories.lastModified(authService.getAuthUserId()).map(this::withAuthorUsername).orElse(null);
     }
 
     @Override
@@ -248,7 +250,8 @@ public class StoriesService implements StoryUseCases {
 
     @Override
     public PageResponse<StoryModel> favorites(int pageNumber, int pageSize) {
-        return response(stories.favorites(authService.getAuthUserId(), pagination(pageNumber, pageSize, null, null)));
+        return storyResponse(stories.favorites(authService.getAuthUserId(),
+                pagination(pageNumber, pageSize, null, null)));
     }
 
     @Override
@@ -270,7 +273,7 @@ public class StoriesService implements StoryUseCases {
         StoryModel story = requireEditableStory(id);
         story.setCoverUrl(url);
         story.setCoverPublicId(publicId);
-        return stories.save(story);
+        return withAuthorUsername(stories.save(story));
     }
 
     @Override
@@ -279,7 +282,7 @@ public class StoriesService implements StoryUseCases {
         StoryModel story = requireEditableStory(id);
         story.setCoverUrl("");
         story.setCoverPublicId(null);
-        return stories.save(story);
+        return withAuthorUsername(stories.save(story));
     }
 
     @Override
@@ -365,5 +368,22 @@ public class StoriesService implements StoryUseCases {
 
     private <T> PageResponse<T> response(PaginationResult<T> result) {
         return PageResponse.<T>builder().data(result.getContent()).metaData(result.toMetaData()).build();
+    }
+
+    private PageResponse<StoryModel> storyResponse(PaginationResult<StoryModel> result) {
+        List<StoryModel> storiesWithAuthors = result.getContent().stream()
+                .map(this::withAuthorUsername)
+                .toList();
+        return PageResponse.<StoryModel>builder()
+                .data(storiesWithAuthors)
+                .metaData(result.toMetaData())
+                .build();
+    }
+
+    private StoryModel withAuthorUsername(StoryModel story) {
+        if (story != null && story.getUserId() != null) {
+            story.setUsername(users.findUserById(story.getUserId()).getUsername());
+        }
+        return story;
     }
 }

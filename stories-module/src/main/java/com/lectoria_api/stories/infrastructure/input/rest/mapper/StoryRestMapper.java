@@ -52,6 +52,7 @@ public class StoryRestMapper {
         response.put("status", story.getStatus());
         response.put("totalViews", story.getTotalViews());
         response.put("userId", story.getUserId());
+        response.put("username", story.getUsername());
         response.put("totalFavorites", story.getTotalFavorites());
         response.put("totalComments", story.getTotalComments());
         response.put("genre", toResponse(story.getGenre()));
