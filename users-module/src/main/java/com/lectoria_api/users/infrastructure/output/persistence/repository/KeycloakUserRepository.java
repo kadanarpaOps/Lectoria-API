@@ -1,6 +1,7 @@
 package com.lectoria_api.users.infrastructure.output.persistence.repository;
 
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
+import com.lectoria_api.users.domain.exceptions.business.UserRegistrationConflictException;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -28,19 +29,27 @@ public class KeycloakUserRepository {
     private String skipDefaultRole;
 
     public String save(UserRepresentation user) {
-        String locationHeader;
         try (Response response = keycloak.realm(realm).users().create(user)) {
-
-            locationHeader = response.getHeaderString(HttpHeaders.LOCATION);
-
-            if (locationHeader != null) {
-                locationHeader = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+            if (response.getStatus() == Response.Status.CONFLICT.getStatusCode()) {
+                throw new UserRegistrationConflictException();
             }
-
+            if (response.getStatus() != Response.Status.CREATED.getStatusCode()) {
+                throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
+            }
+            String locationHeader = response.getHeaderString(HttpHeaders.LOCATION);
+            if (locationHeader == null || locationHeader.isBlank()) {
+                throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
+            }
+            String userId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+            if (userId.isBlank()) {
+                throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
+            }
+            return userId;
+        } catch (UserRegistrationConflictException | FailedOperationException e) {
+            throw e;
         } catch (RuntimeException e) {
             throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
         }
-        return locationHeader;
     }
 
     public void update(String userId, UserRepresentation newInfo) {

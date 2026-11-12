@@ -11,6 +11,7 @@ import com.lectoria_api.users.domain.exceptions.business.FailedOperationExceptio
 import com.lectoria_api.users.domain.exceptions.business.SameFieldValueOnUpdateException;
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldAlreadyExistsException;
 import com.lectoria_api.users.domain.exceptions.business.UserWithFieldNotExistsException;
+import com.lectoria_api.users.domain.exceptions.business.UserRegistrationConflictException;
 import com.lectoria_api.users.domain.model.RoleModel;
 import com.lectoria_api.users.domain.model.UserDetails;
 import com.lectoria_api.users.domain.model.UserFilters;
@@ -23,6 +24,7 @@ import com.lectoria_api.verifications.domain.model.VerificationModel;
 import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import com.lectoria_api.verifications.domain.ports.input.SharedVerificationUseCases;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -151,19 +153,32 @@ public class UserServicePort implements UserUseCases {
         user.setUserEnabled(false);
         user.setUserDetails(userDetails);
 
-        LOG.info("[USER SERVICE] User to be created on Keycloak: {}", user);
+        LOG.info("[USER SERVICE] Creating account in Keycloak for username {}", user.getUsername());
 
         String userId = keycloakConnector.registerKeycloakUser(user);
         user.setUserId(UUID.fromString(userId));
 
-        LOG.info("[USER SERVICE] User to be inserted on Database: {}", user);
+        LOG.info("[USER SERVICE] Saving account {} in the application database", user.getUsername());
 
         try {
             userRepository.save(user);
-            createRegistryVerification(user);
+        } catch (DataIntegrityViolationException e) {
+            rollbackKeycloakUserAfterFailedRegistration(userId, e);
+            throw new UserRegistrationConflictException();
         } catch (Exception e) {
-            keycloakConnector.rollbackKeycloakUserCreation(userId);
+            LOG.error("Could not save account {} in the application database", user.getUsername(), e);
+            rollbackKeycloakUserAfterFailedRegistration(userId, e);
             throw new FailedOperationException(CREATION_OP, DATABASE_ERR_CONNECTION);
+        }
+        createRegistryVerification(user);
+    }
+
+    private void rollbackKeycloakUserAfterFailedRegistration(String userId, Exception registrationFailure) {
+        try {
+            keycloakConnector.rollbackKeycloakUserCreation(userId);
+        } catch (FailedOperationException rollbackFailure) {
+            registrationFailure.addSuppressed(rollbackFailure);
+            LOG.error("Could not roll back Keycloak account after registration failed", rollbackFailure);
         }
     }
 
