@@ -21,6 +21,7 @@ import com.lectoria_api.verifications.domain.model.enums.VerificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,6 +45,13 @@ public class VerificationServicePort implements VerificationUseCases {
     @Override
     public void createVerification(String username, String userEmail, VerificationType verificationType, String emailToBeNotified, UUID disabledUserId) {
         UUID authUserId = resolveAuthUserId();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (verificationType == VerificationType.REACTIVATE_ACCOUNT && (authUserId == null
+                || authentication == null
+                || authentication.getAuthorities().stream()
+                .noneMatch(authority -> authority.getAuthority().equals("ROLE_LECTORIA_ADMIN")))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo un administrador puede iniciar una reactivación");
+        }
 
         resolveVerificationCreationAvailability(authUserId, verificationType);
 

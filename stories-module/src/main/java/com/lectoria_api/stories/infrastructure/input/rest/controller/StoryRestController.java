@@ -127,7 +127,7 @@ public class StoryRestController {
 
     @PatchMapping(value = "/cover/{id}", consumes = "multipart/form-data")
     public Map<String, Object> uploadCover(@PathVariable UUID id, @RequestPart("image") MultipartFile image) {
-        stories.ensureOwnedStory(id);
+        stories.ensureEditableStory(id);
         StoryModel story = stories.story(id);
         CloudinaryFileUpdateUtil.ImageReference uploaded = cloudinary.uploadImage(image, "lectoria/stories");
         StoryModel updated;
@@ -143,7 +143,7 @@ public class StoryRestController {
 
     @DeleteMapping("/cover/{id}")
     public Map<String, Object> deleteCover(@PathVariable UUID id) {
-        stories.ensureOwnedStory(id);
+        stories.ensureEditableStory(id);
         StoryModel story = stories.story(id);
         StoryModel updated = stories.removeCover(id);
         deleteCoverBestEffort(publicId(story));

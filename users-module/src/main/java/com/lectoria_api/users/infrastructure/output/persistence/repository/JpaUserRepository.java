@@ -49,4 +49,7 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, UUID>, JpaS
     boolean existsByUsernameAndUserEnabled(String username, boolean userEnabled);
 
     boolean existsByUserEmailAndUserEnabled(String userEmail, boolean userEnabled);
+
+    @Query("SELECT DISTINCT u FROM UserEntity u JOIN u.userRoles r WHERE r.roleName = :roleName AND u.userEnabled = true")
+    List<UserEntity> findEnabledUsersByRoleName(@Param("roleName") String roleName);
 }

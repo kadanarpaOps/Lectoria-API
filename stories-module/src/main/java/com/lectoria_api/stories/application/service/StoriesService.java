@@ -17,6 +17,7 @@ import com.lectoria_api.stories.domain.model.ViewModel;
 import com.lectoria_api.stories.domain.ports.input.StoryUseCases;
 import com.lectoria_api.stories.domain.ports.output.StoryRepositoryPort;
 import com.lectoria_api.users.domain.ports.input.SharedAuthUseCases;
+import com.lectoria_api.users.domain.ports.input.StoryCollaborationUseCases;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ public class StoriesService implements StoryUseCases {
     private static final List<String> STORY_STATUSES = List.of("IN_PROGRESS", "COMPLETED", "ABANDONED", "PAUSED");
     private final StoryRepositoryPort stories;
     private final SharedAuthUseCases authService;
+    private final StoryCollaborationUseCases collaboration;
 
     @Override
     @Transactional
@@ -65,7 +67,7 @@ public class StoriesService implements StoryUseCases {
     @Override
     public StoryModel story(UUID id) {
         StoryModel story = stories.findById(id).orElseThrow(StoryNotFoundException::new);
-        if (Boolean.TRUE.equals(story.getHidden()) && !authService.getAuthUserId().equals(story.getUserId())) {
+        if (Boolean.TRUE.equals(story.getHidden()) && !collaboration.canEditStory(id)) {
             throw new StoryNotFoundException();
         }
         return story;
@@ -74,7 +76,7 @@ public class StoriesService implements StoryUseCases {
     @Override
     public StoryModel storyByTitle(String title) {
         StoryModel story = stories.findByTitle(title).orElseThrow(StoryNotFoundException::new);
-        if (Boolean.TRUE.equals(story.getHidden()) && !authService.getAuthUserId().equals(story.getUserId())) {
+        if (Boolean.TRUE.equals(story.getHidden()) && !collaboration.canEditStory(story.getId())) {
             throw new StoryNotFoundException();
         }
         return story;
@@ -83,7 +85,7 @@ public class StoriesService implements StoryUseCases {
     @Override
     @Transactional
     public StoryModel updateStory(UUID id, StoryModel input) {
-        StoryModel story = requireOwnedStory(id);
+        StoryModel story = requireEditableStory(id);
         validateStoryInput(input, false);
         if (input.getTitle() != null && !story.getTitle().equalsIgnoreCase(input.getTitle().trim())) {
             if (stories.existsByTitleAndIdNot(input.getTitle().trim(), id)) throw new StoryTitleAlreadyExistsException();
@@ -93,6 +95,9 @@ public class StoriesService implements StoryUseCases {
         if (input.getGenre() != null) story.setGenre(resolveGenre(input.getGenre()));
         if (input.getSecondaryGenre() != null) story.setSecondaryGenre(resolveOptionalGenre(input.getSecondaryGenre()));
         if (input.getStatus() != null) story.setStatus(input.getStatus());
+        if (input.getHidden() != null && !authService.getAuthUserId().equals(story.getUserId())) {
+            throw new StoryOwnershipException();
+        }
         if (input.getHidden() != null) story.setHidden(input.getHidden());
         if (input.getTags() != null) story.setTags(resolveTags(input.getTags()));
         return stories.save(story);
@@ -117,6 +122,11 @@ public class StoriesService implements StoryUseCases {
     @Override
     public void ensureOwnedStory(UUID id) {
         requireOwnedStory(id);
+    }
+
+    @Override
+    public void ensureEditableStory(UUID id) {
+        requireEditableStory(id);
     }
 
     @Override
@@ -176,7 +186,7 @@ public class StoriesService implements StoryUseCases {
     @Override
     @Transactional
     public void updateTags(UUID id, List<String> names) {
-        StoryModel story = requireOwnedStory(id);
+        StoryModel story = requireEditableStory(id);
         story.setTags(resolveTags(names.stream().map(name -> BasicInfoModel.builder().name(name).build()).toList()));
         stories.save(story);
     }
@@ -257,7 +267,7 @@ public class StoriesService implements StoryUseCases {
     @Override
     @Transactional
     public StoryModel setCover(UUID id, String url, String publicId) {
-        StoryModel story = requireOwnedStory(id);
+        StoryModel story = requireEditableStory(id);
         story.setCoverUrl(url);
         story.setCoverPublicId(publicId);
         return stories.save(story);
@@ -266,7 +276,7 @@ public class StoriesService implements StoryUseCases {
     @Override
     @Transactional
     public StoryModel removeCover(UUID id) {
-        StoryModel story = requireOwnedStory(id);
+        StoryModel story = requireEditableStory(id);
         story.setCoverUrl("");
         story.setCoverPublicId(null);
         return stories.save(story);
@@ -291,6 +301,12 @@ public class StoriesService implements StoryUseCases {
     private StoryModel requireOwnedStory(UUID id) {
         StoryModel story = story(id);
         if (!authService.getAuthUserId().equals(story.getUserId())) throw new StoryOwnershipException();
+        return story;
+    }
+
+    private StoryModel requireEditableStory(UUID id) {
+        StoryModel story = story(id);
+        if (!collaboration.canEditStory(id)) throw new StoryOwnershipException();
         return story;
     }
 

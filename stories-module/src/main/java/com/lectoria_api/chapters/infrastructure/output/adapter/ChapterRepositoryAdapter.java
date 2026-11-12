@@ -46,6 +46,12 @@ public class ChapterRepositoryAdapter implements ChapterRepositoryPort {
 
     @Override
     @Transactional(readOnly = true)
+    public List<ChapterModel> chaptersByStory(UUID storyId) {
+        return chapters.findByStoryIdOrderByOrderAsc(storyId).stream().map(mapper::toModel).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public PaginationResult<ChapterModel> chapters(ChapterFilters filters, PaginationRequest request) {
         Sort sort = Boolean.TRUE.equals(filters.getNewestFirst())
                 ? Sort.by(Sort.Direction.DESC, "order") : Sort.by(Sort.Direction.ASC, "order");

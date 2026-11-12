@@ -11,5 +11,6 @@ public interface SharedUserUseCases {
     UserModel findAnyUserByUsername(String username, Boolean isEnabled);
     UserModel findAnyUserByUserEmail(String userEmail, Boolean isEnabled);
     boolean existsUserByUserEmail(String userEmail, Boolean isEnabled);
+    List<UserModel> findEnabledUsersByRoleName(String roleName);
 
 }

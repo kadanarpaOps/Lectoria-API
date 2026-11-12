@@ -4,6 +4,16 @@ server:
 spring:
   application:
     name: Lectoria-API
+  ai:
+    model:
+      chat: ${LECTORIA_AI_MODEL_CHAT:none}
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY:}
+        chat:
+          options:
+            model: ${GEMINI_MODEL:gemini-3.1-flash-lite}
+            max-output-tokens: 180
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USER}
@@ -57,6 +67,10 @@ cloudinary:
 
 view:
   url: ${VIEW_URL:}
+
+lectoria:
+  ai:
+    enabled: ${LECTORIA_AI_ENABLED:false}
 
 springdoc:
   swagger-ui:

@@ -12,6 +12,7 @@ import com.lectoria_api.common.domain.model.PageResponse;
 import com.lectoria_api.common.domain.model.PaginationRequest;
 import com.lectoria_api.common.domain.model.PaginationResult;
 import com.lectoria_api.stories.domain.ports.input.StoryUseCases;
+import com.lectoria_api.users.domain.ports.input.StoryCollaborationUseCases;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class ChapterService implements ChapterUseCases {
     private final ChapterRepositoryPort chapters;
     private final CommentRepositoryPort comments;
     private final StoryUseCases stories;
+    private final StoryCollaborationUseCases collaboration;
 
     @Override
     @Transactional
@@ -43,7 +45,7 @@ public class ChapterService implements ChapterUseCases {
     public ChapterModel chapter(UUID id) {
         ChapterModel chapter = chapters.findById(id).orElseThrow(ChapterNotFoundException::new);
         stories.story(chapter.getStoryId());
-        if (Boolean.TRUE.equals(chapter.getHidden()) && !stories.isOwnedStory(chapter.getStoryId())) {
+        if (Boolean.TRUE.equals(chapter.getHidden()) && !collaboration.canEditStory(chapter.getStoryId())) {
             throw new ChapterNotFoundException();
         }
         return chapter;
@@ -67,7 +69,15 @@ public class ChapterService implements ChapterUseCases {
     public ChapterModel updateChapter(UUID id, ChapterModel input) {
         if (input == null) throw new InvalidChapterDataException("Chapter data is required");
         ChapterModel chapter = chapter(id);
-        ensureOwnedStory(chapter.getStoryId());
+        if (!collaboration.canEditStory(chapter.getStoryId())) throw new ChapterOwnershipException();
+        if (collaboration.isChapterLockedByOtherUser(id)) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.CONFLICT, "Este capítulo está siendo editado por otra persona");
+        }
+        if (!collaboration.isChapterLockOwnedByCurrentUser(id)) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.CONFLICT, "Debes tomar el control de edición antes de guardar");
+        }
         if (input.getTitle() != null) {
             if (input.getTitle().isBlank()) throw new InvalidChapterDataException("Title cannot be blank");
             chapter.setTitle(input.getTitle().trim());
@@ -135,7 +145,7 @@ public class ChapterService implements ChapterUseCases {
     }
 
     private void ensureOwnedStory(UUID storyId) {
-        if (!stories.isOwnedStory(storyId)) throw new ChapterOwnershipException();
+        if (!collaboration.canEditStory(storyId)) throw new ChapterOwnershipException();
     }
 
     private PageResponse<ChapterModel> response(PaginationResult<ChapterModel> result) {

@@ -8,6 +8,7 @@ import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserEmailDT
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserPasswordDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserProfileDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.in.UpdateUserRoleDTO;
+import com.lectoria_api.users.infrastructure.input.rest.dto.in.ResetPasswordDTO;
 import com.lectoria_api.users.infrastructure.input.rest.dto.out.ResUserDTO;
 import com.lectoria_api.users.infrastructure.input.rest.mapper.UserRestMapper;
 import jakarta.validation.Valid;
@@ -102,6 +103,12 @@ public class AuthUserRestController {
     public ResponseEntity<Void> disableUserAccount() {
         userService.disableUserAccount(authService.getAuthUserId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/activate-account")
+    public ResponseEntity<Void> reactivateAccount(@Valid @RequestBody ResetPasswordDTO request) {
+        userService.reactivateUserAccount(request.getUsername(), request.getUserEmail(), request.getNewPassword());
+        return ResponseEntity.noContent().build();
     }
 
     private void deleteImageBestEffort(String publicId) {

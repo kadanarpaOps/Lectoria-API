@@ -20,6 +20,7 @@ public interface StoryUseCases {
     StoryModel deleteStory(UUID id);
     StoryModel toggleHidden(UUID id);
     void ensureOwnedStory(UUID id);
+    void ensureEditableStory(UUID id);
     boolean isOwnedStory(UUID id);
     PageResponse<StoryModel> search(StoryFilters filters);
     PageResponse<StoryModel> publicStoriesByUser(UUID userId, int offset, int limit, boolean newestFirst);
