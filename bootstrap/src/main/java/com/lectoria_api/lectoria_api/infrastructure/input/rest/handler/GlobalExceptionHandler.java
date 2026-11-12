@@ -8,6 +8,7 @@ import com.lectoria_api.comments.domain.exceptions.CommentOwnershipException;
 import com.lectoria_api.comments.domain.exceptions.InvalidCommentDataException;
 import com.lectoria_api.common.infrastructure.input.rest.dto.ErrorDetailsDTO;
 import com.lectoria_api.common.infrastructure.input.rest.dto.ErrorResponseDTO;
+import com.lectoria_api.auth.domain.exceptions.auth.IncorrectCredentialsException;
 import com.lectoria_api.stories.domain.exceptions.GenreNotFoundException;
 import com.lectoria_api.stories.domain.exceptions.InvalidStoryDataException;
 import com.lectoria_api.stories.domain.exceptions.StoryNotFoundException;
@@ -44,14 +45,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponseDTO> handleAuthenticationException(AuthenticationException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                ErrorResponseDTO.builder()
-                        .statusCode(HttpStatus.UNAUTHORIZED.value())
-                        .message(publicMessage(HttpStatus.UNAUTHORIZED))
-                        .details(doDetails(ex))
-                        .timestamp(now())
-                        .build()
-        );
+        return errorResponse(ex, HttpStatus.UNAUTHORIZED, publicMessage(HttpStatus.UNAUTHORIZED));
+    }
+
+    @ExceptionHandler(IncorrectCredentialsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleIncorrectCredentials(IncorrectCredentialsException ex) {
+        return errorResponse(ex, HttpStatus.UNAUTHORIZED,
+                "El usuario o correo y la contraseña no coinciden.");
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -63,14 +63,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleResponseStatusException(ResponseStatusException ex) {
         HttpStatusCode statusCode = ex.getStatusCode();
         HttpStatus status = HttpStatus.resolve(statusCode.value());
-        return ResponseEntity.status(statusCode).body(
-                ErrorResponseDTO.builder()
-                        .statusCode(statusCode.value())
-                        .message(publicMessage(status == null ? HttpStatus.INTERNAL_SERVER_ERROR : status))
-                        .details(doDetails(ex))
-                        .timestamp(now())
-                        .build()
-        );
+        HttpStatus resolvedStatus = status == null ? HttpStatus.INTERNAL_SERVER_ERROR : status;
+        return errorResponse(ex, statusCode, publicMessage(resolvedStatus, ex.getReason()));
     }
 
     @ExceptionHandler({
@@ -167,10 +161,103 @@ public class GlobalExceptionHandler {
 
     private ResponseEntity<ErrorResponseDTO> domainError(Exception ex, HttpStatus status) {
         return ResponseEntity.status(status).body(ErrorResponseDTO.builder()
-                .statusCode(status.value()).message(publicMessage(status)).details(doDetails(ex)).timestamp(now()).build());
+                .statusCode(status.value()).message(domainMessage(ex, status)).details(doDetails(ex)).timestamp(now()).build());
+    }
+
+    private String domainMessage(Exception ex, HttpStatus status) {
+        if (ex instanceof StoryNotFoundException) return "No se encontró la historia solicitada.";
+        if (ex instanceof GenreNotFoundException) return "No se encontró el género solicitado.";
+        if (ex instanceof ChapterNotFoundException) return "No se encontró el capítulo solicitado.";
+        if (ex instanceof CommentNotFoundException) return "No se encontró el comentario solicitado.";
+        if (ex instanceof UserWithFieldNotExistsException) return "No se encontró un usuario con los datos indicados.";
+        if (ex instanceof StoryOwnershipException) return "No tienes permiso para modificar esta historia.";
+        if (ex instanceof ChapterOwnershipException) return "No tienes permiso para modificar este capítulo.";
+        if (ex instanceof CommentOwnershipException) return "No tienes permiso para modificar este comentario.";
+        if (ex instanceof StoryTitleAlreadyExistsException) return "Ya existe una historia con ese título.";
+        if (ex instanceof InvalidParametersForUserSearchException) {
+            return "Indica un nombre de usuario o un correo electrónico, pero no ambos.";
+        }
+        if (ex instanceof InvalidStoryDataException) return translateInvalidStoryMessage(ex.getMessage());
+        if (ex instanceof InvalidChapterDataException) return translateInvalidChapterMessage(ex.getMessage());
+        if (ex instanceof InvalidCommentDataException) return translateInvalidCommentMessage(ex.getMessage());
+        return publicMessage(status);
+    }
+
+    private String translateInvalidStoryMessage(String message) {
+        if (message == null) return "Los datos de la historia no son válidos. Revísalos e inténtalo nuevamente.";
+        return switch (message) {
+            case "Story data is required" -> "Debes completar los datos de la historia.";
+            case "storyId is required" -> "Falta el identificador de la historia.";
+            case "Invalid storyId" -> "El identificador de la historia no es válido.";
+            case "Invalid genre or tag identifier" -> "El género o una etiqueta seleccionada no es válida.";
+            case "Invalid tagNames JSON" -> "La lista de etiquetas enviada no tiene un formato válido.";
+            case "Rating data is required" -> "Debes indicar la calificación de la historia.";
+            case "Invalid storyId or score" -> "La historia o la calificación indicada no es válida.";
+            case "Rating must be between 0 and 10" -> "La calificación debe estar entre 0 y 10.";
+            case "A primary genre is required" -> "Debes seleccionar un género principal.";
+            case "title is required" -> "El título de la historia es obligatorio.";
+            case "Title must contain between 1 and 120 characters" ->
+                    "El título debe tener entre 1 y 120 caracteres.";
+            case "description is required", "description cannot be blank" ->
+                    "La sinopsis de la historia es obligatoria.";
+            case "Invalid story status" -> "El estado seleccionado para la historia no es válido.";
+            case "Invalid pagination values" -> "Los valores de paginación no son válidos.";
+            default -> "Los datos de la historia no son válidos. Revísalos e inténtalo nuevamente.";
+        };
+    }
+
+    private String translateInvalidChapterMessage(String message) {
+        if (message == null) return "Los datos del capítulo no son válidos. Revísalos e inténtalo nuevamente.";
+        return switch (message) {
+            case "storyId is required" -> "Falta el identificador de la historia.";
+            case "Chapter data is required" -> "Debes completar los datos del capítulo.";
+            case "Title cannot be blank" -> "El título del capítulo no puede estar vacío.";
+            case "Chapter order must be positive", "Invalid chapter order" ->
+                    "La posición del capítulo debe ser un número positivo.";
+            case "Chapter order already exists" -> "Ya existe un capítulo en esa posición.";
+            case "Chapter order is required" -> "Debes indicar la posición del capítulo.";
+            case "Chapter order must be between 1 and the total number of chapters" ->
+                    "La posición debe estar entre 1 y el total de capítulos de la historia.";
+            case "Invalid storyId" -> "El identificador de la historia no es válido.";
+            case "Invalid pagination values" -> "Los valores de paginación no son válidos.";
+            default -> "Los datos del capítulo no son válidos. Revísalos e inténtalo nuevamente.";
+        };
+    }
+
+    private String translateInvalidCommentMessage(String message) {
+        if (message == null) return "Los datos del comentario no son válidos. Revísalos e inténtalo nuevamente.";
+        return switch (message) {
+            case "Comment data is required" -> "Debes completar los datos del comentario.";
+            case "Invalid storyId or chapterId", "storyId or chapterId is required" ->
+                    "Indica una historia o un capítulo válido para el comentario.";
+            case "The chapter does not belong to the provided story" ->
+                    "El capítulo seleccionado no pertenece a esa historia.";
+            case "Provide exactly one of storyId or chapterId" ->
+                    "El comentario debe pertenecer a una historia o a un capítulo, no a ambos.";
+            case "content is required" -> "El comentario no puede estar vacío.";
+            case "Invalid pagination values" -> "Los valores de paginación no son válidos.";
+            default -> "Los datos del comentario no son válidos. Revísalos e inténtalo nuevamente.";
+        };
+    }
+
+    private ResponseEntity<ErrorResponseDTO> errorResponse(Exception ex, HttpStatus status, String message) {
+        return errorResponse(ex, (HttpStatusCode) status, message);
+    }
+
+    private ResponseEntity<ErrorResponseDTO> errorResponse(Exception ex, HttpStatusCode status, String message) {
+        return ResponseEntity.status(status).body(ErrorResponseDTO.builder()
+                .statusCode(status.value()).message(message).details(doDetails(ex)).timestamp(now()).build());
     }
 
     private String publicMessage(HttpStatus status) {
+        return publicMessage(status, null);
+    }
+
+    private String publicMessage(HttpStatus status, String reason) {
+        String translatedReason = translateReason(reason);
+        if (translatedReason != null) {
+            return translatedReason;
+        }
         return switch (status) {
             case BAD_REQUEST -> "Los datos enviados no son válidos. Revísalos e inténtalo nuevamente.";
             case UNAUTHORIZED -> "Tu sesión no es válida o ha caducado. Inicia sesión nuevamente.";
@@ -182,6 +269,67 @@ public class GlobalExceptionHandler {
             case BAD_GATEWAY, SERVICE_UNAVAILABLE, GATEWAY_TIMEOUT ->
                     "No se pudo completar la operación por un problema con un servicio externo. Inténtalo más tarde.";
             default -> "Ocurrió un error al procesar la solicitud. Inténtalo más tarde.";
+        };
+    }
+
+    private String translateReason(String reason) {
+        if (reason == null) {
+            return null;
+        }
+        return switch (reason.trim()) {
+            case "Image upload failed", "Image removal failed" ->
+                    "No se pudo actualizar la imagen. Inténtalo nuevamente más tarde.";
+            case "Image is required" -> "Selecciona una imagen para continuar.";
+            case "Image exceeds the 10 MB limit" -> "La imagen supera el tamaño máximo de 10 MB.";
+            case "Only image uploads are supported" -> "El archivo seleccionado no es una imagen válida.";
+            case "Image storage is not configured" ->
+                    "El servicio de imágenes no está disponible. Inténtalo más tarde.";
+            case "Invalid image folder" -> "La ubicación solicitada para la imagen no es válida.";
+            case "The destination email is already in use" ->
+                    "Ese correo electrónico ya está registrado por otra cuenta.";
+            case "Wait until the current code expires before requesting another" ->
+                    "Espera a que venza el código actual antes de solicitar otro.";
+            case "A registration code can only be resent once" ->
+                    "El código de registro solo se puede reenviar una vez.";
+            case "Create a new email verification for the new destination" ->
+                    "Solicita una nueva verificación para el correo electrónico que deseas usar.";
+            case "This verification type requires an authenticated user" ->
+                    "Inicia sesión para solicitar este tipo de verificación.";
+            case "This verification type must be requested from the public scope" ->
+                    "Solicita este tipo de verificación desde la pantalla pública correspondiente.";
+            case "No unverified registration was found" ->
+                    "No se encontró un registro pendiente para los datos indicados.";
+            case "No active verification was found" ->
+                    "No se encontró una verificación activa para los datos indicados.";
+            default -> isKnownSpanishReason(reason.trim()) ? reason.trim() : null;
+        };
+    }
+
+    private boolean isKnownSpanishReason(String reason) {
+        return switch (reason) {
+            case "Solo un administrador puede iniciar una reactivación",
+                 "Indica un nombre de usuario o un correo, pero no ambos",
+                 "No puedes responder esta solicitud",
+                 "No tienes permiso para editar este capítulo",
+                 "Este capítulo está siendo editado por otra persona",
+                 "No puedes invitarte a ti mismo",
+                 "Ya eres el autor de esta historia",
+                 "Este usuario ya es coautor de la historia",
+                 "Ya existe una solicitud pendiente para esta historia",
+                 "No se encontró la solicitud",
+                 "La solicitud ya fue respondida",
+                 "Esta cuenta no puede solicitar reactivación",
+                 "Ya existe una solicitud de reactivación pendiente para esta cuenta",
+                 "La solicitud de reactivación ya no está pendiente",
+                 "La cuenta ya está activa",
+                 "No se encontró el capítulo",
+                 "La paginación no es válida",
+                 "No se encontró la notificación",
+                 "No se pudo generar la sinopsis. Inténtalo nuevamente.",
+                 "La respuesta generada no es válida. Inténtalo nuevamente.",
+                 "Has alcanzado el límite de solicitudes. Inténtalo más tarde.",
+                 "Puedes generar hasta tres sinopsis por minuto." -> true;
+            default -> false;
         };
     }
 
