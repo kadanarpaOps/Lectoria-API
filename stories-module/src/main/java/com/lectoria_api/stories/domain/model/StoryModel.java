@@ -30,6 +30,7 @@ public class StoryModel {
     private String status;
     private Integer totalViews;
     private UUID userId;
+    private String username;
     private Integer totalFavorites;
     private Integer totalComments;
     private BasicInfoModel genre;

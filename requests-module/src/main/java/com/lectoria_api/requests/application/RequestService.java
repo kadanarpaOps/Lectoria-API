@@ -52,6 +52,9 @@ public class RequestService {
     public RequestEntity inviteCoauthor(UUID storyId, String username) {
         stories.ensureOwnedStory(storyId);
         UserModel invitee = users.findAnyUserByUsername(username, true);
+        if (invitee.getUserRoles().stream().anyMatch(role -> "LECTORIA_ADMIN".equals(role.getRoleName()))) {
+            throw conflict("No se puede invitar a un usuario administrador como coautor");
+        }
         if (invitee.getUserId().equals(auth.getAuthUserId())) throw conflict("No puedes invitarte a ti mismo");
         return createCoauthorRequest(storyId, auth.getAuthUserId(), invitee.getUserId(), invitee.getUserId());
     }
