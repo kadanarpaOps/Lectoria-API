@@ -6,12 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-public interface JpaSentNotificationRepository extends JpaRepository<SentNotificationEntity, String> {
+public interface JpaSentNotificationRepository extends JpaRepository<SentNotificationEntity, UUID> {
 
-    List<SentNotificationEntity> findAllByUserIdOrderByCreatedAtDesc(String userId);
+    List<SentNotificationEntity> findAllByUserIdOrderByCreatedAtDesc(UUID userId);
 
-    Integer countByShownEqualsAndUserIdEquals(boolean shown, String userId);
-    Page<SentNotificationEntity> findAllByUserIdOrderByCreatedAtDesc(String userId, Pageable pageable);
-    java.util.Optional<SentNotificationEntity> findByNotificationIdAndUserId(String notificationId, String userId);
+    Integer countByShownEqualsAndUserIdEquals(boolean shown, UUID userId);
+    Page<SentNotificationEntity> findAllByUserIdOrderByCreatedAtDesc(UUID userId, Pageable pageable);
+    Optional<SentNotificationEntity> findByNotificationIdAndUserId(UUID notificationId, UUID userId);
 }

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/notifications")
 @RequiredArgsConstructor
@@ -45,12 +47,12 @@ public class NotificationRestController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La paginación no es válida");
         }
         return sentNotifications.findAllByUserIdOrderByCreatedAtDesc(
-                auth.getAuthUserId().toString(), PageRequest.of(page, pageSize));
+                auth.getAuthUserId(), PageRequest.of(page, pageSize));
     }
 
     @GetMapping("/in-app/unread-count")
     public int unreadCount() {
-        return sentNotifications.countByShownEqualsAndUserIdEquals(false, auth.getAuthUserId().toString());
+        return sentNotifications.countByShownEqualsAndUserIdEquals(false, auth.getAuthUserId());
     }
 
     @PatchMapping("/in-app/{notificationId}/read")
@@ -66,8 +68,14 @@ public class NotificationRestController {
     }
 
     private void updateReadState(String notificationId, boolean read) {
+        UUID parsedNotificationId;
+        try {
+            parsedNotificationId = UUID.fromString(notificationId);
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El identificador de notificación no es válido.");
+        }
         SentNotificationEntity notification = sentNotifications
-                .findByNotificationIdAndUserId(notificationId, auth.getAuthUserId().toString())
+                .findByNotificationIdAndUserId(parsedNotificationId, auth.getAuthUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró la notificación"));
         notification.setShown(read);
         notification.setShownAt(read ? java.time.LocalDateTime.now() : null);
