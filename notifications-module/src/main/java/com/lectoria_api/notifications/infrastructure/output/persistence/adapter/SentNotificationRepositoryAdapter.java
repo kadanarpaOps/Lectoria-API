@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -23,13 +24,13 @@ public class SentNotificationRepositoryAdapter implements SentNotificationReposi
 
     @Override
     public List<InAppNotificationModel> findNotificationByUserId(String userId) {
-        return notificationRepository.findAllByUserIdOrderByCreatedAtDesc(userId)
+        return notificationRepository.findAllByUserIdOrderByCreatedAtDesc(UUID.fromString(userId))
                 .stream().map(mapper::toModel).toList();
     }
 
     @Override
     public Integer countByShownState(boolean shown, String userId) {
-        return notificationRepository.countByShownEqualsAndUserIdEquals(shown, userId);
+        return notificationRepository.countByShownEqualsAndUserIdEquals(shown, UUID.fromString(userId));
     }
 
 }

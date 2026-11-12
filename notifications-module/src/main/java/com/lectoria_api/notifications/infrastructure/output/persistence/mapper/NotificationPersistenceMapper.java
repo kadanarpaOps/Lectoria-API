@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class NotificationPersistenceMapper {
@@ -27,8 +28,8 @@ public class NotificationPersistenceMapper {
     public SentNotificationEntity toEntity(InAppNotificationModel inAppNotificationModel) {
         if (inAppNotificationModel == null) return null;
         return SentNotificationEntity.builder()
-                .notificationId(inAppNotificationModel.getNotificationId())
-                .userId(inAppNotificationModel.getUserId())
+                .notificationId(parseUuid(inAppNotificationModel.getNotificationId()))
+                .userId(UUID.fromString(inAppNotificationModel.getUserId()))
                 .notificationContent(inAppNotificationModel.getNotificationContent())
                 .shown(inAppNotificationModel.isShown())
                 .createdAt(inAppNotificationModel.getCreatedAt())
@@ -51,13 +52,18 @@ public class NotificationPersistenceMapper {
     public InAppNotificationModel toModel(SentNotificationEntity sentNotificationEntity) {
         if (sentNotificationEntity == null) return null;
         return InAppNotificationModel.builder()
-                .notificationId(sentNotificationEntity.getNotificationId())
-                .userId(sentNotificationEntity.getUserId())
+                .notificationId(sentNotificationEntity.getNotificationId() == null
+                        ? null : sentNotificationEntity.getNotificationId().toString())
+                .userId(sentNotificationEntity.getUserId().toString())
                 .notificationContent(sentNotificationEntity.getNotificationContent())
                 .shown(sentNotificationEntity.isShown())
                 .createdAt(sentNotificationEntity.getCreatedAt())
                 .shownAt(sentNotificationEntity.getShownAt())
                 .build();
+    }
+
+    private UUID parseUuid(String value) {
+        return value == null ? null : UUID.fromString(value);
     }
 
     public List<EmailTemplateModel> toModel(List<EmailTemplateEntity> emailTemplateEntities) {

@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "T_SENT_NOTIFICATIONS")
@@ -27,9 +28,9 @@ public class SentNotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "NOTIFICATION_ID")
-    private String notificationId;
+    private UUID notificationId;
     @Column(name = "USER_ID", nullable = false)
-    private String userId;
+    private UUID userId;
     @Column(name = "NOTIFICATION_CONTENT", nullable = false)
     private String notificationContent;
     @Column(name = "NOTIFICATION_SHOWN", nullable = false)
