@@ -5,9 +5,11 @@ import com.lectoria_api.users.infrastructure.output.persistence.entities.RoleEnt
 import com.lectoria_api.users.infrastructure.output.persistence.entities.UserDetailsEntity;
 import com.lectoria_api.users.infrastructure.output.persistence.entities.UserEntity;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -22,18 +24,14 @@ public class UserSpecification {
 
     public static Specification<UserEntity> withFilters(UserFilters filters) {
         return (root, query, cb) -> {
-            if (query != null && Long.class != query.getResultType()) {
-                query.distinct(true);
-            }
-
             List<Predicate> predicates = new ArrayList<>();
 
             addStringLikePredicate(predicates, cb, root.get("username"), filters.getUsername());
             addStringLikePredicate(predicates, cb, root.get("userEmail"), filters.getUserEmail());
             addEqualPredicate(predicates, cb, root.get("userEnabled"), filters.getUserStatus());
             addDetailsPredicate(predicates, cb, root, filters.getIsRegistryVerified());
-            addRolesPredicate(predicates, cb, root, filters.getUserRolesNames(), false);
-            addRolesPredicate(predicates, cb, root, filters.getExcludedRolesNames(), true);
+            addRolesPredicate(predicates, cb, query, root, filters.getUserRolesNames(), false);
+            addRolesPredicate(predicates, cb, query, root, filters.getExcludedRolesNames(), true);
             addExcludedUsersPredicate(predicates, cb, root, filters.getExcludedUsers());
 
             return cb.and(predicates.toArray(new Predicate[0]));
@@ -62,12 +60,16 @@ public class UserSpecification {
         }
     }
 
-    private static void addRolesPredicate(List<Predicate> predicates, CriteriaBuilder cb,
+    private static void addRolesPredicate(List<Predicate> predicates, CriteriaBuilder cb, CriteriaQuery<?> query,
                                           Root<UserEntity> root, List<String> roles, boolean exclude) {
         if (hasElements(roles)) {
-            Join<UserEntity, RoleEntity> joinRoles = root.join("userRoles");
-            Predicate inPredicate = joinRoles.get("roleName").in(roles);
-            predicates.add(exclude ? cb.not(inPredicate) : inPredicate);
+            Subquery<Integer> roleQuery = query.subquery(Integer.class);
+            Root<UserEntity> correlatedUser = roleQuery.correlate(root);
+            Join<UserEntity, RoleEntity> joinRoles = correlatedUser.join("userRoles");
+            roleQuery.select(cb.literal(1))
+                    .where(joinRoles.get("roleName").in(roles));
+            Predicate roleExists = cb.exists(roleQuery);
+            predicates.add(exclude ? cb.not(roleExists) : roleExists);
         }
     }
 

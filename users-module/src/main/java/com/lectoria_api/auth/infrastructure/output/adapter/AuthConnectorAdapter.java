@@ -59,7 +59,8 @@ public class AuthConnectorAdapter implements AuthConnectorPort {
         try {
             loginResponseData = authClient.login(authData).getBody();
         } catch (FeignException e) {
-            if (e.status() == HttpStatus.BAD_REQUEST.value()) {
+            if (e.status() == HttpStatus.BAD_REQUEST.value()
+                    || e.status() == HttpStatus.UNAUTHORIZED.value()) {
                 throw new IncorrectCredentialsException();
             } else {
                 throw new FailedOperationException(AUTH_OP, KEYCLOAK_ERR_CONNECTION);

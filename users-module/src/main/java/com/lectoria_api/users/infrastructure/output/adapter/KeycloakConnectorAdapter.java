@@ -1,6 +1,7 @@
 package com.lectoria_api.users.infrastructure.output.adapter;
 
 import com.lectoria_api.users.domain.exceptions.business.FailedOperationException;
+import com.lectoria_api.users.domain.exceptions.business.UserRegistrationConflictException;
 import com.lectoria_api.users.domain.exceptions.keycloak.KeycloakRoleNotFoundException;
 import com.lectoria_api.users.domain.model.UserModel;
 import com.lectoria_api.users.domain.ports.output.KeycloakConnectorPort;
@@ -62,6 +63,8 @@ public class KeycloakConnectorAdapter implements KeycloakConnectorPort {
 
         try {
             userId = keycloakRepository.save(keycloakUser);
+        } catch (UserRegistrationConflictException e) {
+            throw e;
         } catch (RuntimeException e) {
             LOG.error("[KEYCLOAK_CONNECTOR] Error Creating User: {}", e.getMessage());
             throw new FailedOperationException(CREATION_OP, KEYCLOAK_ERR_CONNECTION);
