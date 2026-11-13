@@ -45,6 +45,7 @@ public class RequestService {
         StoryModel story = stories.story(storyId);
         UUID ownerId = story.getUserId();
         if (ownerId.equals(userId)) throw conflict("Ya eres el autor de esta historia");
+        if (coauthors.existsByStoryIdAndUserId(storyId, userId)) throw conflict("Ya eres coautor de esta historia");
         return createCoauthorRequest(storyId, userId, ownerId, userId);
     }
 
